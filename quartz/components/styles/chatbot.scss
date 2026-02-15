@@ -142,6 +142,12 @@
 
 /* ===== 반응형 (모바일) ===== */
 @media (max-width: 768px) {
+  #chat-widget {
+    flex-direction: column-reverse;
+    align-items: flex-end;
+    gap: 8px;
+  }
+
   #chatbot-container {
     width: calc(100vw - 20px);
     height: calc(100vh - 100px);
@@ -155,6 +161,23 @@
 
   #chat-tooltip-mobile {
     display: block;
+    position: relative;
+    padding: 8px 14px;
+    font-size: 13px;
+    border-radius: 16px;
+    margin-right: 8px;
+
+    &::after {
+      content: "";
+      position: absolute;
+      bottom: -6px;
+      right: 20px;
+      width: 12px;
+      height: 12px;
+      background: var(--light, white);
+      transform: rotate(45deg);
+      box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.08);
+    }
   }
 }
 

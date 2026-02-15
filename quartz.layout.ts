@@ -11,7 +11,7 @@ export const sharedPageComponents: SharedLayout = {
       headerTitle: "다빛솔루션 AI 챗봇",
       buttonEmoji: "\u{1F916}",
       tooltipText: "AI 기술지원 챗봇입니다\n도움이 필요하신가요?",
-      tooltipTextMobile: "AI 챗봇입니다.",
+      tooltipTextMobile: "도움이 필요하신가요?",
     }),
   ],
   footer: Component.Footer({
