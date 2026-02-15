@@ -85,7 +85,7 @@
 
   svg {
     pointer-events: all;
-    transition: transform 0.35s ease;
+    transition: transform 0.15s ease;
 
     & > polyline {
       pointer-events: none;
@@ -144,7 +144,7 @@ button.desktop-explorer {
     display: grid;
     grid-template-rows: 0fr;
     transition-property: grid-template-rows, visibility;
-    transition-duration: 0.3s;
+    transition-duration: 0.15s;
     transition-timing-function: ease-in-out;
   }
 
@@ -208,7 +208,7 @@ button.desktop-explorer {
   margin-right: 5px;
   color: var(--gray);
   cursor: pointer;
-  transition: transform 0.3s ease;
+  transition: transform 0.15s ease;
   backface-visibility: visible;
   flex-shrink: 0;
 }
