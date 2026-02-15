@@ -194,7 +194,7 @@ button.desktop-explorer {
     & span {
       font-size: 0.95rem;
       display: inline-block;
-      color: var(--secondary);
+      color: var(--darkgray);
       font-weight: $semiBoldWeight;
       margin: 0;
       line-height: 1.5rem;
@@ -205,7 +205,7 @@ button.desktop-explorer {
 
 .folder-icon {
   margin-right: 5px;
-  color: var(--secondary);
+  color: var(--gray);
   cursor: pointer;
   transition: transform 0.3s ease;
   backface-visibility: visible;
@@ -214,6 +214,15 @@ button.desktop-explorer {
 
 li:has(> .folder-outer:not(.open)) > .folder-container > svg {
   transform: rotate(-90deg);
+}
+
+// Open folder: blue text and icon
+li:has(> .folder-outer.open) > .folder-container > svg {
+  color: var(--secondary);
+}
+
+li:has(> .folder-outer.open) > .folder-container .folder-title {
+  color: var(--secondary);
 }
 
 .folder-icon:hover {

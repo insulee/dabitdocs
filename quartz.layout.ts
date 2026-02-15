@@ -39,7 +39,6 @@ export const defaultContentPageLayout: PageLayout = {
     Component.Explorer({ folderClickBehavior: "collapse", folderDefaultState: "collapsed" }),
   ],
   right: [
-    Component.Graph(),
     Component.DesktopOnly(Component.TableOfContents()),
     Component.Backlinks(),
   ],
