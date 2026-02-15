@@ -10,9 +10,12 @@ CONTENT_DIR="$QUARTZ_DIR/content"
 
 echo "=== DABIT DOCS 배포 시작 ==="
 
-# 1. 기존 콘텐츠 삭제 (index.md 제외)
+# 1. 기존 콘텐츠 삭제 (index.md 백업 후 복원)
 echo "[1/4] 기존 콘텐츠 정리 중..."
-find "$CONTENT_DIR" -mindepth 1 -not -name 'index.md' -delete 2>/dev/null || true
+cp "$CONTENT_DIR/index.md" "$QUARTZ_DIR/index.md.bak" 2>/dev/null || true
+rm -rf "$CONTENT_DIR"/*
+cp "$QUARTZ_DIR/index.md.bak" "$CONTENT_DIR/index.md" 2>/dev/null || true
+rm -f "$QUARTZ_DIR/index.md.bak"
 
 # 2. Obsidian 볼트에서 콘텐츠 복사
 echo "[2/4] 콘텐츠 복사 중..."
