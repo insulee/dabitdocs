@@ -114,6 +114,16 @@ a.internal.tag-link {
   & ul > li > a {
     font-size: 0.88rem;
   }
+
+  // Hide "탐색기 v" toggle button on desktop
+  & button.desktop-explorer {
+    display: none !important;
+  }
+
+  // Always show explorer content on desktop
+  & .explorer-content {
+    margin-top: 0;
+  }
 }
 
 // ─── Breadcrumbs ───
