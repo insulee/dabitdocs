@@ -13,9 +13,11 @@ echo "=== DABIT DOCS 배포 시작 ==="
 # 1. 기존 콘텐츠 삭제 (index.md 백업 후 복원)
 echo "[1/4] 기존 콘텐츠 정리 중..."
 cp "$CONTENT_DIR/index.md" "$QUARTZ_DIR/index.md.bak" 2>/dev/null || true
+cp "$CONTENT_DIR/CNAME" "$QUARTZ_DIR/CNAME.bak" 2>/dev/null || true
 rm -rf "$CONTENT_DIR"/*
 cp "$QUARTZ_DIR/index.md.bak" "$CONTENT_DIR/index.md" 2>/dev/null || true
-rm -f "$QUARTZ_DIR/index.md.bak"
+cp "$QUARTZ_DIR/CNAME.bak" "$CONTENT_DIR/CNAME" 2>/dev/null || true
+rm -f "$QUARTZ_DIR/index.md.bak" "$QUARTZ_DIR/CNAME.bak"
 
 # 2. Obsidian 볼트에서 콘텐츠 복사
 echo "[2/4] 콘텐츠 복사 중..."
