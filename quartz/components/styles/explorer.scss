@@ -133,7 +133,8 @@ button.desktop-explorer {
 
       &.active {
         opacity: 1;
-        color: var(--tertiary);
+        color: var(--secondary);
+        font-weight: 600;
       }
     }
   }
@@ -216,14 +217,6 @@ li:has(> .folder-outer:not(.open)) > .folder-container > svg {
   transform: rotate(-90deg);
 }
 
-// Open folder: blue text and icon
-li:has(> .folder-outer.open) > .folder-container > svg {
-  color: var(--secondary);
-}
-
-li:has(> .folder-outer.open) > .folder-container .folder-title {
-  color: var(--secondary);
-}
 
 .folder-icon:hover {
   color: var(--tertiary);
