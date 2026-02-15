@@ -19,10 +19,10 @@ export function byDateAndAlphabetical(cfg: GlobalConfiguration): SortFn {
       return 1
     }
 
-    // otherwise, sort lexographically by title
+    // otherwise, sort by title with natural number ordering
     const f1Title = f1.frontmatter?.title.toLowerCase() ?? ""
     const f2Title = f2.frontmatter?.title.toLowerCase() ?? ""
-    return f1Title.localeCompare(f2Title)
+    return f1Title.localeCompare(f2Title, undefined, { numeric: true })
   }
 }
 
@@ -34,21 +34,10 @@ export function byDateAndAlphabeticalFolderFirst(cfg: GlobalConfiguration): Sort
     if (f1IsFolder && !f2IsFolder) return -1
     if (!f1IsFolder && f2IsFolder) return 1
 
-    // If both are folders or both are files, sort by date/alphabetical
-    if (f1.dates && f2.dates) {
-      // sort descending
-      return getDate(cfg, f2)!.getTime() - getDate(cfg, f1)!.getTime()
-    } else if (f1.dates && !f2.dates) {
-      // prioritize files with dates
-      return -1
-    } else if (!f1.dates && f2.dates) {
-      return 1
-    }
-
-    // otherwise, sort lexographically by title
+    // Sort by title with natural number ordering
     const f1Title = f1.frontmatter?.title.toLowerCase() ?? ""
     const f2Title = f2.frontmatter?.title.toLowerCase() ?? ""
-    return f1Title.localeCompare(f2Title)
+    return f1Title.localeCompare(f2Title, undefined, { numeric: true })
   }
 }
 

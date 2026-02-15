@@ -1,70 +1,115 @@
 @use "./base.scss";
 
-// Explorer sidebar
-.explorer {
-  & ul > li > a {
-    font-size: 0.9rem;
-  }
-}
-
-// Folder page title - remove "폴더:" prefix style
-.article-title {
-  font-weight: 700;
-  letter-spacing: -0.01em;
-}
-
-// Page list items - cleaner look
+// ─── Page list: clean card-like items ───
 ul.section-ul {
-  margin-top: 1.5em;
+  margin-top: 1.2em;
 }
 
 li.section-li {
-  margin-bottom: 0.5em;
-  padding: 0.6rem 0.8rem;
-  border-radius: 6px;
-  transition: background-color 0.15s ease;
+  margin-bottom: 0.25em;
+  padding: 0.65rem 0.9rem;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  transition: all 0.15s ease;
 
   &:hover {
     background-color: var(--highlight);
+    border-color: var(--lightgray);
   }
 
   & > .section > .desc > h3 {
-    font-size: 0.95rem;
+    font-size: 0.92rem;
     font-weight: 500;
   }
 }
 
-// Footer
-footer {
-  opacity: 0.6;
+// ─── Article title ───
+.article-title {
+  font-weight: 700;
+  letter-spacing: -0.02em;
 }
 
-// Breadcrumbs
-.breadcrumb-container {
-  font-size: 0.85rem;
-  opacity: 0.7;
-}
+// ─── Internal links: cleaner style ───
+a.internal {
+  background-color: transparent !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+  border-bottom: 1px solid var(--lightgray);
+  transition: border-color 0.15s ease;
 
-// Left sidebar
-.left {
-  & .page-title {
-    font-weight: 800;
+  &:hover {
+    border-bottom-color: var(--secondary);
   }
 }
 
-// Callouts
+a.internal.tag-link {
+  background-color: var(--highlight) !important;
+  padding: 0.15rem 0.45rem !important;
+  border-radius: 12px !important;
+  border-bottom: none !important;
+  font-size: 0.82rem;
+}
+
+// ─── Left sidebar ───
+.left {
+  & .page-title {
+    font-weight: 800;
+    letter-spacing: -0.03em;
+  }
+}
+
+// ─── Explorer sidebar ───
+.explorer {
+  & ul > li > a {
+    font-size: 0.88rem;
+  }
+}
+
+// ─── Breadcrumbs ───
+.breadcrumb-container {
+  font-size: 0.84rem;
+  opacity: 0.65;
+}
+
+// ─── Footer ───
+footer {
+  opacity: 0.5;
+  font-size: 0.85rem;
+}
+
+// ─── Callouts ───
 .callout {
   border-radius: 8px;
 }
 
-// Search button
+// ─── Search ───
 .search > .search-button {
-  border-radius: 6px;
+  border-radius: 8px;
 }
 
-// Table of contents
+// ─── Table of contents ───
 .toc {
   & .depth-1 {
     font-weight: 500;
   }
+}
+
+// ─── Graph, Backlinks, TOC section titles ───
+.graph > h3,
+.backlinks > h3,
+.toc > h3 {
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  opacity: 0.7;
+  font-weight: 600;
+}
+
+// ─── Code blocks ───
+pre {
+  border-radius: 8px;
+}
+
+code {
+  border-radius: 4px;
 }
