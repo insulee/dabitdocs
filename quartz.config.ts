@@ -15,7 +15,7 @@ const config: QuartzConfig = {
     analytics: null,
     locale: "ko-KR",
     baseUrl: "docs.dabitsol.com",
-    ignorePatterns: ["private", "templates", ".obsidian", ".claude", ".trash", "Template", "Inbox"],
+    ignorePatterns: ["private", "templates", ".obsidian", ".claude", ".trash", "Template"],
     defaultDateType: "modified",
     theme: {
       fontOrigin: "local",
