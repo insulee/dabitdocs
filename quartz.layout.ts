@@ -1,6 +1,35 @@
 import { PageLayout, SharedLayout } from "./quartz/cfg"
 import * as Component from "./quartz/components"
 
+// 특정 폴더의 파일 정렬 순서를 지정
+const customSortFn = (a: any, b: any) => {
+  const customOrders: Record<string, string[]> = {
+    "4.-고객지원": ["AS 및 기술문의 안내", "원격 지원 안내", "견적 문의 안내"],
+    "6.-다빛솔루션-소개": ["다빛솔루션 소개", "다빛솔루션 연혁", "교육 안내 및 오시는 길"],
+  }
+
+  if (!a.isFolder && !b.isFolder) {
+    for (const [folder, order] of Object.entries(customOrders)) {
+      if (String(a.slug).startsWith(folder + "/") && String(b.slug).startsWith(folder + "/")) {
+        const aIdx = order.indexOf(a.displayName)
+        const bIdx = order.indexOf(b.displayName)
+        if (aIdx !== -1 && bIdx !== -1) return aIdx - bIdx
+        if (aIdx !== -1) return -1
+        if (bIdx !== -1) return 1
+      }
+    }
+  }
+
+  // 기본: 폴더 우선, 이후 알파벳순
+  if ((!a.isFolder && !b.isFolder) || (a.isFolder && b.isFolder)) {
+    return a.displayName.localeCompare(b.displayName, undefined, {
+      numeric: true,
+      sensitivity: "base",
+    })
+  }
+  return a.isFolder ? -1 : 1
+}
+
 // components shared across all pages
 export const sharedPageComponents: SharedLayout = {
   head: Component.Head(),
@@ -44,7 +73,7 @@ export const defaultContentPageLayout: PageLayout = {
         { Component: Component.ReaderMode() },
       ],
     }),
-    Component.Explorer({ folderClickBehavior: "collapse", folderDefaultState: "collapsed" }),
+    Component.Explorer({ folderClickBehavior: "collapse", folderDefaultState: "collapsed", sortFn: customSortFn }),
   ],
   right: [
     Component.DesktopOnly(Component.TableOfContents()),
@@ -67,7 +96,7 @@ export const defaultListPageLayout: PageLayout = {
         { Component: Component.Darkmode() },
       ],
     }),
-    Component.Explorer({ folderClickBehavior: "collapse", folderDefaultState: "collapsed" }),
+    Component.Explorer({ folderClickBehavior: "collapse", folderDefaultState: "collapsed", sortFn: customSortFn }),
   ],
   right: [],
 }
