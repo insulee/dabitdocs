@@ -5,7 +5,14 @@ import * as Component from "./quartz/components"
 export const sharedPageComponents: SharedLayout = {
   head: Component.Head(),
   header: [],
-  afterBody: [],
+  afterBody: [
+    Component.Chatbot({
+      iframeUrl: "https://chatbot.dabit.synology.me",
+      headerTitle: "다빛솔루션 AI 챗봇",
+      buttonEmoji: "\u{1F916}",
+      tooltipText: "AI 기술지원 챗봇입니다\n도움이 필요하신가요?",
+    }),
+  ],
   footer: Component.Footer({
     links: {
       "다빛솔루션": "https://dabitsol.com",
