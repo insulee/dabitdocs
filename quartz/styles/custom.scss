@@ -1,5 +1,54 @@
 @use "./base.scss";
 
+// ─── Heading hierarchy: clear visual distinction ───
+article {
+  & > h1 {
+    font-size: 1.9rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-top: 2.5rem;
+    margin-bottom: 0.8rem;
+    color: var(--dark);
+  }
+
+  & > h2 {
+    font-size: 1.45rem;
+    font-weight: 700;
+    margin-top: 2.2rem;
+    margin-bottom: 0.6rem;
+    padding-bottom: 0.35rem;
+    border-bottom: 1px solid var(--lightgray);
+    color: var(--dark);
+  }
+
+  & > h3 {
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-top: 1.8rem;
+    margin-bottom: 0.5rem;
+    color: var(--dark);
+  }
+
+  & > h4 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-top: 1.5rem;
+    margin-bottom: 0.4rem;
+    color: var(--darkgray);
+  }
+
+  & > h5,
+  & > h6 {
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-top: 1.3rem;
+    margin-bottom: 0.3rem;
+    color: var(--gray);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+}
+
 // ─── Page list: clean card-like items ───
 ul.section-ul {
   margin-top: 1.2em;
@@ -20,6 +69,8 @@ li.section-li {
   & > .section > .desc > h3 {
     font-size: 0.92rem;
     font-weight: 500;
+    border-bottom: none;
+    padding-bottom: 0;
   }
 }
 
@@ -103,6 +154,8 @@ footer {
   letter-spacing: 0.05em;
   opacity: 0.7;
   font-weight: 600;
+  border-bottom: none;
+  padding-bottom: 0;
 }
 
 // ─── Code blocks ───
