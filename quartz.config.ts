@@ -8,16 +8,14 @@ import * as Plugin from "./quartz/plugins"
  */
 const config: QuartzConfig = {
   configuration: {
-    pageTitle: "Quartz 4",
-    pageTitleSuffix: "",
+    pageTitle: "DABIT DOCS",
+    pageTitleSuffix: " - 다빛솔루션",
     enableSPA: true,
     enablePopovers: true,
-    analytics: {
-      provider: "plausible",
-    },
-    locale: "en-US",
-    baseUrl: "quartz.jzhao.xyz",
-    ignorePatterns: ["private", "templates", ".obsidian"],
+    analytics: null,
+    locale: "ko-KR",
+    baseUrl: "docs.dabitsol.com",
+    ignorePatterns: ["private", "templates", ".obsidian", ".claude", ".trash", "Template", "Inbox"],
     defaultDateType: "modified",
     theme: {
       fontOrigin: "googleFonts",
