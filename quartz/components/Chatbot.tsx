@@ -8,6 +8,7 @@ interface ChatbotOptions {
   headerTitle: string
   buttonEmoji: string
   tooltipText: string
+  tooltipTextMobile: string
 }
 
 const defaultOptions: ChatbotOptions = {
@@ -15,6 +16,7 @@ const defaultOptions: ChatbotOptions = {
   headerTitle: "AI 챗봇",
   buttonEmoji: "\u{1F916}",
   tooltipText: "",
+  tooltipTextMobile: "",
 }
 
 export default ((opts?: Partial<ChatbotOptions>) => {
@@ -24,7 +26,8 @@ export default ((opts?: Partial<ChatbotOptions>) => {
     return (
       <>
         <div id="chat-widget" data-iframe-url={options.iframeUrl}>
-          {options.tooltipText && <div id="chat-tooltip">{options.tooltipText}</div>}
+          {options.tooltipText && <div id="chat-tooltip" class="desktop-only">{options.tooltipText}</div>}
+          {options.tooltipTextMobile && <div id="chat-tooltip-mobile" class="mobile-only">{options.tooltipTextMobile}</div>}
           <button id="chat-btn" aria-label="Open chatbot">
             {options.buttonEmoji}
           </button>

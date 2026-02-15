@@ -9,7 +9,8 @@
   gap: 15px;
 }
 
-#chat-tooltip {
+#chat-tooltip,
+#chat-tooltip-mobile {
   background: var(--light, white);
   padding: 12px 18px;
   border-radius: 20px;
@@ -19,7 +20,11 @@
   font-weight: 500;
   white-space: pre-line;
   line-height: 1.5;
-  animation: chatbot-fadeInOut 10s ease-in-out forwards;
+  animation: chatbot-fadeIn 0.5s ease forwards;
+}
+
+#chat-tooltip-mobile {
+  display: none;
 }
 
 #chat-btn {
@@ -54,25 +59,7 @@
   }
 }
 
-@keyframes chatbot-fadeInOut {
-  0% {
-    opacity: 0;
-    transform: translateX(20px);
-  }
-  10% {
-    opacity: 1;
-    transform: translateX(0);
-  }
-  90% {
-    opacity: 1;
-    transform: translateX(0);
-  }
-  100% {
-    opacity: 0;
-    transform: translateX(20px);
-    pointer-events: none;
-  }
-}
+/* chatbot-fadeInOut 제거: 툴팁이 항상 표시되도록 변경 */
 
 /* ===== 챗봇 모달 ===== */
 #chatbot-modal {
@@ -164,6 +151,10 @@
 
   #chat-tooltip {
     display: none;
+  }
+
+  #chat-tooltip-mobile {
+    display: block;
   }
 }
 
