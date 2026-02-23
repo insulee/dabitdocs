@@ -57,3 +57,52 @@
     display: none;
   }
 }
+
+// 모바일: 햄버거 메뉴 열렸을 때 하단 고정
+@media all and ($mobile) {
+  .explorer:not(.collapsed) ~ .quick-links {
+    display: block;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 101;
+    margin: 0;
+    padding: 0.7rem 1.2rem calc(0.7rem + env(safe-area-inset-bottom));
+    background-color: var(--light);
+    border-top: 1px solid var(--lightgray);
+
+    & > h3 {
+      display: none;
+    }
+
+    & > ul {
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 0;
+      justify-content: center;
+    }
+
+    & li {
+      flex: 0 0 auto;
+    }
+
+    & li > a {
+      flex-direction: column;
+      gap: 0.2rem;
+      padding: 0.4rem 0.65rem;
+      font-size: 0.65rem;
+      text-align: center;
+    }
+
+    & .quick-link-icon {
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  // 탐색기 목록이 하단 바로가기에 가리지 않도록 여백 추가
+  .explorer:not(.collapsed) > .explorer-content {
+    padding-bottom: 5rem;
+  }
+}
