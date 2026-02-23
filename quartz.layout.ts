@@ -62,6 +62,7 @@ export const defaultContentPageLayout: PageLayout = {
   ],
   left: [
     Component.PageTitle(),
+    Component.HomepageLink({ text: "다빛솔루션 홈페이지", url: "https://dabitsol.com" }),
     Component.MobileOnly(Component.Spacer()),
     Component.Flex({
       components: [
@@ -86,6 +87,7 @@ export const defaultListPageLayout: PageLayout = {
   beforeBody: [Component.Breadcrumbs(), Component.ArticleTitle()],
   left: [
     Component.PageTitle(),
+    Component.HomepageLink({ text: "다빛솔루션 홈페이지", url: "https://dabitsol.com" }),
     Component.MobileOnly(Component.Spacer()),
     Component.Flex({
       components: [
