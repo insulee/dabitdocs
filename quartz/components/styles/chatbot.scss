@@ -140,6 +140,11 @@
   border: none;
 }
 
+/* 모바일 탐색기 열렸을 때 챗봇 버튼 숨기기 */
+.mobile-no-scroll #chat-widget {
+  display: none;
+}
+
 /* ===== 반응형 (모바일) ===== */
 @media (max-width: 768px) {
   #chat-widget {
