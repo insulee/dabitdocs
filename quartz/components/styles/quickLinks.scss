@@ -1,0 +1,59 @@
+@use "../../styles/variables.scss" as *;
+
+.quick-links {
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid var(--lightgray);
+
+  & > h3 {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--gray);
+    margin: 0 0 0.5rem 0;
+    opacity: 0.6;
+  }
+
+  & > ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+  }
+
+  & li > a {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.3rem 0.15rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    color: var(--darkgray);
+    text-decoration: none;
+    transition:
+      color 0.15s ease,
+      background-color 0.15s ease;
+
+    &:hover {
+      color: var(--dark);
+      background-color: var(--highlight);
+    }
+  }
+
+  & .quick-link-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    opacity: 0.55;
+  }
+
+  @media all and ($mobile) {
+    display: none;
+  }
+}

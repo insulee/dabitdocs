@@ -30,6 +30,18 @@ const customSortFn = (a: any, b: any) => {
   return a.isFolder ? -1 : 1
 }
 
+// 사이드바 하단 바로가기 링크
+const quickLinks = Component.QuickLinks({
+  title: "바로가기",
+  links: [
+    { icon: "home", label: "다빛솔루션 홈페이지", href: "https://dabitsol.com" },
+    { icon: "store", label: "네이버 스마트스토어", href: "https://smartstore.naver.com/dabitsol" },
+    { icon: "chat", label: "카카오톡 채널", href: "http://pf.kakao.com/_iPfen" },
+    { icon: "mail", label: "dabit@dabitsol.com", href: "mailto:dabit@dabitsol.com" },
+    { icon: "phone", label: "031-202-2436", href: "tel:031-202-2436" },
+  ],
+})
+
 // components shared across all pages
 export const sharedPageComponents: SharedLayout = {
   head: Component.Head(),
@@ -73,12 +85,8 @@ export const defaultContentPageLayout: PageLayout = {
         { Component: Component.ReaderMode() },
       ],
     }),
-    Component.Explorer({
-      folderClickBehavior: "collapse",
-      folderDefaultState: "collapsed",
-      sortFn: customSortFn,
-      externalLinks: [{ text: "다빛솔루션 홈페이지", url: "https://dabitsol.com" }],
-    }),
+    Component.Explorer({ folderClickBehavior: "collapse", folderDefaultState: "collapsed", sortFn: customSortFn }),
+    quickLinks,
   ],
   right: [
     Component.DesktopOnly(Component.TableOfContents()),
@@ -101,12 +109,8 @@ export const defaultListPageLayout: PageLayout = {
         { Component: Component.Darkmode() },
       ],
     }),
-    Component.Explorer({
-      folderClickBehavior: "collapse",
-      folderDefaultState: "collapsed",
-      sortFn: customSortFn,
-      externalLinks: [{ text: "다빛솔루션 홈페이지", url: "https://dabitsol.com" }],
-    }),
+    Component.Explorer({ folderClickBehavior: "collapse", folderDefaultState: "collapsed", sortFn: customSortFn }),
+    quickLinks,
   ],
   right: [],
 }
