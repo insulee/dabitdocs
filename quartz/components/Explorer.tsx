@@ -11,6 +11,11 @@ import { concatenateResources } from "../util/resources"
 
 type OrderEntries = "sort" | "filter" | "map"
 
+interface ExternalLink {
+  text: string
+  url: string
+}
+
 export interface Options {
   title?: string
   folderDefaultState: "collapsed" | "open"
@@ -20,6 +25,7 @@ export interface Options {
   filterFn: (node: FileTrieNode) => boolean
   mapFn: (node: FileTrieNode) => void
   order: OrderEntries[]
+  externalLinks: ExternalLink[]
 }
 
 const defaultOptions: Options = {
@@ -48,6 +54,7 @@ const defaultOptions: Options = {
   },
   filterFn: (node) => node.slugSegment !== "tags",
   order: ["filter", "map", "sort"],
+  externalLinks: [],
 }
 
 export type FolderState = {
@@ -120,6 +127,33 @@ export default ((userOpts?: Partial<Options>) => {
           </svg>
         </button>
         <div id={id} class="explorer-content" aria-expanded={false} role="group">
+          {opts.externalLinks.length > 0 && (
+            <ul class="explorer-external-links">
+              {opts.externalLinks.map((link) => (
+                <li>
+                  <a href={link.url} target="_blank" rel="noopener noreferrer">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="12"
+                      height="12"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="external-link-icon"
+                    >
+                      <path d="M15 3h6v6" />
+                      <path d="M10 14 21 3" />
+                      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                    </svg>
+                    {link.text}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          )}
           <OverflowList class="explorer-ul" />
         </div>
         <template id="template-file">

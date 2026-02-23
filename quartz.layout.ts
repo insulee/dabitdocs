@@ -62,7 +62,6 @@ export const defaultContentPageLayout: PageLayout = {
   ],
   left: [
     Component.PageTitle(),
-    Component.HomepageLink({ text: "다빛솔루션 홈페이지", url: "https://dabitsol.com" }),
     Component.MobileOnly(Component.Spacer()),
     Component.Flex({
       components: [
@@ -74,7 +73,12 @@ export const defaultContentPageLayout: PageLayout = {
         { Component: Component.ReaderMode() },
       ],
     }),
-    Component.Explorer({ folderClickBehavior: "collapse", folderDefaultState: "collapsed", sortFn: customSortFn }),
+    Component.Explorer({
+      folderClickBehavior: "collapse",
+      folderDefaultState: "collapsed",
+      sortFn: customSortFn,
+      externalLinks: [{ text: "다빛솔루션 홈페이지", url: "https://dabitsol.com" }],
+    }),
   ],
   right: [
     Component.DesktopOnly(Component.TableOfContents()),
@@ -87,7 +91,6 @@ export const defaultListPageLayout: PageLayout = {
   beforeBody: [Component.Breadcrumbs(), Component.ArticleTitle()],
   left: [
     Component.PageTitle(),
-    Component.HomepageLink({ text: "다빛솔루션 홈페이지", url: "https://dabitsol.com" }),
     Component.MobileOnly(Component.Spacer()),
     Component.Flex({
       components: [
@@ -98,7 +101,12 @@ export const defaultListPageLayout: PageLayout = {
         { Component: Component.Darkmode() },
       ],
     }),
-    Component.Explorer({ folderClickBehavior: "collapse", folderDefaultState: "collapsed", sortFn: customSortFn }),
+    Component.Explorer({
+      folderClickBehavior: "collapse",
+      folderDefaultState: "collapsed",
+      sortFn: customSortFn,
+      externalLinks: [{ text: "다빛솔루션 홈페이지", url: "https://dabitsol.com" }],
+    }),
   ],
   right: [],
 }
