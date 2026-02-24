@@ -79,6 +79,21 @@ function toggleFolder(evt: MouseEvent) {
   localStorage.setItem("fileTree", stringifiedFileTree)
 }
 
+// "1. 시작하기" → <span class="num-prefix">1. </span>시작하기
+function setDisplayNameWithNumPrefix(el: HTMLElement, name: string) {
+  const match = name.match(/^([\d.]+\.\s*)(.*)$/)
+  if (match) {
+    const numSpan = document.createElement("span")
+    numSpan.className = "num-prefix"
+    numSpan.textContent = match[1]
+    el.textContent = ""
+    el.appendChild(numSpan)
+    el.appendChild(document.createTextNode(match[2]))
+  } else {
+    el.textContent = name
+  }
+}
+
 function createFileNode(currentSlug: FullSlug, node: FileTrieNode): HTMLLIElement {
   const template = document.getElementById("template-file") as HTMLTemplateElement
   const clone = template.content.cloneNode(true) as DocumentFragment
@@ -86,7 +101,7 @@ function createFileNode(currentSlug: FullSlug, node: FileTrieNode): HTMLLIElemen
   const a = li.querySelector("a") as HTMLAnchorElement
   a.href = resolveRelative(currentSlug, node.slug)
   a.dataset.for = node.slug
-  a.textContent = node.displayName
+  setDisplayNameWithNumPrefix(a, node.displayName)
 
   if (currentSlug === node.slug) {
     a.classList.add("active")
@@ -122,11 +137,11 @@ function createFolderNode(
     a.href = resolveRelative(currentSlug, folderPath)
     a.dataset.for = folderPath
     a.className = "folder-title"
-    a.textContent = node.displayName
+    setDisplayNameWithNumPrefix(a, node.displayName)
     button.replaceWith(a)
   } else {
     const span = titleContainer.querySelector(".folder-title") as HTMLElement
-    span.textContent = node.displayName
+    setDisplayNameWithNumPrefix(span, node.displayName)
   }
 
   // if the saved state is collapsed or the default state is collapsed

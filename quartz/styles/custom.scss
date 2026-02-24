@@ -111,11 +111,17 @@ a.internal.tag-link {
 
 // ─── Explorer sidebar ───
 .explorer {
-  // 숫자 폭 균일화 (1과 2~6의 너비를 동일하게)
-  font-variant-numeric: tabular-nums;
-
   & ul > li > a {
     font-size: 0.88rem;
+  }
+
+  // 번호 접두사 고정폭 정렬
+  & .num-prefix {
+    display: inline-block;
+    font-family: var(--codeFont);
+    font-size: 0.85em;
+    opacity: 0.5;
+    min-width: 1.8em;
   }
 
   // 폴더(최상위 메뉴) 항목 간 상하 간격

@@ -166,7 +166,6 @@ button.desktop-explorer {
   display: flex;
   align-items: center;
   user-select: none;
-  font-variant-numeric: tabular-nums;
 
   & div > a {
     color: var(--secondary);
