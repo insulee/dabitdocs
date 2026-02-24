@@ -111,8 +111,21 @@ a.internal.tag-link {
 
 // ─── Explorer sidebar ───
 .explorer {
+  // 숫자 폭 균일화 (1과 2~6의 너비를 동일하게)
+  font-variant-numeric: tabular-nums;
+
   & ul > li > a {
     font-size: 0.88rem;
+  }
+
+  // 폴더(최상위 메뉴) 항목 간 상하 간격
+  & .explorer-content > ul > li {
+    margin-bottom: 0.15rem;
+  }
+
+  // 폴더 안 하위 항목 간 간격
+  & .folder-outer ul > li {
+    margin-bottom: 0.1rem;
   }
 
   // Hide "탐색기 v" toggle button on desktop
