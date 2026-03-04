@@ -38,7 +38,7 @@ const quickLinks = Component.QuickLinks({
     { icon: "store", label: "네이버 스마트스토어", href: "https://smartstore.naver.com/dabitsol" },
     { icon: "chat", label: "카카오톡 채널", href: "http://pf.kakao.com/_iPfen" },
     { icon: "mail", label: "dabit@dabitsol.com", href: "mailto:dabit@dabitsol.com" },
-    { icon: "phone", label: "031-202-2436", href: "tel:031-202-2436" },
+    { icon: "phone", label: "031-202-2435~6", href: "tel:031-202-2435" },
   ],
 })
 
