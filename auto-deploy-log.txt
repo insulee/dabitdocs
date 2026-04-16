@@ -17,3 +17,6 @@
 2026-04-17 05:56:28 - Deploy started
 2026-04-17 05:57:52 - Auto-deploy watcher started: D:\Note\20_Marketing_Team\22_Area\dabitdocs-quartz\content
 2026-04-17 05:58:17 - Deploy started
+2026-04-17 05:59:01 - Auto-deploy watcher started: D:\Note\20_Marketing_Team\22_Area\dabitdocs-quartz\content
+2026-04-17 05:59:31 - Change detected: 3.11. 외부장치 제어용 릴레이 연결 및 설정.md
+2026-04-17 05:59:31 - Deploy started
