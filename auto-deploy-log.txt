@@ -24,3 +24,5 @@
 2026-04-17 06:00:12 - Change detected: 3.27. 정보문구 표시 방법.md
 2026-04-17 06:00:42 - Change detected: 제품 시작 가이드.md
 2026-04-17 06:00:42 - Deploy started
+2026-04-17 06:00:50 - Deploy completed
+2026-04-17 06:01:20 - Change detected: 3.27. 정보문구 표시 방법.md
