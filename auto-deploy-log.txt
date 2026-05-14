@@ -26,3 +26,5 @@
 2026-04-17 06:00:42 - Deploy started
 2026-04-17 06:00:50 - Deploy completed
 2026-04-17 06:01:20 - Change detected: 3.27. 정보문구 표시 방법.md
+2026-05-14 08:25:18 - Auto-deploy watcher started: D:\Note\20_Marketing_Team\22_Area\dabitdocs-quartz\content
+2026-05-15 08:46:11 - Change detected: 2.3.2. 표출신호 문자열 패턴 프로토콜 설정 매뉴얼.md
