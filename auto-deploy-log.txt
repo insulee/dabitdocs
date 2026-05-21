@@ -30,3 +30,6 @@
 2026-05-15 08:46:11 - Change detected: 2.3.2. 표출신호 문자열 패턴 프로토콜 설정 매뉴얼.md
 2026-05-15 08:46:49 - Change detected: 2.5.3. 섹션별 효과 동시표출과 개별표출.md
 2026-05-15 12:01:31 - Auto-deploy watcher started: D:\Note\20_Marketing_Team\22_Area\dabitdocs-quartz\content
+2026-05-21 10:45:55 - Auto-deploy watcher started: D:\Note\20_Marketing_Team\22_Area\dabitdocs-quartz\content
+2026-05-21 18:26:15 - Change detected: 2.4.3. 사용자 폰트 입력 방법.md
+2026-05-21 18:26:15 - Deploy started
