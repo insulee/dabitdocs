@@ -42,3 +42,7 @@
 2026-05-26 10:17:08 - Change detected: 3.20. ASCII 프로토콜의 BCC 계산 및 적용 가이드.md
 2026-05-26 10:24:38 - Change detected: 전광판 알아보기.md
 2026-05-26 10:24:38 - Deploy started
+2026-05-26 10:24:47 - Deploy completed
+2026-05-26 10:25:17 - Change detected: 2.2.1. 전광판 크기 설정.md
+2026-05-26 10:36:17 - Change detected: 전광판 알아보기.md
+2026-05-26 10:36:17 - Deploy started
