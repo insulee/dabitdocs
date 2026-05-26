@@ -60,3 +60,5 @@
 2026-05-26 10:55:15 - Change detected: 전광판 알아보기.md
 2026-05-26 10:55:15 - Deploy started
 2026-05-26 10:55:52 - Change detected: 전광판 알아보기.md
+2026-05-26 13:02:58 - Change detected: 제품 시작 가이드.md
+2026-05-26 13:02:58 - Deploy started
