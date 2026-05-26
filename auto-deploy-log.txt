@@ -46,3 +46,6 @@
 2026-05-26 10:25:17 - Change detected: 2.2.1. 전광판 크기 설정.md
 2026-05-26 10:36:17 - Change detected: 전광판 알아보기.md
 2026-05-26 10:36:17 - Deploy started
+2026-05-26 10:36:54 - Change detected: 견적 문의 안내.md
+2026-05-26 10:41:54 - Change detected: 전광판 알아보기.md
+2026-05-26 10:41:54 - Deploy started
