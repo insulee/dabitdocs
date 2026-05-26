@@ -55,3 +55,7 @@
 2026-05-26 10:45:37 - Change detected: 2.4.4. 세로형 폰트 설정 방법.md
 2026-05-26 10:47:37 - Change detected: 2.4.4. 세로형 폰트 설정 방법.md
 2026-05-26 10:47:37 - Deploy started
+2026-05-26 10:47:45 - Deploy completed
+2026-05-26 10:48:15 - Change detected: 소프트웨어 다운로드.md
+2026-05-26 10:55:15 - Change detected: 전광판 알아보기.md
+2026-05-26 10:55:15 - Deploy started
