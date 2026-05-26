@@ -4,6 +4,7 @@ import * as Component from "./quartz/components"
 // 특정 폴더의 파일 정렬 순서를 지정
 const customSortFn = (a: any, b: any) => {
   const customOrders: Record<string, string[]> = {
+    "1.-시작하기": ["전광판 알아보기", "제품 시작 가이드"],
     "4.-고객지원": ["AS 및 기술문의 안내", "원격 지원 안내", "견적 문의 안내"],
     "6.-다빛솔루션-소개": ["다빛솔루션 소개", "다빛솔루션 연혁", "교육 안내 및 오시는 길"],
   }

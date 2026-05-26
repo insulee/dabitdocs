@@ -1,0 +1,3434 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>다빛솔루션 전광판 연동 교육</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* ===== Reset ===== */
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  /* 장식용 발광 원(.slide::before)이 가로 스크롤바를 만들지 않도록 차단 */
+  html, body { overflow-x: hidden; }
+
+  /* ===== Design Tokens ===== */
+  :root {
+    /* 배경·글자 (회사소개 HTML 팔레트) */
+    --bg: #0b0f1a;
+    --text: #e8ecf1;
+    /* accent 색 */
+    --accent: #4B7BE5;
+    --accent-light: #7B9FEE;
+    --green: #2ECC71;
+    --green-light: #6ee7a0;
+    --yellow: #F59E0B;
+    --orange: #F97316;
+    --orange-light: #fdba74;
+    --red: #E8443A;
+    --red-light: #EF6B63;
+    /* 글자 투명도 단계 */
+    --text-90: rgba(255,255,255,0.9);
+    --text-85: rgba(255,255,255,0.85);
+    --text-80: rgba(255,255,255,0.8);
+    --text-75: rgba(255,255,255,0.75);
+    --text-70: rgba(255,255,255,0.7);
+    --text-65: rgba(255,255,255,0.65);
+    --text-60: rgba(255,255,255,0.60);
+    --text-50: rgba(255,255,255,0.5);
+    --text-40: rgba(255,255,255,0.4);
+    --text-30: rgba(255,255,255,0.3);
+    /* 면·테두리 */
+    --surface: rgba(255,255,255,0.05);
+    --surface-soft: rgba(255,255,255,0.04);
+    --border: rgba(255,255,255,0.1);
+    --border-soft: rgba(255,255,255,0.08);
+    /* 글꼴 */
+    --font-sans: 'Noto Sans KR', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+  }
+
+  /* ===== Base Layout ===== */
+  body {
+    font-family: var(--font-sans);
+    background: var(--bg);
+    color: var(--text);
+  }
+
+  .slide {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 80px;
+    position: relative;
+  }
+
+  .slide-inner { max-width: 1100px; width: 100%; z-index: 1; }
+
+  /* 그라데이션 배경 클래스 (회사소개 HTML 31~36행 차용) */
+  .slide-navy { background: linear-gradient(135deg, #0b0f1a 0%, #152042 50%, #0b0f1a 100%); }
+  .slide-blue { background: linear-gradient(135deg, #0b1628 0%, #122a4f 50%, #0b1628 100%); }
+  .slide-green { background: linear-gradient(135deg, #0b1a10 0%, #0f3020 50%, #0b1a10 100%); }
+  .slide-purple { background: linear-gradient(135deg, #150f28 0%, #251845 50%, #150f28 100%); }
+  .slide-red { background: linear-gradient(135deg, #1a0f0f 0%, #2d1518 50%, #1a0f0f 100%); }
+  /* 연동 사례(5부) — 주황 계열. 데이터 흐름 슬라이드의 '④ 실제 연동 사례'(card-orange)와 톤 일치 */
+  .slide-orange-bg { background: linear-gradient(135deg, #1a120b 0%, #2e2012 50%, #1a120b 100%); }
+  .slide-closing { background: linear-gradient(135deg, #0b0f1a 0%, #1a1a2e 50%, #0b0f1a 100%); }
+
+  /* 슬라이드 우상단 발광 원 장식 */
+  .slide::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(75,123,229,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  /* ===== 페이지 마커 ===== */
+  /* 타이포그래피는 2026-05 전체 ~20% 확대 (이전 값은 주석으로 병기). */
+  .slide-number {
+    position: absolute;
+    bottom: 30px;
+    right: 40px;
+    font-size: 17px;          /* was 14px */
+    color: var(--text-30);
+    font-weight: 300;
+  }
+
+  .logo {
+    font-size: 22px;          /* was 18px */
+    font-weight: 700;
+    color: var(--text-30);
+    letter-spacing: 2px;
+    position: absolute;
+    top: 30px;
+    left: 40px;
+  }
+
+  .date-badge {
+    position: absolute;
+    top: 30px;
+    right: 40px;
+    font-size: 17px;          /* was 14px */
+    color: var(--text-30);
+  }
+
+  /* ===== 텍스트 컴포넌트 ===== */
+  .kicker {
+    font-size: 17px;          /* was 14px */
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: var(--accent);
+    margin-bottom: 16px;
+  }
+
+  h1 { font-size: 62px; font-weight: 900; line-height: 1.2; margin-bottom: 24px; letter-spacing: -1px; }  /* was 52px */
+  h2 { font-size: 48px; font-weight: 700; line-height: 1.3; margin-bottom: 20px; }  /* was 40px */
+  h3 { font-size: 26px; font-weight: 700; margin-bottom: 12px; color: var(--accent-light); }  /* was 22px */
+
+  .subtitle {
+    font-size: 26px;          /* was 22px */
+    font-weight: 300;
+    color: var(--text-70);
+    line-height: 1.6;
+    margin-bottom: 32px;
+  }
+
+  .lead { font-size: 24px; line-height: 1.8; color: var(--text-80); margin-bottom: 32px; }  /* was 20px */
+  p { font-size: 22px; line-height: 1.7; color: var(--text-75); margin-bottom: 16px; }  /* was 18px */
+
+  /* 인라인 강조 — strong 역할. 회사소개 HTML 기준 굵기(700) */
+  .highlight { color: var(--accent); font-weight: 700; }
+  .highlight-red { color: var(--red); font-weight: 700; }
+  .highlight-green { color: var(--green); font-weight: 700; }
+  .highlight-yellow { color: var(--yellow); font-weight: 700; }
+  .highlight-orange { color: var(--orange); font-weight: 700; }
+  strong { font-weight: 700; }
+
+  /* ===== 통계 ===== */
+  .stat-row { display: flex; gap: 48px; margin: 40px 0; flex-wrap: wrap; }
+  .stat { text-align: center; }
+  .stat-number { font-size: 76px; font-weight: 900; line-height: 1; margin-bottom: 8px; }  /* was 64px */
+  .stat-label { font-size: 18px; color: var(--text-60); font-weight: 400; }  /* was 15px */
+
+  /* ===== 카드 ===== */
+  .card-row { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin: 32px 0; }
+  .card-row-1 { grid-template-columns: 1fr; }
+  .card-row-3 { grid-template-columns: 1fr 1fr 1fr; }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+    backdrop-filter: blur(10px);
+  }
+
+  .card-accent { border-left: 4px solid var(--accent); }
+  .card-green { border-left: 4px solid var(--green); }
+  .card-yellow { border-left: 4px solid var(--yellow); }
+  .card-orange { border-left: 4px solid var(--orange); }
+  .card-red { border-left: 4px solid var(--red); }
+  .card h3 { font-size: 24px; margin-bottom: 10px; }  /* was 20px */
+  .card p { font-size: 19px; margin-bottom: 8px; }  /* was 16px */
+
+  /* ===== 태그 ===== */
+  .tag {
+    display: inline-block;
+    font-size: 16px;          /* was 13px */
+    padding: 4px 10px;
+    border-radius: 20px;
+    background: rgba(75,123,229,0.15);
+    color: var(--accent-light);
+    margin-right: 6px;
+    margin-top: 8px;
+  }
+
+  .tag-green { background: rgba(46,204,113,0.15); color: var(--green-light); }
+  .tag-orange { background: rgba(249,115,22,0.15); color: var(--orange-light); }
+
+  /* ===== 플로우 ===== */
+  .flow {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 32px 0;
+    flex-wrap: wrap;
+  }
+
+  .flow-step {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 12px;
+    padding: 18px 20px;
+    text-align: center;
+    flex: 1;
+    min-width: 130px;
+  }
+
+  .flow-step .icon { font-size: 34px; margin-bottom: 6px; }  /* was 28px */
+  .flow-step .label { font-size: 17px; font-weight: 500; color: var(--text-85); }  /* was 14px */
+  .flow-step .desc { font-size: 14px; color: var(--text-50); margin-top: 4px; }  /* was 12px */
+  .flow-arrow { font-size: 24px; color: rgba(255,255,255,0.25); flex-shrink: 0; }  /* was 20px */
+
+  /* 슬림 플로우 — 연동 사례 위젯 슬라이드용. 아이콘 없이 한 줄로 핵심만 */
+  .flow-compact { margin: 20px 0; gap: 10px; }
+  .flow-compact .flow-step { padding: 10px 16px; flex: 0 1 auto; min-width: 0; }
+  .flow-compact .flow-step .label { font-size: 16px; }  /* was 13px */
+
+  /* 연동 흐름 — 28·29·30 연동 사례 3슬라이드 공용. 입력 → 중간 → 컨트롤러 3단 */
+  .flow-link {
+    margin: 22px 0;
+    gap: 0;
+    align-items: stretch;
+  }
+  .flow-link .flow-step {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.14);
+    border-radius: 14px;
+    padding: 20px 18px 18px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    min-width: 150px;
+    transition: border-color 0.2s ease, background 0.2s ease;
+  }
+  /* 마지막 노드 = 컨트롤러(목적지) 강조 */
+  .flow-link .flow-step.is-target {
+    background: rgba(249,115,22,0.10);
+    border-color: rgba(249,115,22,0.45);
+  }
+  .flow-link .flow-step .fl-icon {
+    font-size: 38px;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .flow-link .flow-step .fl-role {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--orange-light);
+  }
+  .flow-link .flow-step .label {
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--text-90);
+  }
+  .flow-link .flow-step .fl-sub {
+    font-size: 13px;
+    color: var(--text-50);
+    margin-top: 2px;
+    font-family: var(--font-mono);
+  }
+  /* 화살표 — 노드 사이를 잇는 또렷한 연결선 */
+  .flow-link .flow-arrow {
+    flex: 0 0 auto;
+    align-self: center;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--orange);
+    padding: 0 6px;
+  }
+
+  /* ===== 표 ===== */
+  .table-wrap { margin: 24px 0; overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; }
+  th { text-align: left; font-size: 17px; font-weight: 500; color: var(--text-50); text-transform: uppercase; letter-spacing: 1px; padding: 12px 16px; border-bottom: 1px solid var(--border); }  /* was 14px */
+  td { font-size: 19px; padding: 14px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: var(--text-80); }  /* was 16px */
+  tr:hover td { background: rgba(255,255,255,0.03); }
+
+  /* ===== 인용 ===== */
+  .quote {
+    border-left: 4px solid var(--accent);
+    padding: 24px 32px;
+    margin: 32px 0;
+    background: rgba(75,123,229,0.05);
+    border-radius: 0 12px 12px 0;
+    font-size: 24px;          /* was 20px */
+    font-weight: 400;
+    line-height: 1.6;
+    color: var(--text-85);
+  }
+
+  /* ===== 구분선 ===== */
+  .divider { height: 1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent); margin: 24px 0; }
+
+  /* ===== 피치 설명 그림 ===== */
+  /* 피치 슬라이드의 SVG 다이어그램을 담는 카드 */
+  .pitch-figure {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px 28px;
+    margin: 28px 0;
+  }
+  .pitch-figure svg { display: block; width: 100%; height: auto; }
+  .pitch-figure .pf-caption {
+    font-size: 17px;          /* was 14px */
+    color: var(--text-60);
+    text-align: center;
+    margin-top: 14px;
+    line-height: 1.6;
+  }
+
+  /* ===== 피치 비교 — 실제 도트매트릭스 (슬라이드 10) =====
+     P8·P4 보드를 canvas 도트로 그려 나란히 비교. 두 canvas는 같은 물리 폭. */
+  .pitch-compare {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 36px;
+    flex-wrap: wrap;
+  }
+  /* 보드 한 짝 — 머리말 + LED 패널 + 캡션 */
+  .pitch-board { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+  .pitch-board-head { text-align: center; }
+  .pitch-board-title { display: block; font-size: 23px; font-weight: 700; }
+  .pitch-board-sub {
+    display: block;
+    font-size: 17px;
+    color: var(--text-60);
+    margin-top: 4px;
+  }
+  .pitch-board-cap { font-size: 22px; font-weight: 800; }
+  /* P8 주황 · P4 파랑 — 기존 SVG 색 계열 유지 */
+  .pb-orange { color: var(--orange); }
+  .pb-blue   { color: var(--accent); }
+  /* "같은 물리 크기" 안내 — 두 보드 아래 초록 한 줄 */
+  .pitch-equal-note {
+    text-align: center;
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--green);
+    margin-top: 22px;
+  }
+  /* 도트 보드용 LED 패널 — 폭은 canvas(448px)에 맞추고 넘치면 축소 */
+  .pitch-figure-dots .led-panel { margin: 0; max-width: 100%; }
+
+  /* ===== 배지 ===== */
+  .badge { display: inline-block; font-size: 16px; font-weight: 500; padding: 4px 12px; border-radius: 20px; margin-right: 8px; }  /* was 13px */
+  .badge-blue { background: rgba(75,123,229,0.2); color: var(--accent-light); }
+  .badge-green { background: rgba(46,204,113,0.2); color: var(--green-light); }
+  .badge-red { background: rgba(232,68,58,0.2); color: var(--red-light); }
+
+  /* ===== 유틸 ===== */
+  .center-text { text-align: center; }
+  .mono { font-family: var(--font-mono); font-size: 17px; }  /* was 14px */
+
+  /* ===== LED 미리보기 패널 (전광판 케이스 느낌) ===== */
+  /* 검정 배경 + 안쪽 그림자 + 둥근 테두리. canvas 가로 스크롤을 가두는 뷰포트. */
+  .led-panel {
+    background: #050505;
+    border: 2px solid #2a2a2a;
+    border-radius: 14px;
+    padding: 18px;
+    margin: 24px 0;
+    box-shadow:
+      inset 0 0 24px rgba(0, 0, 0, 0.9),
+      inset 0 0 4px rgba(0, 0, 0, 1),
+      0 4px 20px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+
+  /* 고정 픽셀 보드 canvas 한 장을 담는 뷰포트.
+     좌스크롤도 보드 canvas 안에서 일어나므로(렌더러가 보드 밖 도트를 자름)
+     canvas는 보드 폭 그대로, 패널보다 넓으면 max-width로 축소만 한다. */
+  .led-row {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    line-height: 0; /* canvas 아래 여백 제거 */
+  }
+
+  .led-row canvas {
+    display: block;
+    max-width: 100%;   /* 패널 폭을 넘으면 축소 (도트 비율 유지) */
+    height: auto;
+  }
+
+  /* ===== 인터랙티브 패킷 카드 =====
+     좌측 입력 컨트롤 + 우측(LED 미리보기 + 생성 패킷) 2열. 모바일에서 1열. */
+  .packet-card {
+    display: grid;
+    grid-template-columns: 0.85fr 1.15fr;
+    gap: 28px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+    margin: 28px 0;
+    backdrop-filter: blur(10px);
+  }
+
+  /* 카드 좌측 — 입력 컨트롤 묶음 */
+  /* min-width:0 — grid 자식 기본값(min-width:auto)이 좌스크롤 canvas의 내재 폭을
+     트랙 계산에 반영해 좌측 열을 짓누르는 것을 막는다 */
+  .pc-controls { display: flex; flex-direction: column; gap: 18px; min-width: 0; }
+  /* 카드 우측 — LED 미리보기 + 패킷 출력 */
+  .pc-output { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+
+  /* 컨트롤 한 덩어리(라벨 + 입력) */
+  .pc-field { display: flex; flex-direction: column; gap: 8px; }
+
+  .pc-label {
+    font-size: 16px;          /* was 13px */
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--accent-light);
+  }
+
+  /* 텍스트 입력 — 다크 테마 */
+  .pc-input {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: rgba(0, 0, 0, 0.35);
+    color: var(--text);
+    font-family: var(--font-sans);
+    font-size: 19px;          /* was 16px */
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .pc-input:focus { border-color: var(--accent); }
+  .pc-input::placeholder { color: var(--text-40); }
+
+  /* 드롭다운 — 다크 테마 */
+  .pc-select {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: rgba(0, 0, 0, 0.35);
+    color: var(--text);
+    font-family: var(--font-sans);
+    font-size: 18px;          /* was 15px */
+    outline: none;
+    cursor: pointer;
+    transition: border-color 0.2s;
+  }
+  .pc-select:focus { border-color: var(--accent); }
+  .pc-select option { background: #11151f; color: var(--text); }
+
+  /* 색 스와치 버튼 줄 */
+  .pc-swatches { display: flex; gap: 12px; flex-wrap: wrap; }
+  .pc-swatch {
+    width: 46px;
+    height: 46px;
+    border-radius: 10px;
+    border: 3px solid transparent;
+    cursor: pointer;
+    padding: 0;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .pc-swatch:hover { transform: translateY(-3px); }
+  .pc-swatch:focus-visible { outline: 2px solid var(--accent-light); outline-offset: 2px; }
+  .pc-swatch.is-active {
+    border-color: #fff;
+    box-shadow: 0 0 16px rgba(255, 255, 255, 0.35);
+  }
+
+  /* 일반 버튼 (입차·출차·전송 등) */
+  .pc-btn {
+    padding: 12px 22px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--text);
+    font-family: var(--font-sans);
+    font-size: 18px;          /* was 15px */
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s, transform 0.1s;
+  }
+  .pc-btn:hover { background: rgba(255, 255, 255, 0.12); border-color: var(--border); }
+  .pc-btn:active { transform: translateY(1px); }
+  .pc-btn:focus-visible { outline: 2px solid var(--accent-light); outline-offset: 2px; }
+
+  /* 강조 버튼 — 입차(파랑계열) */
+  .pc-btn-in { background: rgba(75, 123, 229, 0.22); border-color: rgba(75, 123, 229, 0.45); color: var(--accent-light); }
+  .pc-btn-in:hover { background: rgba(75, 123, 229, 0.35); }
+  /* 강조 버튼 — 출차(주황계열) */
+  .pc-btn-out { background: rgba(249, 115, 22, 0.2); border-color: rgba(249, 115, 22, 0.45); color: var(--orange-light); }
+  .pc-btn-out:hover { background: rgba(249, 115, 22, 0.32); }
+  /* 강조 버튼 — 전송(초록계열) */
+  .pc-btn-send { background: rgba(46, 204, 113, 0.22); border-color: rgba(46, 204, 113, 0.45); color: var(--green-light); font-weight: 500; }
+  .pc-btn-send:hover { background: rgba(46, 204, 113, 0.35); }
+  /* 강조 버튼 — 만차 표시(빨강계열) */
+  .pc-btn-full { background: rgba(232, 68, 58, 0.2); border-color: rgba(232, 68, 58, 0.45); color: var(--red-light); }
+  .pc-btn-full:hover { background: rgba(232, 68, 58, 0.32); }
+
+  .pc-btn-row { display: flex; gap: 12px; flex-wrap: wrap; }
+
+  /* range 슬라이더 — 다크 테마 */
+  .pc-range { width: 100%; accent-color: var(--accent); cursor: pointer; }
+  .pc-range-label { display: flex; justify-content: space-between; align-items: baseline; }
+  .pc-range-val { font-family: var(--font-mono); font-size: 17px; color: var(--text); }  /* was 14px */
+
+  /* 생성된 패킷 출력 박스 */
+  .pc-packet {
+    background: rgba(0, 0, 0, 0.45);
+    border: 1px solid rgba(75, 123, 229, 0.3);
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+  .pc-packet-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  .pc-packet-tag {
+    font-size: 14px;          /* was 12px */
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    color: var(--accent-light);
+  }
+  .pc-packet code {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 18px;          /* was 15px */
+    color: var(--green-light);
+    word-break: break-all;
+    line-height: 1.6;
+  }
+  /* 패킷 문자열은 초록 단색 — 속성 코드도 강조 없이 통일 */
+  .pc-packet code .pc-attr { color: var(--green-light); }
+
+  /* 복사 버튼 — 작게 */
+  .pc-copy {
+    background: rgba(75, 123, 229, 0.12);
+    border: 1px solid rgba(75, 123, 229, 0.3);
+    color: var(--accent-light);
+    padding: 4px 12px;
+    border-radius: 6px;
+    font-family: var(--font-sans);
+    font-size: 14px;          /* was 12px */
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+  }
+  .pc-copy:hover { background: var(--accent); color: #fff; }
+  .pc-copy:focus-visible { outline: 2px solid var(--accent-light); outline-offset: 2px; }
+
+  /* 송수신 로그 */
+  .pc-log {
+    background: rgba(0, 0, 0, 0.45);
+    border: 1px solid var(--border-soft);
+    border-radius: 10px;
+    padding: 12px 14px;
+    max-height: 180px;        /* 글자 확대분만큼 로그 박스도 키움 (was 150px) */
+    overflow-y: auto;
+    font-family: var(--font-mono);
+    font-size: 16px;          /* was 13px */
+    line-height: 1.7;
+  }
+  .pc-log-empty { color: var(--text-40); }
+  .pc-log-line { color: var(--text-75); }
+  .pc-log-line .pc-log-tx { color: var(--accent-light); }
+  .pc-log-line .pc-log-rx { color: var(--green-light); }
+  .pc-log-line .pc-log-rx-fail { color: var(--red-light); }
+
+  /* 카드 안 작은 도움말 문구 */
+  .pc-hint { font-size: 17px; color: var(--text-60); line-height: 1.6; }  /* was 14px */
+
+  /* 위젯 아래 — 본문 크기로 또렷하게 읽히는 설명 블록 */
+  .widget-note {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--accent);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin: 20px 0 0;
+    font-size: 21px;
+    line-height: 1.75;
+    color: var(--text-85, var(--text));
+  }
+  .widget-note code,
+  .widget-note .wn-code {
+    font-family: var(--font-mono);
+    font-size: 0.92em;
+    background: rgba(75, 123, 229, 0.16);
+    color: var(--accent-light);
+    padding: 1px 7px;
+    border-radius: 5px;
+  }
+  .widget-note .wn-em { font-weight: 700; color: var(--text); }
+  /* LED 미리보기 위 작은 캡션 */
+  .pc-caption {
+    font-size: 16px;          /* was 13px */
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--text-50);
+  }
+  /* 카드 안 LED 패널은 위아래 여백을 자체 gap이 맡으므로 margin 제거 */
+  .packet-card .led-panel { margin: 0; }
+
+  /* ===== 체크리스트 ===== */
+  /* 연동할 때 확인할 것 — 항목마다 체크 아이콘 + 설명 */
+  .checklist { display: flex; flex-direction: column; gap: 14px; margin: 28px 0; }
+  .check-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--green);
+    border-radius: 12px;
+    padding: 18px 22px;
+  }
+  .check-item .check-mark {
+    flex-shrink: 0;
+    width: 34px;              /* 아이콘 글자 확대에 맞춰 원도 키움 (was 28px) */
+    height: 34px;
+    border-radius: 50%;
+    background: rgba(46, 204, 113, 0.18);
+    color: var(--green);
+    font-size: 19px;          /* was 16px */
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .check-item .check-body { flex: 1; }
+  .check-item .check-title { font-size: 20px; font-weight: 500; color: var(--text-90); margin-bottom: 3px; }  /* was 17px */
+  .check-item .check-desc { font-size: 18px; color: var(--text-65, var(--text-70)); line-height: 1.55; }  /* was 15px */
+
+  /* ===== 반응형 (회사소개 HTML 293~305행 패턴) ===== */
+  /* 좁은 화면 글자도 데스크톱과 같은 ~20% 비율로 함께 키움 (이전 값 주석 병기). */
+  @media (max-width: 768px) {
+    .slide { padding: 40px 24px; }
+    h1 { font-size: 38px; }   /* was 32px */
+    h2 { font-size: 32px; }   /* was 26px */
+    .subtitle { font-size: 22px; }  /* was 18px */
+    .stat-number { font-size: 50px; }  /* was 42px */
+    .stat-row { gap: 24px; }
+    .card-row, .card-row-3 { grid-template-columns: 1fr; }
+    .packet-card { grid-template-columns: 1fr; gap: 22px; }
+    .flow { flex-direction: column; }
+    .flow-arrow { transform: rotate(90deg); }
+    /* 연동 흐름 — 좁은 화면에서 노드 가로폭 채우고 화살표 세로 연결 */
+    .flow-link .flow-step { width: 100%; }
+    .flow-link .flow-arrow { padding: 4px 0; }
+    .quote { font-size: 20px; padding: 20px 24px; }  /* was 17px */
+    .logo { font-size: 18px; top: 20px; left: 24px; }  /* was 15px */
+    .date-badge { font-size: 14px; top: 20px; right: 24px; }  /* was 12px */
+    /* 체크리스트도 좁은 화면에서 여백 줄이기 */
+    .check-item { padding: 14px 16px; gap: 12px; }
+    .widget-note { font-size: 18px; padding: 16px 18px; }
+  }
+
+  /* 아주 좁은 화면(스마트폰 세로 ~375px) — LED 패널·표가 넘치지 않게 */
+  @media (max-width: 420px) {
+    .slide { padding: 32px 16px; }
+    h1 { font-size: 32px; }   /* was 27px */
+    h2 { font-size: 26px; }   /* was 22px */
+    .led-panel { padding: 12px; }
+    .table-wrap { margin: 20px 0; }
+    th { padding: 10px 10px; font-size: 14px; }  /* was 12px */
+    td { padding: 10px 10px; font-size: 17px; }  /* was 14px */
+    .stat-row { gap: 18px; }
+    .pc-swatch { width: 40px; height: 40px; }
+  }
+
+  /* ===== 슬라이드 9 — 피치 + P-series 선택기 (★ 인터랙티브) =====
+     SVG 그림 위에 P-series 5개 버튼 + LED 미리보기 16×16 + mm 라벨.
+     버튼 클릭 → 선택 피치에 따라 cell 크기와 mm 라벨이 갱신된다. */
+  .ps-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+    margin: 24px 0;
+    backdrop-filter: blur(10px);
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+  /* 피치 버튼 줄 — 5개 라운드 박스 */
+  .ps-buttons {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .ps-btn {
+    flex: 1 1 0;
+    min-width: 88px;
+    max-width: 140px;
+    padding: 14px 8px;
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-80);
+    font-family: var(--font-sans);
+    font-size: 24px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s, color 0.15s, transform 0.1s;
+  }
+  .ps-btn:hover { background: rgba(75, 123, 229, 0.15); border-color: rgba(75, 123, 229, 0.35); }
+  .ps-btn:active { transform: translateY(1px); }
+  .ps-btn:focus-visible { outline: 2px solid var(--accent-light); outline-offset: 2px; }
+  .ps-btn.is-active {
+    background: rgba(75, 123, 229, 0.28);
+    border-color: var(--accent);
+    color: #fff;
+    box-shadow: 0 0 18px rgba(75, 123, 229, 0.35);
+  }
+
+  /* LED 미리보기 + mm 라벨 — 좌(미리보기) 우(라벨) 2열, 좁아지면 세로 */
+  .ps-display {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 28px;
+    align-items: center;
+    justify-content: center;
+  }
+  .ps-led-wrap { display: flex; justify-content: center; }
+  .ps-led-wrap .led-panel { margin: 0; }
+  .ps-meta { display: flex; flex-direction: column; gap: 10px; }
+  .ps-pitch-label {
+    font-size: 17px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--accent-light);
+  }
+  .ps-pitch-value {
+    font-size: 56px;
+    font-weight: 900;
+    line-height: 1;
+    color: var(--green-light);
+    letter-spacing: -1px;
+    text-shadow: 0 2px 18px rgba(110, 231, 160, 0.30);
+  }
+  .ps-size-label {
+    font-size: 17px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--text-50);
+    margin-top: 8px;
+  }
+  .ps-size-value {
+    font-size: 38px;
+    font-weight: 700;
+    color: var(--text-90);
+    line-height: 1.1;
+    font-family: var(--font-mono);
+  }
+  .ps-size-sub {
+    font-size: 17px;
+    color: var(--text-60);
+    line-height: 1.5;
+  }
+  /* 슬라이드 9 SVG는 작게 — 카드 안에 같이 두므로 폭 제한 */
+  .pitch-figure.pitch-figure-small svg { max-width: 380px; margin: 0 auto; }
+
+  @media (max-width: 768px) {
+    .ps-display { grid-template-columns: 1fr; gap: 18px; }
+    .ps-meta { align-items: center; text-align: center; }
+    .ps-pitch-value { font-size: 48px; }
+    .ps-size-value { font-size: 30px; }
+    .ps-btn { font-size: 20px; padding: 12px 6px; min-width: 70px; }
+  }
+  @media (max-width: 420px) {
+    .ps-btn { font-size: 18px; min-width: 56px; padding: 10px 4px; }
+    .ps-pitch-value { font-size: 40px; }
+    .ps-size-value { font-size: 26px; }
+  }
+
+  /* ===== 슬라이드 11 — 화면 크기 산정 (모델 2개 × 3개 구성) =====
+     P4·P6 두 모델을 좌·우 또는 위·아래로 두고, 각 모델 아래 3개 구성 카드.
+     모듈을 1장·가로 2장·2×2(4장) 식으로 쌓을 때 단·열·mm가 어떻게 바뀌는지 보여준다. */
+  .sizing-models {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 22px;
+    margin: 28px 0;
+  }
+  .sizing-model {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--accent);
+    border-radius: 14px;
+    padding: 22px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .sizing-model.sm-p4 { border-left-color: var(--green); }
+  .sizing-model.sm-p6 { border-left-color: var(--yellow); }
+
+  /* 모델 헤더 — 모델명 + 한 장 사양 */
+  .sm-head { display: flex; flex-direction: column; gap: 4px; }
+  .sm-model {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text-90);
+    letter-spacing: -0.3px;
+  }
+  .sm-spec {
+    font-size: 17px;
+    color: var(--text-65);
+    font-family: var(--font-mono);
+    line-height: 1.5;
+  }
+
+  /* 3개 구성 카드 묶음 */
+  .sm-configs { display: flex; flex-direction: column; gap: 10px; }
+  .sm-config {
+    display: grid;
+    /* 도형 칸은 모듈 크기에 따라 가변(auto). 가장 큰 P4 2×2(약 204×102px),
+       P6 2×2(약 154×154px)까지 수용해야 하므로 고정 폭을 두지 않는다. */
+    grid-template-columns: minmax(120px, auto) 1fr auto;
+    align-items: center;
+    gap: 18px;
+    padding: 12px 14px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border-soft);
+    border-radius: 10px;
+  }
+  /* 단·열 시각화 — 실제 모듈 비례(가로:세로) 그대로 + 모델 간 크기 차이 시각화.
+     공통 스케일 --mm-px(1mm→px)로 P4(256×128mm = 2:1 가로 직사각)와
+     P6(192×192mm = 1:1 정사각)의 실제 크기 차이가 한눈에 보이게 한다.
+     모델별 모듈 mm 값은 부모 .sm-p4 / .sm-p6 에 CSS 변수로 주입한다. */
+  :root {
+    --mm-px: 0.4;            /* 1mm 당 픽셀 — 너무 크지도 작지도 않게 튜닝 */
+    --sm-mod-gap: 2px;       /* 모듈 사이 가는 갭 */
+  }
+  .sm-shape {
+    display: grid;
+    gap: var(--sm-mod-gap);
+    justify-self: center;
+    align-self: center;
+  }
+  /* 한 모듈 도형 — 작은 LED 모듈 톤(다크 + 진한 테두리).
+     크기는 부모(.sm-p4 / .sm-p6)에서 주입한 --mod-w/--mod-h(단위: mm) × --mm-px. */
+  .sm-shape .sm-module {
+    width: calc(var(--mod-w) * 1px * var(--mm-px));
+    height: calc(var(--mod-h) * 1px * var(--mm-px));
+    background: linear-gradient(135deg, #1d222c 0%, #0a0c12 100%);
+    border: 1.5px solid #5a6373;
+    border-radius: 3px;
+    box-shadow:
+      inset 0 0 0 1px rgba(255, 255, 255, 0.05),
+      0 0 0 1px rgba(0, 0, 0, 0.6);
+  }
+  /* 모델별 모듈 실측 — P4 256×128mm(2:1), P6 192×192mm(1:1) */
+  .sizing-model.sm-p4 { --mod-w: 256; --mod-h: 128; }
+  .sizing-model.sm-p6 { --mod-w: 192; --mod-h: 192; }
+
+  /* 구성별 격자 배치 — 모듈 N장이 모인 모양.
+     -1x1: 1장, -1x2: 가로 2장, -2x2: 2×2(4장). 각 셀 크기는 .sm-module 자체 크기로 결정. */
+  .sm-shape-1x1 { grid-template-columns: auto; grid-template-rows: auto; }
+  .sm-shape-1x2 { grid-template-columns: auto auto; grid-template-rows: auto; }
+  .sm-shape-2x2 { grid-template-columns: auto auto; grid-template-rows: auto auto; }
+
+  /* 구성 라벨 — 장 수 + 단·열 */
+  .sm-info { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  .sm-info .sm-tiles {
+    font-size: 16px;
+    color: var(--text-65);
+    font-family: var(--font-mono);
+  }
+  .sm-info .sm-grid {
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--text-90);
+  }
+  .sm-size {
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--accent-light);
+    font-family: var(--font-mono);
+    text-align: right;
+    white-space: nowrap;
+  }
+  .sizing-model.sm-p4 .sm-size { color: var(--green-light); }
+  .sizing-model.sm-p6 .sm-size { color: var(--yellow); }
+
+  @media (max-width: 768px) {
+    .sizing-models { grid-template-columns: 1fr; gap: 16px; }
+    .sizing-model { padding: 18px 20px; }
+    .sm-model { font-size: 20px; }
+    /* 좁은 화면에서는 스케일을 살짝 줄여 도형이 카드 폭을 넘지 않게 한다.
+       P4 2×2 = 512×256mm × 0.28 ≈ 143×72px 로 수용 가능. */
+    :root { --mm-px: 0.28; }
+    .sm-config { grid-template-columns: minmax(100px, auto) 1fr auto; gap: 12px; padding: 10px 12px; }
+    .sm-size { font-size: 17px; }
+    .sm-info .sm-grid { font-size: 17px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ====================== 표지 ====================== -->
+<section class="slide slide-navy">
+  <div class="logo">DABIT SOLUTION</div>
+  <div class="slide-inner center-text">
+    <div class="kicker">led sign integration training</div>
+    <h1>다빛솔루션<br>전광판 컨트롤러</h1>
+    <p class="subtitle">
+      외부 시스템에서 컨트롤러로,<br>
+      컨트롤러에서 LED 모듈에 표출
+    </p>
+    <div style="margin-top: 40px;">
+      <span class="badge badge-blue">시스템 연동</span>
+      <span class="badge badge-green">ASCII 프로토콜</span>
+      <span class="badge badge-red">실시간 표출</span>
+    </div>
+    <p style="margin-top: 48px; font-size: 18px; color: var(--text-30);">
+      다빛솔루션
+    </p>
+  </div>
+  <div class="slide-number">01</div>
+</section>
+
+<!-- ============ 인터스티셜 A — 전광판이란 ============ -->
+<section class="slide slide-navy">
+  <div class="logo">DABIT SOLUTION</div>
+  <div class="slide-inner center-text">
+    <div class="kicker">PART 1</div>
+    <h1>프로토콜 전광판 컨트롤러란</h1>
+  </div>
+  <div class="slide-number">02</div>
+</section>
+
+<!-- A-1: 전광판 구성 -->
+<section class="slide slide-blue">
+  <div class="logo">DABIT SOLUTION</div>
+  <div class="slide-inner">
+    <div class="kicker">WHAT IT IS MADE OF</div>
+    <h2>전광판은 LED 모듈과 컨트롤러로 구성됩니다</h2>
+
+    <div class="flow">
+      <div class="flow-step">
+        <div class="icon">📡</div>
+        <div class="label">전광판 컨트롤러</div>
+        <div class="desc">명령을 받는 곳</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="icon">💡</div>
+        <div class="label">LED 모듈</div>
+        <div class="desc">글자가 표시되는 판</div>
+      </div>
+    </div>
+
+    <div class="card-row">
+      <div class="card card-accent">
+        <h3>💡 LED 모듈</h3>
+        <p>글자가 표시되는 판입니다. 여러 장을 이어 붙여 화면을 만듭니다.</p>
+      </div>
+      <div class="card card-green">
+        <h3>📡 전광판 컨트롤러</h3>
+        <p>무엇을 표시할지 받아서 LED 모듈로 보냅니다.</p>
+      </div>
+    </div>
+
+    <div class="quote">
+      외부 시스템이 명령을 보내는 곳은 <span class="highlight">컨트롤러</span>입니다.
+    </div>
+  </div>
+  <div class="slide-number">03</div>
+</section>
+
+<!-- A-3: 리모컨형 vs 프로토콜형 -->
+<section class="slide slide-blue">
+  <div class="logo">DABIT SOLUTION</div>
+  <div class="slide-inner">
+    <div class="kicker">REMOTE VS PROTOCOL</div>
+    <h2>리모컨형과 프로토콜형 방식의 차이</h2>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>구분</th>
+            <th>리모컨형</th>
+            <th>프로토콜형 (다빛솔루션)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>입력</td>
+            <td>사람이 리모컨으로 직접</td>
+            <td>외부 시스템이 자동으로</td>
+          </tr>
+          <tr>
+            <td>변경</td>
+            <td>손으로 다시 입력</td>
+            <td>시스템이 실시간 전송</td>
+          </tr>
+          <tr>
+            <td>연동</td>
+            <td>안 됨</td>
+            <td>주차·관제·센서와 연동</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="quote">
+      다빛솔루션 전광판은 외부 시스템이 보낸 데이터를 <span class="highlight">그대로 표시</span>합니다.
+    </div>
+  </div>
+  <div class="slide-number">04</div>
+</section>
+
+<!-- A-4: 데이터 흐름 -->
+<section class="slide slide-blue">
+  <div class="logo">DABIT SOLUTION</div>
+  <div class="slide-inner">
+    <div class="kicker">DATA FLOW</div>
+    <h2>데이터가 화면에 표시되는 흐름</h2>
+
+    <div class="flow">
+      <div class="flow-step">
+        <div class="icon">🖥️</div>
+        <div class="label">외부 시스템</div>
+        <div class="desc">PC · PLC · 서버</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="icon">🔌</div>
+        <div class="label">통신</div>
+        <div class="desc">이더넷 · 시리얼</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="icon">📡</div>
+        <div class="label">컨트롤러</div>
+        <div class="desc">명령 해석</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="icon">💡</div>
+        <div class="label">LED 모듈</div>
+        <div class="desc">화면 표출</div>
+      </div>
+    </div>
+
+    <div class="card-row">
+      <div class="card card-accent">
+        <h3>① LED 모듈과 컨트롤러</h3>
+        <p>화면을 만드는 하드웨어를 살펴봅니다.</p>
+      </div>
+      <div class="card card-green">
+        <h3>② 통신 연결</h3>
+        <p>외부 시스템과 컨트롤러를 잇는 방법입니다.</p>
+      </div>
+      <div class="card card-yellow">
+        <h3>③ 프로토콜</h3>
+        <p>글자를 보내는 형식을 익힙니다.</p>
+      </div>
+      <div class="card card-orange">
+        <h3>④ 연동 사례</h3>
+        <p>현장에서 어떻게 쓰는지 봅니다.</p>
+      </div>
+    </div>
+  </div>
+  <div class="slide-number">05</div>
+</section>
+
+<!-- A-5: 텍스트 한 줄 보내기 -->
+<section class="slide slide-blue">
+  <div class="logo">DABIT SOLUTION</div>
+  <div class="slide-inner">
+    <div class="kicker">SEND ONE LINE</div>
+    <h2>텍스트 한 줄 보내기</h2>
+    <p class="subtitle">이 한 줄을 전광판에 보내면 그대로 화면에 뜹니다.</p>
+
+    <div class="mono" style="font-size:22px; color:var(--accent-light); margin-bottom:8px;">
+      ![000다빛솔루션입니다!]
+    </div>
+
+    <div class="led-panel" id="led-cover" role="img" aria-label="LED 미리보기: 다빛솔루션입니다"></div>
+
+    <div class="card-row">
+      <div class="card card-accent">
+        <h3>리모컨이 필요 없습니다</h3>
+        <p>리모컨도, 전용 프로그램도 없이 표시할 수 있습니다.</p>
+      </div>
+      <div class="card card-green">
+        <h3>텍스트만 보내면 끝</h3>
+        <p>외부 시스템에서 텍스트만 보내면 그대로 화면에 나타납니다.</p>
+      </div>
+    </div>
+  </div>
+  <div class="slide-number">06</div>
+</section>
+
+<!-- ========= 인터스티셜 B — 하드웨어 ========= -->
+<section class="slide slide-navy">
+  <div class="logo">DABIT SOLUTION</div>
+  <div class="slide-inner center-text">
+    <div class="kicker">PART 2</div>
+    <h1>화면을 만드는 하드웨어</h1>
+    <p class="subtitle">LED 모듈과 컨트롤러</p>
+  </div>
+  <div class="slide-number">07</div>
+</section>
+
+<!-- B-1: LED 모듈 — 픽셀·RGB·글자 크기 -->
+<section class="slide slide-green">
+  <div class="logo">DABIT SOLUTION</div>
+  <div class="slide-inner">
+    <div class="kicker">LED MODULE</div>
+    <h2>LED 모듈 — 픽셀과 글자 크기</h2>
+
+    <div class="card-row">
+      <div class="card card-accent">
+        <h3>픽셀 하나 = RGB LED</h3>
+        <p>픽셀 하나는 <span class="highlight-red">빨강</span>·<span class="highlight-green">초록</span>·<span class="highlight">파랑</span> LED를 한 세트로 묶은 것입니다. 세 색을 섞어 픽셀마다 색을 만듭니다.</p>
+      </div>
+      <div class="card card-green">
+        <h3>글자 크기 기준</h3>
+        <p>한글 1자 = <span class="highlight-green">16 × 16 픽셀</span>. 숫자·영문은 <span class="highlight-green">8 × 16</span>으로 절반 폭이라, 한글 한 자리에 2자가 들어갑니다.</p>
+      </div>
+    </div>
+
+    <div class="led-panel" id="led-module" role="img" aria-label="LED 미리보기: 1234AaBb가나다라"></div>
+
+    <div class="quote">
+      픽셀은 <span class="highlight">RGB LED 한 세트</span>, 글자는 한글 16×16 · 숫자 8×16 픽셀을 차지합니다.
+    </div>
+  </div>
+  <div class="slide-number">08</div>
+</section>
+
+<!-- B-2: 피치 -->
+<!-- B-2a: 피치 — 픽셀 사이 거리 + P-series 선택기 (LED모듈가이드 슬라이드 4 이식) -->
+<section class="slide slide-purple">
+  <div class="logo">DABIT SOLUTION</div>
+  <div class="slide-inner">
+    <div class="kicker">PIXEL PITCH</div>
+    <h2>피치 — 픽셀 사이 거리</h2>
+
+    <p class="lead">
+      <span class="highlight">피치</span> = 이웃 픽셀 중심 사이 거리(mm).
+      모델명의 P 숫자가 곧 피치 — <span class="highlight">P3, P4, P6, P8, P10</span>.
+      피치가 넓을수록 같은 픽셀 수에도 모듈이 커집니다.
+    </p>
+
+    <div class="pitch-figure pitch-figure-small">
+      <svg viewBox="0 0 420 240" role="img"
+           aria-label="피치 설명 그림 — 이웃한 픽셀 중심 사이의 거리가 피치입니다">
+        <defs>
+          <radialGradient id="pf-dot" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#9fc0ff"/>
+            <stop offset="55%" stop-color="#4B7BE5"/>
+            <stop offset="100%" stop-color="#1e3a78"/>
+          </radialGradient>
+          <!-- 피치 치수선 화살촉 -->
+          <marker id="pf-arr" viewBox="0 0 10 10" refX="5" refY="5"
+                  markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="#F59E0B"/>
+          </marker>
+        </defs>
+
+        <!-- 픽셀 격자 5×3, 중심 간격(피치) 60 -->
+        <g>
+          <circle cx="90"  cy="80"  r="14" fill="url(#pf-dot)"/>
+          <circle cx="150" cy="80"  r="14" fill="url(#pf-dot)"/>
+          <circle cx="210" cy="80"  r="14" fill="url(#pf-dot)"/>
+          <circle cx="270" cy="80"  r="14" fill="url(#pf-dot)"/>
+          <circle cx="330" cy="80"  r="14" fill="url(#pf-dot)"/>
+          <circle cx="90"  cy="140" r="14" fill="url(#pf-dot)"/>
+          <circle cx="150" cy="140" r="14" fill="url(#pf-dot)"/>
+          <circle cx="210" cy="140" r="14" fill="url(#pf-dot)"/>
+          <circle cx="270" cy="140" r="14" fill="url(#pf-dot)"/>
+          <circle cx="330" cy="140" r="14" fill="url(#pf-dot)"/>
+          <circle cx="90"  cy="200" r="14" fill="url(#pf-dot)"/>
+          <circle cx="150" cy="200" r="14" fill="url(#pf-dot)"/>
+          <circle cx="210" cy="200" r="14" fill="url(#pf-dot)"/>
+          <circle cx="270" cy="200" r="14" fill="url(#pf-dot)"/>
+          <circle cx="330" cy="200" r="14" fill="url(#pf-dot)"/>
+        </g>
+        <!-- 피치 치수선 — 픽셀(0,0)과 (1,0)의 중심 사이 -->
+        <line x1="90"  y1="80" x2="90"  y2="40" stroke="#F59E0B" stroke-width="1.5" stroke-dasharray="3 3"/>
+        <line x1="150" y1="80" x2="150" y2="40" stroke="#F59E0B" stroke-width="1.5" stroke-dasharray="3 3"/>
+        <line x1="90" y1="48" x2="150" y2="48"  stroke="#F59E0B" stroke-width="2"
+              marker-start="url(#pf-arr)" marker-end="url(#pf-arr)"/>
+        <text x="120" y="36" fill="#F59E0B" font-family="'Noto Sans KR',sans-serif"
+              font-size="19" font-weight="700" text-anchor="middle">피치</text>
+      </svg>
+    </div>
+
+    <!-- P-series 선택기 — 5개 버튼 + 16×16 LED 미리보기 + mm 라벨 -->
+    <div class="ps-card">
+      <div class="ps-buttons" role="group" aria-label="P-series 피치 선택">
+        <button class="ps-btn" type="button" data-pitch="3">P3</button>
+        <button class="ps-btn" type="button" data-pitch="4">P4</button>
+        <button class="ps-btn is-active" type="button" data-pitch="6" aria-pressed="true">P6</button>
+        <button class="ps-btn" type="button" data-pitch="8">P8</button>
+        <button class="ps-btn" type="button" data-pitch="10">P10</button>
+      </div>
+
+      <div class="ps-display">
+        <div class="ps-led-wrap">
+          <div class="led-panel" id="ps-led"
+               role="img" aria-label="LED 미리보기: P6 한글 가 한 글자"></div>
+        </div>
+        <div class="ps-meta">
+          <div class="ps-pitch-value" id="ps-pitch">P6</div>
+          <div class="ps-size-label">모듈 크기 (16 × 피치)</div>
+          <div class="ps-size-value" id="ps-size">96 × 96 mm</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-number">09</div>
+</section>
+
+<!-- B-2b: 같은 크기, 다른 글자 수 (LED모듈가이드 슬라이드 5 이식) -->
+<section class="slide slide-green">
+  <div class="logo">DABIT SOLUTION</div>
+  <div class="slide-inner">
+    <div class="kicker">PITCH &amp; CAPACITY</div>
+    <h2>같은 크기, 다른 글자 수</h2>
+    <p class="subtitle">
+      간판 크기는 같아도 피치가 좁으면 그 안에 들어가는 픽셀이 많아 — 표시할 수 있는 글자 수도 함께 늘어납니다.
+    </p>
+
+    <div class="pitch-figure pitch-figure-dots">
+      <div class="pitch-compare">
+        <!-- 왼쪽 — P8 보드 32×16, "가나" 한 줄 2자 -->
+        <div class="pitch-board">
+          <div class="pitch-board-head">
+            <span class="pitch-board-title pb-orange">P8</span>
+            <span class="pitch-board-sub">32 × 16 픽셀 · 한 줄 2자</span>
+          </div>
+          <div class="led-panel" id="led-p8-compare" role="img"
+               aria-label="P8 도트매트릭스 — 32 곱하기 16 픽셀에 한글 가나 2자"></div>
+          <div class="pitch-board-cap pb-orange">2자</div>
+        </div>
+        <!-- 오른쪽 — P6 보드 64×32, "가나가나"/"가나가나" 2줄 8자 -->
+        <div class="pitch-board">
+          <div class="pitch-board-head">
+            <span class="pitch-board-title pb-blue">P6</span>
+            <span class="pitch-board-sub">64 × 32 픽셀 · 두 줄 8자</span>
+          </div>
+          <div class="led-panel" id="led-p6-compare" role="img"
+               aria-label="P6 도트매트릭스 — 64 곱하기 32 픽셀에 한글 가나가나가나가나 2줄 8자"></div>
+          <div class="pitch-board-cap pb-blue">8자</div>
+        </div>
+      </div>
+      <div class="pitch-equal-note">두 모듈은 실제 크기가 똑같습니다 — 안에 든 픽셀 수만 다릅니다</div>
+      <div class="pf-caption">
+        16픽셀 × 16픽셀에 한글 한 글자가 들어가는데, 피치(픽셀 간격)가 넓으면 그 한 글자가 더 큰 면적을 차지합니다.
+        P8(8mm)에서는 한 글자가 128 × 128mm, P6(6mm)에서는 96 × 96mm.
+      </div>
+    </div>
+
+    <div class="quote">
+      같은 크기의 모듈이라도 <span class="highlight">피치가 좁으면</span> 더 많은 정보가 들어갑니다.
+    </div>
+  </div>
+  <div class="slide-number">10</div>
+</section>
+
+<!-- B-3: 화면 크기 산정 — 모델 2개 × 구성 3종 (LED모듈가이드 슬라이드 6 이식) -->
+<section class="slide slide-navy">
+  <div class="logo">DABIT SOLUTION</div>
+  <div class="slide-inner">
+    <div class="kicker">SIZING</div>
+    <h2>같은 모듈, 다양한 화면 크기</h2>
+    <p class="subtitle">
+      가로·세로 장 수와 배치를 바꿔 원하는 크기를 만듭니다.
+    </p>
+
+    <div class="sizing-models">
+      <!-- 모델 A — DABIT P4 64×32 (한 장 2단 4열 · 256×128mm) -->
+      <div class="sizing-model sm-p4">
+        <div class="sm-head">
+          <div class="sm-model">DABIT P4 64×32</div>
+          <div class="sm-spec">한 장 · 2단 4열 · 256 × 128 mm</div>
+        </div>
+        <div class="sm-configs">
+          <!-- 1장 → 2단 4열 → 256×128mm -->
+          <div class="sm-config">
+            <div class="sm-shape sm-shape-1x1" aria-hidden="true">
+              <div class="sm-module"></div>
+            </div>
+            <div class="sm-info">
+              <div class="sm-tiles">1장</div>
+              <div class="sm-grid">2단 4열</div>
+            </div>
+            <div class="sm-size">256 × 128 mm</div>
+          </div>
+          <!-- 가로 2장 → 2단 8열 → 512×128mm -->
+          <div class="sm-config">
+            <div class="sm-shape sm-shape-1x2" aria-hidden="true">
+              <div class="sm-module"></div>
+              <div class="sm-module"></div>
+            </div>
+            <div class="sm-info">
+              <div class="sm-tiles">가로 2장</div>
+              <div class="sm-grid">2단 8열</div>
+            </div>
+            <div class="sm-size">512 × 128 mm</div>
+          </div>
+          <!-- 2×2 (4장) → 4단 8열 → 512×256mm -->
+          <div class="sm-config">
+            <div class="sm-shape sm-shape-2x2" aria-hidden="true">
+              <div class="sm-module"></div>
+              <div class="sm-module"></div>
+              <div class="sm-module"></div>
+              <div class="sm-module"></div>
+            </div>
+            <div class="sm-info">
+              <div class="sm-tiles">2 × 2 (4장)</div>
+              <div class="sm-grid">4단 8열</div>
+            </div>
+            <div class="sm-size">512 × 256 mm</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 모델 B — DABIT P6 32×32 (한 장 2단 2열 · 192×192mm) -->
+      <div class="sizing-model sm-p6">
+        <div class="sm-head">
+          <div class="sm-model">DABIT P6 32×32</div>
+          <div class="sm-spec">한 장 · 2단 2열 · 192 × 192 mm</div>
+        </div>
+        <div class="sm-configs">
+          <!-- 1장 → 2단 2열 → 192×192mm -->
+          <div class="sm-config">
+            <div class="sm-shape sm-shape-1x1" aria-hidden="true">
+              <div class="sm-module"></div>
+            </div>
+            <div class="sm-info">
+              <div class="sm-tiles">1장</div>
+              <div class="sm-grid">2단 2열</div>
+            </div>
+            <div class="sm-size">192 × 192 mm</div>
+          </div>
+          <!-- 가로 2장 → 2단 4열 → 384×192mm -->
+          <div class="sm-config">
+            <div class="sm-shape sm-shape-1x2" aria-hidden="true">
+              <div class="sm-module"></div>
+              <div class="sm-module"></div>
+            </div>
+            <div class="sm-info">
+              <div class="sm-tiles">가로 2장</div>
+              <div class="sm-grid">2단 4열</div>
+            </div>
+            <div class="sm-size">384 × 192 mm</div>
+          </div>
+          <!-- 2×2 (4장) → 4단 4열 → 384×384mm -->
+          <div class="sm-config">
+            <div class="sm-shape sm-shape-2x2" aria-hidden="true">
+              <div class="sm-module"></div>
+              <div class="sm-module"></div>
+              <div class="sm-module"></div>
+              <div class="sm-module"></div>
+            </div>
+            <div class="sm-info">
+              <div class="sm-tiles">2 × 2 (4장)</div>
+              <div class="sm-grid">4단 4열</div>
+            </div>
+            <div class="sm-size">384 × 384 mm</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-number">11</div>
+</section>
+
+<!-- ========= 인터스티셜 C — 프로토콜 ========= -->
+<section class="slide slide-navy">
+  <div class="logo">DABIT SOLUTION</div>
+  <div class="slide-inner center-text">
+    <div class="kicker">PART 3</div>
+    <h1>전광판에 연결해 데이터 보내기</h1>
+    <p class="subtitle">패킷을 직접 만들어 보며 익힙니다.</p>
+  </div>
+  <div class="slide-number">12</div>
+</section>
+
+<!-- C-1: 통신 방법 -->
+<section class="slide slide-purple">
+  <div class="logo">DABIT SOLUTION</div>
+  <div class="slide-inner">
+    <div class="kicker">CONNECTION METHODS</div>
+    <h2>통신 연결 방법</h2>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>방식</th>
+            <th>설명</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>이더넷</td>
+            <td>LAN 케이블, TCP/IP. 가장 일반적</td>
+          </tr>
+          <tr>
+            <td>Serial</td>
+            <td>TTL · RS232 · RS485 — 케이블 직접 연결</td>
+          </tr>
+          <tr>
+            <td>WiFi · BLE</td>
+            <td>무선 연결</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="quote">
+      어떤 방식으로 연결하든, 보내는 <span class="highlight">명령은 똑같습니다</span>.
+    </div>
+  </div>
+  <div class="slide-number">13</div>
+</section>
+
+<!-- D-1: 패킷 구조 -->
+<section class="slide slide-red">
+  <div class="logo">DABIT SOLUTION</div>
+  <div class="slide-inner">
+    <div class="kicker">PACKET STRUCTURE</div>
+    <h2>패킷은 이렇게 생겼습니다</h2>
+
+    <div class="mono" style="font-size:26px; margin:8px 0 28px; word-break:break-all;">
+      <span style="color:var(--accent-light);">![</span><span style="color:var(--yellow,#F59E0B);">000/P0000/D9901/F0003/E0101/S0504/X0000/Y0000/B000/C1/G0/T1</span><span style="color:#fff;">가나다라</span><span style="color:var(--accent-light);">!]</span>
+    </div>
+
+    <div class="card-row">
+      <div class="card card-accent">
+        <h3>![ … !]</h3>
+        <p>패킷의 시작과 끝입니다. 모든 명령은 <span class="mono" style="color:var(--accent-light);">![</span> 로 열고 <span class="mono" style="color:var(--accent-light);">!]</span> 로 닫습니다.</p>
+      </div>
+      <div class="card card-green">
+        <h3>내용</h3>
+        <p>화면에 표시할 글자입니다. <span class="highlight-green">시작 마커 다음에 그대로</span> 적습니다.</p>
+      </div>
+    </div>
+
+    <div class="quote">
+      ASCII 프로토콜 패킷은 <span class="mono" style="color:var(--accent-light);">![</span><span class="mono" style="color:var(--yellow,#F59E0B);">옵션</span><span class="mono" style="color:#fff;"> + 내용 + </span><span class="mono" style="color:var(--accent-light);">!]</span> 형태입니다.
+    </div>
+  </div>
+  <div class="slide-number">14</div>
+</section>
+
+<!-- D-2: 예시1 — 기본 문구 (인터랙티브) -->
+<section class="slide slide-red">
+  <div class="logo">DABIT SOLUTION</div>
+  <div class="slide-inner">
+    <div class="kicker">EXAMPLE 1 — BASIC</div>
+    <h2>예시 1 — 기본 문구</h2>
+    <p class="subtitle">메시지를 입력하면 LED와 패킷이 바로 바뀝니다.</p>
+
+    <div class="packet-card" id="card-msg">
+      <div class="pc-controls">
+        <div class="pc-field">
+          <label class="pc-label" for="msg-input">메시지</label>
+          <input type="text" class="pc-input" id="msg-input"
+                 value="다빛솔루션" placeholder="표시할 글자를 입력하세요"
+                 maxlength="20" autocomplete="off">
+        </div>
+        <p class="pc-hint">옵션 없이 내용만 넣어도 그대로 표시됩니다. 타이핑하면 오른쪽 LED와 패킷이 즉시 따라옵니다.</p>
+      </div>
+      <div class="pc-output">
+        <div class="pc-caption">LED 미리보기</div>
+        <div class="led-panel" id="led-msg" role="img" aria-label="LED 미리보기: 다빛솔루션"></div>
+        <div class="pc-packet">
+          <div class="pc-packet-head">
+            <span class="pc-packet-tag">생성 패킷</span>
+            <button type="button" class="pc-copy" data-copy="pkt-msg">복사</button>
+          </div>
+          <code id="pkt-msg"></code>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-number">15</div>
+</section>
+
+<!-- D-3: 예시2 — 색 바꾸기 (인터랙티브) -->
+<section class="slide slide-red">
+  <div class="logo">DABIT SOLUTION</div>
+  <div class="slide-inner">
+    <div class="kicker">EXAMPLE 2 — COLOR</div>
+    <h2>예시 2 — 색 바꾸기</h2>
+    <p class="subtitle">색을 고르면 <span class="mono">/C</span> 코드가 패킷에 붙습니다.</p>
+
+    <div class="packet-card" id="card-color">
+      <div class="pc-controls">
+        <div class="pc-field">
+          <label class="pc-label">글자색</label>
+          <div class="pc-swatches" id="color-swatches" role="group" aria-label="글자색 선택">
+            <button type="button" class="pc-swatch" data-color="1"
+                    style="background:#ff3b30;" title="빨강 (/C1)" aria-label="빨강"></button>
+            <button type="button" class="pc-swatch" data-color="2"
+                    style="background:#34c759;" title="초록 (/C2)" aria-label="초록"></button>
+            <button type="button" class="pc-swatch is-active" data-color="3"
+                    style="background:#ffcc00;" title="노랑 (/C3)" aria-label="노랑"></button>
+            <button type="button" class="pc-swatch" data-color="7"
+                    style="background:#f5f5f5;" title="흰색 (/C7)" aria-label="흰색"></button>
+          </div>
+        </div>
+        <p class="pc-hint">색은 코드 한 자리로 정합니다 — 빨강 1 · 초록 2 · 노랑 3 · 흰색 7. 검정(0)은 화면에서 안 보여 뺐습니다.</p>
+      </div>
+      <div class="pc-output">
+        <div class="pc-caption">LED 미리보기</div>
+        <div class="led-panel" id="led-color" role="img" aria-label="LED 미리보기: 정차 위반 차량"></div>
+        <div class="pc-packet">
+          <div class="pc-packet-head">
+            <span class="pc-packet-tag">생성 패킷</span>
+            <button type="button" class="pc-copy" data-copy="pkt-color">복사</button>
+          </div>
+          <code id="pkt-color"></code>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-number">16</div>
+</section>
+
+<!-- D-4: 예시3 — 효과 (인터랙티브) -->
+<section class="slide slide-red">
+  <div class="logo">DABIT SOLUTION</div>
+  <div class="slide-inner">
+    <div class="kicker">EXAMPLE 3 — EFFECT</div>
+    <h2>예시 3 — 효과</h2>
+    <p class="subtitle">글자가 나타나는 방식을 효과로 정합니다.</p>
+
+    <div class="packet-card" id="card-effect">
+      <div class="pc-controls">
+        <div class="pc-field">
+          <label class="pc-label" for="effect-select">효과</label>
+          <select class="pc-select" id="effect-select">
+            <option value="01">정지 — 즉시 표시</option>
+            <option value="02">점멸 — 깜빡임</option>
+            <option value="06" selected>좌스크롤 — 오른쪽에서 왼쪽으로</option>
+          </select>
+        </div>
+        <p class="pc-hint"><span class="mono">/E</span>는 시작·종료 효과, <span class="mono">/S</span>는 속도와 머무는 시간입니다. 빠진 옵션은 기본값으로 동작합니다.</p>
+      </div>
+      <div class="pc-output">
+        <div class="pc-caption">LED 미리보기</div>
+        <div class="led-panel" id="led-effect" role="img" aria-label="LED 미리보기: 주차장 만차"></div>
+        <div class="pc-packet">
+          <div class="pc-packet-head">
+            <span class="pc-packet-tag">생성 패킷</span>
+            <button type="button" class="pc-copy" data-copy="pkt-effect">복사</button>
+          </div>
+          <code id="pkt-effect"></code>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-number">17</div>
+</section>
+
+<!-- D-5: 예시4 — 숫자 갱신 (인터랙티브) -->
+<section class="slide slide-red">
+  <div class="logo">DABIT SOLUTION</div>
+  <div class="slide-inner">
+    <div class="kicker">EXAMPLE 4 — UPDATE</div>
+    <h2>예시 4 — 숫자만 바꿔 다시 보내기</h2>
+    <p class="subtitle">주차 대수가 바뀔 때마다 같은 형식으로 다시 보냅니다.</p>
+
+    <div class="packet-card" id="card-count">
+      <div class="pc-controls">
+        <div class="pc-field">
+          <label class="pc-label">주차 잔여 면수</label>
+          <div class="pc-btn-row">
+            <button type="button" class="pc-btn pc-btn-in" id="btn-in">▼ 입차 (−1)</button>
+            <button type="button" class="pc-btn pc-btn-out" id="btn-out">▲ 출차 (+1)</button>
+          </div>
+        </div>
+        <p class="pc-hint">입차하면 잔여가 줄고, 출차하면 늡니다. 값이 바뀔 때만 패킷을 다시 보냅니다 — 같은 값이면 보내지 않습니다.</p>
+        <div class="pc-field">
+          <label class="pc-label">전송 로그</label>
+          <div class="pc-log" id="log-count" aria-live="polite">
+            <span class="pc-log-empty">아직 보낸 패킷이 없습니다.</span>
+          </div>
+        </div>
+      </div>
+      <div class="pc-output">
+        <div class="pc-caption">LED 미리보기</div>
+        <div class="led-panel" id="led-count" role="img" aria-label="LED 미리보기: 주차 잔여 152면"></div>
+        <div class="pc-packet">
+          <div class="pc-packet-head">
+            <span class="pc-packet-tag">생성 패킷</span>
+            <button type="button" class="pc-copy" data-copy="pkt-count">복사</button>
+          </div>
+          <code id="pkt-count"></code>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-number">18</div>
+</section>
+
+<!-- D-6: 종합 패킷 빌더 (인터랙티브) -->
+<section class="slide slide-red">
+  <div class="logo">DABIT SOLUTION</div>
+  <div class="slide-inner">
+    <div class="kicker">PACKET BUILDER</div>
+    <h2>종합 패킷 빌더</h2>
+    <p class="subtitle">옵션을 모두 정해 패킷을 만들고, <span class="mono">전송</span>하면 응답이 옵니다.</p>
+
+    <div class="packet-card" id="card-builder">
+      <div class="pc-controls">
+        <div class="pc-field">
+          <label class="pc-label" for="b-msg">메시지</label>
+          <input type="text" class="pc-input" id="b-msg"
+                 value="주차장 만차" placeholder="표시할 글자" maxlength="20" autocomplete="off">
+        </div>
+        <div class="pc-field">
+          <label class="pc-label">글자색</label>
+          <div class="pc-swatches" id="b-swatches" role="group" aria-label="글자색 선택">
+            <button type="button" class="pc-swatch is-active" data-color="1"
+                    style="background:#ff3b30;" title="빨강 (/C1)" aria-label="빨강"></button>
+            <button type="button" class="pc-swatch" data-color="2"
+                    style="background:#34c759;" title="초록 (/C2)" aria-label="초록"></button>
+            <button type="button" class="pc-swatch" data-color="3"
+                    style="background:#ffcc00;" title="노랑 (/C3)" aria-label="노랑"></button>
+            <button type="button" class="pc-swatch" data-color="7"
+                    style="background:#f5f5f5;" title="흰색 (/C7)" aria-label="흰색"></button>
+          </div>
+        </div>
+        <div class="pc-field">
+          <label class="pc-label" for="b-entrance">시작 효과</label>
+          <select class="pc-select" id="b-entrance">
+            <option value="01">정지</option>
+            <option value="02">점멸</option>
+            <option value="06" selected>좌스크롤</option>
+          </select>
+        </div>
+        <div class="pc-field">
+          <label class="pc-label" for="b-exit">종료 효과</label>
+          <select class="pc-select" id="b-exit">
+            <option value="01" selected>정지</option>
+            <option value="02">점멸</option>
+            <option value="06">좌스크롤</option>
+          </select>
+        </div>
+        <div class="pc-field">
+          <div class="pc-range-label">
+            <label class="pc-label" for="b-speed">효과 속도</label>
+            <span class="pc-range-val" id="b-speed-val">20</span>
+          </div>
+          <input type="range" class="pc-range" id="b-speed" min="0" max="99" value="20">
+          <span class="pc-hint">0이 가장 빠르고 99가 가장 느립니다.</span>
+        </div>
+        <div class="pc-field">
+          <div class="pc-range-label">
+            <label class="pc-label" for="b-hold">유지 시간</label>
+            <span class="pc-range-val" id="b-hold-val">4 (2.0초)</span>
+          </div>
+          <input type="range" class="pc-range" id="b-hold" min="0" max="99" value="4">
+          <span class="pc-hint">정지 상태로 머무는 시간 — 값 &times; 0.5초.</span>
+        </div>
+        <div class="pc-field">
+          <div class="pc-range-label">
+            <label class="pc-label" for="b-repeat">반복 횟수</label>
+            <span class="pc-range-val" id="b-repeat-val">99 (무한)</span>
+          </div>
+          <input type="range" class="pc-range" id="b-repeat" min="0" max="99" value="99">
+          <span class="pc-hint">99는 무한 반복, 00은 표시 안 함입니다.</span>
+        </div>
+      </div>
+      <div class="pc-output">
+        <div class="pc-caption">LED 미리보기</div>
+        <div class="led-panel" id="led-builder" role="img" aria-label="LED 미리보기: 주차장 만차"></div>
+        <div class="pc-packet">
+          <div class="pc-packet-head">
+            <span class="pc-packet-tag">생성 패킷</span>
+            <button type="button" class="pc-copy" data-copy="pkt-builder">복사</button>
+          </div>
+          <code id="pkt-builder"></code>
+        </div>
+        <div class="pc-btn-row">
+          <button type="button" class="pc-btn pc-btn-send" id="btn-send">전송 →</button>
+        </div>
+        <div class="pc-field">
+          <label class="pc-label">송수신 로그</label>
+          <div class="pc-log" id="log-builder" aria-live="polite">
+            <span class="pc-log-empty">전송 버튼을 누르면 응답이 여기에 쌓입니다.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="quote">
+      응답 <span class="mono">![0000!]</span> — 끝자리가 <span class="highlight-green">0이면 성공</span>, <span class="highlight-red">F면 실패</span>입니다. 응답을 확인한 뒤 다음 명령을 보냅니다.
+    </div>
+  </div>
+  <div class="slide-number">19</div>
+</section>
+
+<!-- D-7: 시뮬레이터·다빛채 안내 -->
+<section class="slide slide-red">
+  <div class="logo">DABIT SOLUTION</div>
+  <div class="slide-inner">
+    <div class="kicker">TOOLS</div>
+    <h2>프로토콜 시뮬레이터와 다빛채</h2>
+
+    <div class="card-row">
+      <div class="card card-accent">
+        <h3>🧪 프로토콜 시뮬레이터</h3>
+        <p>패킷을 만들어 보내며 테스트하는 프로그램입니다.</p>
+        <p>패킷을 입력해 전송하고 응답을 바로 확인합니다.</p>
+        <p>주고받은 내용이 <span class="highlight">로그</span>에 남아, 패킷 예시를 잡고 점검하기 쉽습니다.</p>
+      </div>
+      <div class="card card-green">
+        <h3>🖼️ 다빛채</h3>
+        <p>이미지·콘텐츠를 전광판에 올리는 프로그램입니다.</p>
+        <p>그림·애니메이션을 만들어 컨트롤러에 업로드합니다.</p>
+        <p>표시목록으로 여러 화면을 묶어 관리합니다.</p>
+      </div>
+    </div>
+
+    <div class="quote">
+      시뮬레이터는 <span class="highlight">패킷 실습·로그 확인</span>, 다빛채는 <span class="highlight-green">이미지 업로드</span> — 역할이 다릅니다.
+    </div>
+  </div>
+  <div class="slide-number">20</div>
+</section>
+
+<!-- ====================================================================
+     배치5 — 인터스티셜 E (연동 사례) · 클로징
+     ==================================================================== -->
+
+<!-- ========= 인터스티셜 D — 연동 사례 ========= -->
+<section class="slide slide-navy">
+  <div class="logo">DABIT SOLUTION</div>
+  <div class="slide-inner center-text">
+    <div class="kicker">PART 4</div>
+    <h1>연동 사례</h1>
+    <p class="subtitle">현장에서 전광판을 어떻게 잇는지 봅니다.</p>
+  </div>
+  <div class="slide-number">21</div>
+</section>
+
+<!-- E-1: 연동하는 3가지 방법 -->
+<section class="slide slide-orange-bg">
+  <div class="logo">DABIT SOLUTION</div>
+  <div class="slide-inner">
+    <div class="kicker">THREE WAYS</div>
+    <h2>연동하는 3가지 방법</h2>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>방법</th>
+            <th>설명</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>프로토콜 직접 전송</td>
+            <td>시스템이 패킷을 보냄</td>
+          </tr>
+          <tr>
+            <td>접점신호 (PLC)</td>
+            <td>핀 신호로 저장된 화면 호출</td>
+          </tr>
+          <tr>
+            <td>센서 직결</td>
+            <td>컨트롤러가 센서값을 직접 표시</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card-row card-row-3">
+      <div class="card card-accent">
+        <h3>📤 프로토콜 직접 전송</h3>
+        <p>3부에서 배운 방식입니다. 서버·PC가 패킷을 만들어 보냅니다.</p>
+      </div>
+      <div class="card card-green">
+        <h3>⚙️ 접점신호 (PLC)</h3>
+        <p>핀만 켜면 미리 저장된 화면이 뜹니다. 코드가 없어도 됩니다.</p>
+      </div>
+      <div class="card card-yellow">
+        <h3>📟 센서 직결</h3>
+        <p>컨트롤러가 센서값을 직접 읽어 표시합니다. 외부 시스템이 없어도 됩니다.</p>
+      </div>
+    </div>
+  </div>
+  <div class="slide-number">22</div>
+</section>
+
+<!-- E-2: 주차관제 (인터랙티브) -->
+<section class="slide slide-orange-bg">
+  <div class="logo">DABIT SOLUTION</div>
+  <div class="slide-inner">
+    <div class="kicker">PARKING CONTROL</div>
+    <h2>주차관제</h2>
+    <p class="subtitle">차가 드나들 때마다 관제 서버가 주차 가능 대수를 다시 보냅니다.</p>
+
+    <div class="flow flow-link">
+      <div class="flow-step">
+        <div class="fl-icon">🅿️</div>
+        <div class="fl-role">입력</div>
+        <div class="label">주차면 센서</div>
+        <div class="fl-sub">차량 유무 감지</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="fl-icon">🖥️</div>
+        <div class="fl-role">집계</div>
+        <div class="label">관제 서버</div>
+        <div class="fl-sub">가능 대수 계산</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step is-target">
+        <div class="fl-icon">📡</div>
+        <div class="fl-role">표출</div>
+        <div class="label">컨트롤러</div>
+        <div class="fl-sub">LED 화면 갱신</div>
+      </div>
+    </div>
+
+    <div class="packet-card" id="card-parking">
+      <div class="pc-controls">
+        <div class="pc-field">
+          <div class="pc-range-label">
+            <label class="pc-label">주차 가능 대수</label>
+            <span class="pc-range-val" id="parking-count">152</span>
+          </div>
+          <div class="pc-btn-row">
+            <button type="button" class="pc-btn pc-btn-in" id="btn-park-in">▼ 입차 (−1)</button>
+            <button type="button" class="pc-btn pc-btn-out" id="btn-park-out">▲ 출차 (+1)</button>
+            <button type="button" class="pc-btn pc-btn-full" id="btn-park-full">만차 표시</button>
+          </div>
+        </div>
+        <div class="pc-field">
+          <label class="pc-label">전송 로그</label>
+          <div class="pc-log" id="log-parking" aria-live="polite">
+            <span class="pc-log-empty">입차·출차를 누르면 보낸 패킷이 쌓입니다.</span>
+          </div>
+        </div>
+      </div>
+      <div class="pc-output">
+        <div class="pc-caption">LED 미리보기</div>
+        <div class="led-panel" id="led-parking" role="img" aria-label="LED 미리보기: 주차 가능 152대"></div>
+        <div class="pc-packet">
+          <div class="pc-packet-head">
+            <span class="pc-packet-tag">생성 패킷</span>
+            <button type="button" class="pc-copy" data-copy="pkt-parking">복사</button>
+          </div>
+          <code id="pkt-parking"></code>
+        </div>
+      </div>
+    </div>
+
+    <p class="widget-note">
+      입차로 주차 가능 대수가 0이 되면 관제 서버가 만차를 감지해 색 코드 <span class="wn-code">/C1</span>까지 붙여 빨강 <span class="wn-em">"만 차"</span>로 바꿔 보냅니다. 출차로 다시 1 이상이 되면 노랑 대수 표시로 돌아옵니다. <span class="wn-em">만차 표시</span>를 누르면 곧장 만차 상태를 시연합니다.
+    </p>
+  </div>
+  <div class="slide-number">23</div>
+</section>
+
+<!-- E-3: 불법주정차 단속 (인터랙티브) -->
+<section class="slide slide-orange-bg">
+  <div class="logo">DABIT SOLUTION</div>
+  <div class="slide-inner">
+    <div class="kicker">ILLEGAL PARKING</div>
+    <h2>불법주정차 단속</h2>
+    <p class="subtitle">평소엔 "단속 중"이 흐르다, 카메라가 번호판을 읽으면 그 번호를 보냅니다.</p>
+
+    <div class="flow flow-link">
+      <div class="flow-step">
+        <div class="fl-icon">📷</div>
+        <div class="fl-role">입력</div>
+        <div class="label">단속 카메라</div>
+        <div class="fl-sub">번호판 인식</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="fl-icon">🖥️</div>
+        <div class="fl-role">판정</div>
+        <div class="label">단속 시스템</div>
+        <div class="fl-sub">위반 문구 생성</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step is-target">
+        <div class="fl-icon">📡</div>
+        <div class="fl-role">표출</div>
+        <div class="label">컨트롤러</div>
+        <div class="fl-sub">LED 화면 갱신</div>
+      </div>
+    </div>
+
+    <div class="packet-card" id="card-illegal">
+      <div class="pc-controls">
+        <div class="pc-field">
+          <label class="pc-label">단속 동작</label>
+          <div class="pc-btn-row">
+            <button type="button" class="pc-btn pc-btn-send" id="btn-illegal-catch">위반 적발</button>
+            <button type="button" class="pc-btn" id="btn-illegal-reset">단속 중으로</button>
+          </div>
+        </div>
+        <div class="pc-field">
+          <label class="pc-label">전송 로그</label>
+          <div class="pc-log" id="log-illegal" aria-live="polite">
+            <span class="pc-log-empty">위반 적발을 누르면 보낸 패킷이 쌓입니다.</span>
+          </div>
+        </div>
+      </div>
+      <div class="pc-output">
+        <div class="pc-caption">LED 미리보기</div>
+        <div class="led-panel" id="led-illegal" role="img" aria-label="LED 미리보기: 주정차 위반 단속 중"></div>
+        <div class="pc-packet">
+          <div class="pc-packet-head">
+            <span class="pc-packet-tag">생성 패킷</span>
+            <button type="button" class="pc-copy" data-copy="pkt-illegal">복사</button>
+          </div>
+          <code id="pkt-illegal"></code>
+        </div>
+      </div>
+    </div>
+
+    <p class="widget-note">
+      평소엔 흰 글씨 <span class="wn-em">"주정차 위반 단속 중!"</span>이 좌스크롤로 흐릅니다. 카메라가 번호판을 읽으면 단속 시스템이 색 코드 <span class="wn-code">/C1</span>을 붙여 빨강 <span class="wn-em">"{차량번호} 이동해 주세요."</span>로 바꿔 보냅니다. 번호판은 적발할 때마다 다른 값으로 바뀝니다.
+    </p>
+  </div>
+  <div class="slide-number">24</div>
+</section>
+
+<!-- E-4: 접점신호 — PLC 연동 (인터랙티브) -->
+<section class="slide slide-orange-bg">
+  <div class="logo">DABIT SOLUTION</div>
+  <div class="slide-inner">
+    <div class="kicker">CONTACT SIGNAL — PLC</div>
+    <h2>접점신호 — PLC 연동</h2>
+    <p class="subtitle">화면을 미리 저장해 두면, PLC가 핀을 켜는 것만으로 그 화면이 호출됩니다.</p>
+
+    <div class="flow flow-link">
+      <div class="flow-step">
+        <div class="fl-icon">⚙️</div>
+        <div class="fl-role">입력</div>
+        <div class="label">PLC</div>
+        <div class="fl-sub">접점 핀 ON</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="fl-icon">🔌</div>
+        <div class="fl-role">중계</div>
+        <div class="label">접점보드</div>
+        <div class="fl-sub">S1~S8</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step is-target">
+        <div class="fl-icon">📡</div>
+        <div class="fl-role">표출</div>
+        <div class="label">컨트롤러</div>
+        <div class="fl-sub">저장 화면 호출</div>
+      </div>
+    </div>
+
+    <div class="packet-card" id="card-plc">
+      <div class="pc-controls">
+        <div class="pc-field">
+          <label class="pc-label">PLC 접점신호</label>
+          <div class="pc-btn-row">
+            <button type="button" class="pc-btn pc-btn-in" id="btn-plc-1">1번 화면 호출</button>
+            <button type="button" class="pc-btn pc-btn-out" id="btn-plc-2">2번 화면 호출</button>
+            <button type="button" class="pc-btn pc-btn-full" id="btn-plc-3">3번 화면 호출</button>
+          </div>
+        </div>
+        <div class="pc-field">
+          <label class="pc-label">전송 로그</label>
+          <div class="pc-log" id="log-plc" aria-live="polite">
+            <span class="pc-log-empty">화면 호출 버튼을 누르면 보낸 패킷이 쌓입니다.</span>
+          </div>
+        </div>
+      </div>
+      <div class="pc-output">
+        <div class="pc-caption">LED 미리보기</div>
+        <div class="led-panel" id="led-plc" role="img" aria-label="LED 미리보기: 차량 통제 중"></div>
+        <div class="pc-packet">
+          <div class="pc-packet-head">
+            <span class="pc-packet-tag">생성 패킷</span>
+            <button type="button" class="pc-copy" data-copy="pkt-plc">복사</button>
+          </div>
+          <code id="pkt-plc"></code>
+        </div>
+      </div>
+    </div>
+
+    <p class="widget-note">
+      PLC는 코드 없이 핀만 켜면 됩니다. 핀이 켜지면 컨트롤러가 미리 저장된 화면을 불러옵니다 — 1번은 <span class="wn-em">"차량 통제 중"</span>, 2번은 <span class="wn-em">"정상 운행"</span>, 3번은 <span class="wn-em">방향 안내 화살표 그림</span>. 글자뿐 아니라 그림도 화면 한 장으로 저장해 둘 수 있습니다.
+    </p>
+  </div>
+  <div class="slide-number">25</div>
+</section>
+
+<!-- E-5: 센서 연동 (인터랙티브) -->
+<section class="slide slide-orange-bg">
+  <div class="logo">DABIT SOLUTION</div>
+  <div class="slide-inner">
+    <div class="kicker">SENSOR INTEGRATION</div>
+    <h2>센서 연동 — 소음 측정</h2>
+    <p class="subtitle">소음 센서가 측정한 dB 값을 컨트롤러가 직접 화면에 표시합니다.</p>
+
+    <div class="packet-card" id="card-sensor">
+      <div class="pc-controls">
+        <div class="pc-field">
+          <label class="pc-label">측정 소음 (dB)</label>
+          <div class="pc-btn-row">
+            <button type="button" class="pc-btn" id="btn-db-50">50</button>
+            <button type="button" class="pc-btn" id="btn-db-60">60</button>
+            <button type="button" class="pc-btn pc-btn-out" id="btn-db-85">85</button>
+          </div>
+        </div>
+        <div class="pc-field">
+          <label class="pc-label">전송 로그</label>
+          <div class="pc-log" id="log-sensor" aria-live="polite">
+            <span class="pc-log-empty">dB 버튼을 누르면 보낸 패킷이 쌓입니다.</span>
+          </div>
+        </div>
+      </div>
+      <div class="pc-output">
+        <div class="pc-caption">LED 미리보기 — 32&times;16 (1단 2열)</div>
+        <div class="led-panel" id="led-sensor" role="img" aria-label="LED 미리보기: 50 dB"></div>
+        <div class="pc-packet">
+          <div class="pc-packet-head">
+            <span class="pc-packet-tag">생성 패킷</span>
+            <button type="button" class="pc-copy" data-copy="pkt-sensor">복사</button>
+          </div>
+          <code id="pkt-sensor"></code>
+        </div>
+      </div>
+    </div>
+
+    <p class="widget-note">
+      작은 1단 2열(32&times;16) 전광판입니다. 왼쪽엔 숫자, 오른쪽엔 초록 <span class="wn-em">"dB"</span> 글자가 늘 켜져 있습니다 — "dB"는 배경이미지 <span class="wn-code">B001</span>입니다. 측정값이 바뀌면 숫자만 갱신합니다.
+    </p>
+  </div>
+  <div class="slide-number">26</div>
+</section>
+
+<!-- E-6: 릴레이 출력 -->
+<section class="slide slide-orange-bg">
+  <div class="logo">DABIT SOLUTION</div>
+  <div class="slide-inner">
+    <div class="kicker">RELAY OUTPUT</div>
+    <h2>릴레이 출력</h2>
+    <p class="subtitle">전광판이 받기만 하는 게 아니라, 외부 장치를 켜고 끌 수도 있습니다.</p>
+
+    <div class="card-row">
+      <div class="card card-accent">
+        <h3>🚨 경광등·스피커 제어</h3>
+        <p>컨트롤러 J4에 릴레이를 달면 경광등·스피커를 제어합니다.</p>
+      </div>
+      <div class="card card-green">
+        <h3>📤 패킷 한 줄로</h3>
+        <p>패킷 한 줄로 켜기 · 끄기 · 몇 초간 켜기를 할 수 있습니다.</p>
+      </div>
+    </div>
+
+    <div class="card-row card-row-1">
+      <div class="card card-red">
+        <h3>🔗 표출과 함께</h3>
+        <p>단속 문구를 띄우면서 경광등도 같이 켜는 식으로 씁니다.</p>
+      </div>
+    </div>
+
+    <div class="quote">
+      전광판은 <span class="highlight">받기도 하고 보내기도</span> 합니다 — 화면 표출 + 장치 제어.
+    </div>
+  </div>
+  <div class="slide-number">27</div>
+</section>
+
+<!-- ====================== 클로징 ====================== -->
+<section class="slide slide-closing">
+  <div class="logo">DABIT SOLUTION</div>
+  <div class="slide-inner center-text">
+    <div class="kicker">THANK YOU</div>
+    <h1>데이터를 보낼 수 있으면,<br>전광판에 표시할 수 있습니다</h1>
+
+    <div class="divider"></div>
+
+    <div class="card-row card-row-3">
+      <div class="card card-accent">
+        <h3>📚 DABIT DOCS</h3>
+        <p>docs.dabitsol.com</p>
+        <p style="font-size:17px; color:var(--text-60);">프로토콜 레퍼런스·연동 가이드</p>
+      </div>
+      <div class="card card-green">
+        <h3>🛠️ 기술지원</h3>
+        <p>031-202-2435~6</p>
+        <p style="font-size:17px; color:var(--text-60);">dabit@dabitsol.com</p>
+      </div>
+      <div class="card card-accent">
+        <h3>🌐 홈페이지</h3>
+        <p>dabitsol.com</p>
+        <p style="font-size:17px; color:var(--text-60);">제품·회사 소개</p>
+      </div>
+    </div>
+  </div>
+  <div class="slide-number">28</div>
+</section>
+
+<script>
+/* =========================================================================
+   전광판 교육자료 — LED 엔진 (배치2)
+   노출 전역: DotMatrix, LedSign  (그 외 식별자는 IIFE 안에 격리)
+   ========================================================================= */
+(function () {
+  'use strict';
+
+  /* -----------------------------------------------------------------------
+     DotMatrix — 글자를 실제 점(픽셀)으로 그리는 canvas 도트매트릭스 렌더러
+
+     실물 전광판처럼 "고정 픽셀 보드"에 글자를 도트로 그린다.
+       · 글자 한 줄의 높이 = 16 도트 (GLYPH_ROWS)
+       · 한글 한 자 = 16×16,  숫자·영문 한 자 = 8×16 (절반 폭)
+       · 보드 크기는 고정 — 기본 128×16(1단 8열), 센서는 32×16(1단 2열)
+       · 글자가 보드 폭을 넘으면 좌스크롤(렌더러 밖 _renderLine이 담당)
+     글자별로 자기 셀(한글 16칸·영문 8칸)에 래스터라이즈해 폭을 규격대로 맞춘다.
+     ----------------------------------------------------------------------- */
+  const DotMatrix = {
+    GLYPH_ROWS: 16,   // 글자 한 줄의 세로 도트 수
+    KO_COLS: 16,      // 한글 한 자의 가로 도트 수
+    EN_COLS: 8,       // 숫자·영문 한 자의 가로 도트 수 (절반)
+
+    // 글자별 비트맵 캐시 — 'ch|cols' 키. 같은 글자 재래스터를 피한다.
+    _charCache: {},
+
+    /** ASCII 1바이트 글자(숫자·영문·기호·공백)면 true → 8칸 폭. 그 외(한글 등) 16칸. */
+    _isHalfWidth(ch) {
+      return ch.charCodeAt(0) < 0x80;
+    },
+
+    /**
+     * 글자 한 자를 cell(8 또는 16)×16 도트 비트맵으로 래스터라이즈한다.
+     * @returns {{on:Set<string>, cols:number}}  on은 'x,y' 켜짐 좌표 집합
+     */
+    _charBitmap(ch) {
+      const cols = DotMatrix._isHalfWidth(ch) ? DotMatrix.EN_COLS : DotMatrix.KO_COLS;
+      const rows = DotMatrix.GLYPH_ROWS;
+      const key  = ch + '|' + cols;
+      if (DotMatrix._charCache[key]) return DotMatrix._charCache[key];
+
+      const probe = document.createElement('canvas');
+      probe.width  = cols;
+      probe.height = rows;
+      const pctx = probe.getContext('2d', { willReadFrequently: true });
+      // 폰트는 굴림/돋움 우선 고딕 스택 — 전광판다운 각진 비트맵 글꼴.
+      // 굴림·돋움은 단일 굵기 폰트라 weight 접두를 빼야(faux-light 합성 방지)
+      // 획이 또렷하게 남는다. 글자 높이는 16행을 꽉 채우는 1.0 배수 —
+      // 굴림은 글리프가 위쪽 여백을 두므로 받침·모자도 행 안에 들어온다.
+      // 굴림 글리프는 alpha가 사실상 0/255 이진이라 임계값 48은 넉넉히 안전.
+      const fontPx = Math.round(rows * 1.0);
+      pctx.font = fontPx + "px 굴림, Gulim, 돋움, Dotum, '맑은 고딕', 'Malgun Gothic', sans-serif";
+      pctx.textBaseline = 'middle';
+      pctx.textAlign = 'center';
+      pctx.fillStyle = '#fff';
+      pctx.fillText(ch, cols / 2, rows / 2 + 0.5);
+
+      const px = pctx.getImageData(0, 0, cols, rows).data;
+      const on = new Set();
+      for (let y = 0; y < rows; y++) {
+        for (let x = 0; x < cols; x++) {
+          if (px[(y * cols + x) * 4 + 3] > 48) on.add(x + ',' + y);
+        }
+      }
+      const bmp = { on: on, cols: cols };
+      DotMatrix._charCache[key] = bmp;
+      return bmp;
+    },
+
+    /**
+     * 한 줄(문자열 또는 색 구간 배열)을 글자별로 이어 붙여 16행 비트맵을 만든다.
+     * @param {string|Array<{text:string,colorHex:string}>} content
+     * @returns {{cells:Array<{x:number,on:Set,colorHex:?string}>, cols:number, rows:number}}
+     */
+    _lineBitmap(content) {
+      // 입력을 색 구간 배열로 정규화 — 문자열이면 색 없는 1구간
+      const segs = (typeof content === 'string')
+        ? [{ text: content, colorHex: null }]
+        : (content || []);
+      const cells = [];
+      let x = 0;
+      segs.forEach(function (seg) {
+        const text = String(seg.text == null ? '' : seg.text);
+        for (let i = 0; i < text.length; i++) {
+          const bmp = DotMatrix._charBitmap(text.charAt(i));
+          cells.push({ x: x, on: bmp.on, cols: bmp.cols, colorHex: seg.colorHex });
+          x += bmp.cols;
+        }
+      });
+      return { cells: cells, cols: x, rows: DotMatrix.GLYPH_ROWS };
+    },
+
+    /** 한 줄 문구의 도트 폭을 잰다 (좌스크롤 판정용). */
+    measureLine(content) {
+      return DotMatrix._lineBitmap(content).cols;
+    },
+
+    /**
+     * 도트 한 칸을 canvas에 그린다.
+     * @param {string} mode 'main'(밝게+발광) | 'off'(꺼짐 격자)
+     */
+    _dot(ctx, cx, cy, r, cell, color, mode) {
+      ctx.beginPath();
+      ctx.arc(cx, cy, r, 0, Math.PI * 2);
+      if (mode === 'main') {
+        ctx.shadowColor = color;
+        ctx.shadowBlur  = cell * 0.6;
+        ctx.fillStyle   = color;
+      } else {
+        ctx.shadowBlur  = 0;
+        ctx.fillStyle   = '#161616';   // 꺼진 도트 — 격자감 유지
+      }
+      ctx.fill();
+    },
+
+    /**
+     * 고정 픽셀 보드에 글자를 도트매트릭스로 그린다.
+     * 보드 칸은 boardCols×boardRows 로 고정 — 글자는 그 격자 안에 배치된다.
+     * @param {HTMLCanvasElement} canvas  대상 canvas
+     * @param {object} board   { cols, rows } 보드 도트 크기 (128×16 / 32×16 등)
+     * @param {Array}  lines   줄 배열. 각 원소는 문자열 또는 색구간 배열.
+     *                         줄 수에 따라 boardRows를 16씩 나눠 배치.
+     * @param {object} opts
+     *   - color   기본 켜짐 도트 색 (hex). 색구간에 colorHex가 있으면 그쪽 우선
+     *   - cell    도트 한 칸 px 크기, 기본 10
+     *   - offsetX 좌스크롤할 때의 가로 도트 오프셋 (없으면 가운데/좌정렬)
+     *   - scrollLine  좌스크롤 적용 대상 — 줄 인덱스(숫자) 또는 'all'(모든 줄).
+     *                 기본 없음(모든 줄 정지 배치).
+     * @returns {{cols:number, rows:number, lineWidths:number[]}}
+     */
+    renderBoard(canvas, board, lines, opts = {}) {
+      const color = opts.color || '#ffb400';
+      const cell  = opts.cell  || 10;
+      const bCols = board.cols;
+      const bRows = board.rows;
+      const glyphRows = DotMatrix.GLYPH_ROWS;
+
+      canvas.width  = bCols * cell;
+      canvas.height = bRows * cell;
+      const ctx = canvas.getContext('2d');
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const r = cell * 0.38;
+
+      // 1) 꺼진 도트 격자를 보드 전체에 깐다 (전광판 면 느낌)
+      for (let y = 0; y < bRows; y++) {
+        for (let x = 0; x < bCols; x++) {
+          DotMatrix._dot(ctx, x * cell + cell / 2, y * cell + cell / 2,
+            r, cell, color, 'off');
+        }
+      }
+
+      // 2) 각 줄을 16행 띠에 배치. 줄 수만큼 띠를 세로로 균등 분배.
+      const lineCount = Math.max(1, lines.length);
+      // 줄 사이 세로 여백 — 보드에 남는 행을 줄 수+1로 나눠 위·사이·아래에 분배
+      const usedRows  = lineCount * glyphRows;
+      const freeRows  = Math.max(0, bRows - usedRows);
+      const vGap      = Math.floor(freeRows / (lineCount + 1));
+      const lineWidths = [];
+
+      lines.forEach(function (lineContent, li) {
+        const lb = DotMatrix._lineBitmap(lineContent);
+        lineWidths.push(lb.cols);
+        const rowTop = vGap + li * (glyphRows + vGap);
+
+        // 가로 위치 — 좌스크롤 대상 줄이면 offsetX, 아니면 가운데(넘치면 0).
+        // scrollLine 은 줄 인덱스(이 줄만) 또는 'all'(모든 줄)을 받는다.
+        const scrolled = opts.offsetX != null &&
+          (opts.scrollLine === 'all' || opts.scrollLine === li);
+        let x0;
+        if (scrolled) {
+          x0 = Math.round(opts.offsetX);
+        } else {
+          x0 = Math.round((bCols - lb.cols) / 2);
+          if (x0 < 0) x0 = 0;
+        }
+
+        // 글자 셀을 하나씩 보드에 그린다. 보드 밖 도트는 그리지 않는다(클리핑).
+        lb.cells.forEach(function (cellBmp) {
+          const cellX0 = x0 + cellBmp.x;
+          const dotColor = cellBmp.colorHex || color;
+          cellBmp.on.forEach(function (k) {
+            const parts = k.split(',');
+            const gx = cellX0 + (+parts[0]);
+            const gy = rowTop + (+parts[1]);
+            if (gx < 0 || gx >= bCols || gy < 0 || gy >= bRows) return;
+            DotMatrix._dot(ctx, gx * cell + cell / 2, gy * cell + cell / 2,
+              r, cell, dotColor, 'main');
+          });
+        });
+      });
+
+      ctx.shadowBlur = 0;
+      return { cols: bCols, rows: bRows, lineWidths: lineWidths };
+    },
+
+    /**
+     * 고정 픽셀 보드에 임의의 켜짐 좌표 집합을 도트 그림(픽토그램)으로 그린다.
+     * 글자가 아니라 화살표 같은 그림을 보드에 직접 찍을 때 쓴다 — renderBoard의
+     * 꺼진 격자 + 켜짐 도트(main) 그리기 방식을 그대로 재사용한다.
+     * @param {HTMLCanvasElement} canvas  대상 canvas
+     * @param {object} board   { cols, rows } 보드 도트 크기
+     * @param {Array<[number,number]>} dots  켜질 도트 좌표 [x,y] 배열
+     * @param {object} opts  - color 켜짐 도트 색(hex), - cell 도트 한 칸 px
+     */
+    renderDots(canvas, board, dots, opts = {}) {
+      const color = opts.color || '#ffb400';
+      const cell  = opts.cell  || 10;
+      const bCols = board.cols;
+      const bRows = board.rows;
+
+      canvas.width  = bCols * cell;
+      canvas.height = bRows * cell;
+      const ctx = canvas.getContext('2d');
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const r = cell * 0.38;
+
+      // 1) 꺼진 도트 격자를 보드 전체에 깐다 (전광판 면 느낌)
+      for (let y = 0; y < bRows; y++) {
+        for (let x = 0; x < bCols; x++) {
+          DotMatrix._dot(ctx, x * cell + cell / 2, y * cell + cell / 2,
+            r, cell, color, 'off');
+        }
+      }
+      // 2) 켜질 좌표를 main 모드로 찍는다. 보드 밖 좌표는 무시(클리핑).
+      (dots || []).forEach(function (pt) {
+        const gx = pt[0], gy = pt[1];
+        if (gx < 0 || gx >= bCols || gy < 0 || gy >= bRows) return;
+        DotMatrix._dot(ctx, gx * cell + cell / 2, gy * cell + cell / 2,
+          r, cell, color, 'main');
+      });
+
+      ctx.shadowBlur = 0;
+      return { cols: bCols, rows: bRows };
+    }
+  };
+
+  /* -----------------------------------------------------------------------
+     LedSign — ASCII 패킷 생성 / 응답 시뮬레이션 / LED 미리보기
+     ----------------------------------------------------------------------- */
+  const LedSign = {};
+
+  // 색 코드맵 (ASCII 프로토콜 /C 속성) — 0 검정 ~ 7 흰색
+  LedSign.COLORS = {
+    0: { name: '검정', hex: '#222222' },
+    1: { name: '빨강', hex: '#ff3b30' },
+    2: { name: '초록', hex: '#34c759' },
+    3: { name: '노랑', hex: '#ffcc00' },
+    4: { name: '파랑', hex: '#4b7be5' },
+    5: { name: '자주', hex: '#ff2d95' },
+    6: { name: '청록', hex: '#32d6d6' },
+    7: { name: '흰색', hex: '#f5f5f5' }
+  };
+
+  // 효과 코드맵 (/E 속성) — 교육 UI에 노출하는 효과는 정지·점멸·좌스크롤 3종.
+  // 좌스크롤(글자가 오른쪽→왼쪽으로 흐름) = 코드 '06' → 패킷 /E0606.
+  LedSign.EFFECTS = {
+    '01': { name: '정지',   kind: 'static' },
+    '02': { name: '점멸',   kind: 'blink'  },
+    '06': { name: '좌스크롤', kind: 'scroll' }  // 좌스크롤 — 우→좌 이동
+  };
+
+  /** 색 코드(0~7) → hex. 미정의 코드는 노랑으로 폴백. */
+  LedSign.colorHex = function (code) {
+    const c = LedSign.COLORS[code];
+    return c ? c.hex : LedSign.COLORS[3].hex;
+  };
+
+  /**
+   * ASCII 명령 패킷 생성.  형식: ![{주소}{에러체크}{타입}{속성}{내용}!]
+   * 주소·에러체크·타입은 교육용 고정값 '000' (싱글모드·BCC미사용·실시간메시지).
+   * 속성 순서는 /E → /S → /D → /C (레퍼런스 4장 예시 순서).
+   * preview와 같은 opts 객체를 받는다 (공통 스키마):
+   *   { msg, color, entranceEffect, exitEffect, speed, hold, repeat, displayMethod }
+   * @param {object} o
+   *   - msg            표시 문구
+   *   - color          색 코드 0~7 (hex 아님)
+   *   - entranceEffect 시작효과 코드 '01'정지·'02'점멸·'06'좌스크롤
+   *   - exitEffect     종료효과 코드 '01'정지·'02'점멸·'06'좌스크롤
+   *   - speed          효과 속도 0~99 (0=최고속·99=최저속)
+   *   - hold           정지 유지 시간
+   *   - repeat         반복 횟수
+   *   - displayMethod  표시방법 '00'|'01', 기본 '01' (레퍼런스 기본 /D9901과 일치)
+   */
+  LedSign.buildPacket = function (o) {
+    o = o || {};
+    // 숫자 필드를 0~99로 가두고 2자리로 — 100 이상이면 자릿수가 새 패킷 형식이 깨짐
+    const clamp2 = function (v) {
+      return String(Math.min(99, Math.max(0, Math.round(Number(v) || 0))))
+        .padStart(2, '0');
+    };
+    let attr = '';
+    if (o.entranceEffect || o.exitEffect) {
+      attr += '/E' + (o.entranceEffect || '01') + (o.exitEffect || '01');
+    }
+    if (o.speed != null || o.hold != null) {
+      const sp = clamp2(o.speed != null ? o.speed : 20);
+      const hd = clamp2(o.hold  != null ? o.hold  : 4);
+      attr += '/S' + sp + hd;
+    }
+    if (o.repeat != null) {
+      // /D{반복2자리}{표시방법} — 표시방법 기본 '01'
+      const dm = (o.displayMethod === '00') ? '00' : '01';
+      attr += '/D' + clamp2(o.repeat) + dm;
+    }
+    if (o.color != null) {
+      attr += '/C' + o.color;
+    }
+    return '![000' + attr + (o.msg || '') + '!]';
+  };
+
+  /**
+   * 응답 시뮬레이션.  패킷이 시작마커 '!['로 시작하고 종료마커 '!]'로 끝나면
+   * 성공 ![0000!], 형식이 어긋나면 실패 ![000F!]. 종합 빌더의 형식 검증에 쓴다.
+   * 실제 소켓 통신은 없다 (설계 문서 10장 비범위).
+   */
+  LedSign.simulateResponse = function (pkt) {
+    const t = String(pkt).trim();
+    return (t.startsWith('![') && t.endsWith('!]')) ? '![0000!]' : '![000F!]';
+  };
+
+  /* ----- LED 미리보기 (애니메이션) -------------------------------------- */
+
+  // 패널마다 진행 중인 애니메이션 핸들을 보관 → 재호출 시 이전 것을 취소
+  const _anim = new WeakMap();
+
+  // 보드 기본 크기 — 128×16 도트 (1단 8열). 센서 위젯만 32×16을 따로 넘긴다.
+  const DEFAULT_BOARD = { cols: 128, rows: 16 };
+  // 보드 도트 한 칸의 기본 px 크기 — canvas는 max-width로 패널에 맞춰 축소된다.
+  const DEFAULT_CELL = 9;
+
+  function _cancel(panelEl) {
+    const h = _anim.get(panelEl);
+    if (h) {
+      if (h.raf) cancelAnimationFrame(h.raf);
+      _anim.delete(panelEl);
+    }
+  }
+
+  /**
+   * 패널에 LED 미리보기를 고정 픽셀 보드로 그린다.
+   * buildPacket과 같은 opts 객체를 받는다 (공통 스키마):
+   *   { msg, color, entranceEffect, exitEffect, speed, hold, repeat, displayMethod }
+   * 같은 객체를 buildPacket과 preview 둘 다에 넘길 수 있다.
+   * @param {HTMLElement} panelEl  .led-panel 컨테이너
+   * @param {object} opts
+   *   - msg            표시 문구 (1줄)
+   *   - lines          여러 줄 배열 ['상단','하단'] — 있으면 msg 무시
+   *   - segments       색 구간 1줄 — [{text,color}] 형태 (센서 "85"+초록"dB")
+   *   - color          색 코드 0~7 (hex 아님), 기본 3. 내부에서 colorHex로 변환
+   *   - entranceEffect 시작효과 코드 '01'정지·'02'점멸·'06'좌스크롤. 미리보기는 이 효과로 구동
+   *   - exitEffect     종료효과 코드 (패킷용 — 미리보기는 시각화 안 함)
+   *   - speed          효과 속도 0~99 (0=최고속·99=최저속), 기본 20
+   *   - board          보드 도트 크기 { cols, rows } — 기본 128×16, 센서는 32×16
+   *   - cell           도트 한 칸 px — 미지정 시 보드 폭에 맞춰 자동
+   */
+  LedSign.preview = function (panelEl, opts) {
+    if (!panelEl) return;
+    opts = opts || {};
+    _cancel(panelEl);
+    panelEl.innerHTML = '';
+
+    const board = opts.board || DEFAULT_BOARD;
+    const cell  = opts.cell  || DEFAULT_CELL;
+
+    // 색 — opts.color는 0~7 코드. colorHex로 hex 변환.
+    // (이미 hex 문자열이 들어와도 colorHex가 미정의 코드로 보고 폴백하지 않게 그대로 통과)
+    let colorCode = opts.color != null ? opts.color : 3;
+    const colorHex = (typeof colorCode === 'string' && colorCode.charAt(0) === '#')
+      ? colorCode
+      : LedSign.colorHex(colorCode);
+
+    // 효과 — 눈에 보이는 애니메이션은 entranceEffect로 구동. 코드를 kind로 변환.
+    let kind = opts.entranceEffect || '01';
+    if (LedSign.EFFECTS[kind]) kind = LedSign.EFFECTS[kind].kind;
+    if (kind !== 'blink' && kind !== 'scroll') kind = 'static';
+
+    // 줄 목록 — segments(색 구간 1줄) > lines(여러 줄) > msg(1줄) 순.
+    // segments는 [{text,color}] — color는 0~7 코드. 보드용 colorHex 구간으로 변환.
+    let lines;
+    if (opts.segments && opts.segments.length) {
+      lines = [opts.segments.map(function (s) {
+        return {
+          text: s.text,
+          colorHex: (s.color != null) ? LedSign.colorHex(s.color) : colorHex
+        };
+      })];
+    } else if (opts.lines && opts.lines.length) {
+      lines = opts.lines;
+    } else {
+      lines = [opts.msg != null ? opts.msg : ''];
+    }
+
+    // canvas + 뷰포트 DOM (보드 하나 = 줄 전체를 담는 한 장)
+    const row = document.createElement('div');
+    row.className = 'led-row';
+    const canvas = document.createElement('canvas');
+    row.appendChild(canvas);
+    panelEl.appendChild(row);
+
+    const renderOpts = { color: colorHex, cell: cell };
+    const speed = opts.speed != null ? opts.speed : 20;
+
+    if (kind === 'scroll') {
+      // 좌스크롤 — 보드 안에서 글자를 오른쪽→왼쪽으로 흘린다.
+      // 매 프레임 offsetX를 줄여 보드를 다시 그린다(보드 밖 도트는 renderBoard가 자른다).
+      // 미리보기 속도는 /S 근사: speed 0=최고속(약 56도트/s) ~ 99=최저속(약 9도트/s).
+      const dotsPerSec = 56 - speed / 99 * 47;
+      // 가장 넓은 줄 폭으로 루프 길이를 잡아 여러 줄이 어긋나지 않게 같이 흐른다.
+      let maxW = 1;
+      lines.forEach(function (ln) {
+        const w = DotMatrix.measureLine(ln);
+        if (w > maxW) maxW = w;
+      });
+      let offset = board.cols;          // 보드 오른쪽 끝 밖에서 시작
+      let last = performance.now();
+      // 모든 줄을 같은 offset으로 좌스크롤 (scrollLine 'all').
+      const drawFrame = function () {
+        DotMatrix.renderBoard(canvas, board, lines, Object.assign({}, renderOpts, {
+          offsetX: offset, scrollLine: 'all'
+        }));
+      };
+      const handle = { raf: 0 };
+      const loop = function (now) {
+        const dt = (now - last) / 1000;
+        last = now;
+        offset -= dotsPerSec * dt;
+        if (offset <= -maxW) offset = board.cols; // 왼쪽 밖으로 다 나가면 루프
+        drawFrame();
+        handle.raf = requestAnimationFrame(loop);
+      };
+      drawFrame();                      // 첫 프레임 즉시 (rAF 전 빈 보드 깜빡임 방지)
+      handle.raf = requestAnimationFrame(loop);
+      _anim.set(panelEl, handle);
+    } else if (kind === 'blink') {
+      // 점멸 — 보드를 한 번 그리고 canvas 투명도를 주기적으로 토글.
+      DotMatrix.renderBoard(canvas, board, lines, renderOpts);
+      let on = true;
+      let last = performance.now();
+      const period = 80 + speed / 99 * 1320;
+      const handle = { raf: 0 };
+      const loop = function (now) {
+        if (now - last >= period) {
+          on = !on;
+          canvas.style.opacity = on ? '1' : '0.06';
+          last = now;
+        }
+        handle.raf = requestAnimationFrame(loop);
+      };
+      handle.raf = requestAnimationFrame(loop);
+      _anim.set(panelEl, handle);
+    } else {
+      // 정지 — 보드를 한 번만 그린다 (가운데 정렬, 넘치면 좌정렬 클리핑).
+      DotMatrix.renderBoard(canvas, board, lines, renderOpts);
+    }
+  };
+
+  /**
+   * 패널에 도트 그림(픽토그램)을 고정 픽셀 보드로 그린다 — 글자 대신 화살표 등.
+   * preview와 같은 .led-panel DOM 구조를 만들되, 애니메이션 없이 한 번만 찍는다.
+   * @param {HTMLElement} panelEl  .led-panel 컨테이너
+   * @param {object} opts
+   *   - dots   켜질 도트 좌표 [x,y] 배열
+   *   - color  켜짐 도트 색 — 0~7 코드 또는 hex, 기본 3(노랑)
+   *   - board  보드 도트 크기 { cols, rows } — 기본 128×16
+   *   - cell   도트 한 칸 px — 기본 DEFAULT_CELL
+   */
+  LedSign.previewDots = function (panelEl, opts) {
+    if (!panelEl) return;
+    opts = opts || {};
+    _cancel(panelEl);
+    panelEl.innerHTML = '';
+
+    const board = opts.board || DEFAULT_BOARD;
+    const cell  = opts.cell  || DEFAULT_CELL;
+    let colorCode = opts.color != null ? opts.color : 3;
+    const colorHex = (typeof colorCode === 'string' && colorCode.charAt(0) === '#')
+      ? colorCode
+      : LedSign.colorHex(colorCode);
+
+    const row = document.createElement('div');
+    row.className = 'led-row';
+    const canvas = document.createElement('canvas');
+    row.appendChild(canvas);
+    panelEl.appendChild(row);
+
+    DotMatrix.renderDots(canvas, board, opts.dots || [], { color: colorHex, cell: cell });
+  };
+
+  /** 패널의 애니메이션을 멈춘다 (슬라이드 전환 등에서 사용). */
+  LedSign.stop = function (panelEl) { _cancel(panelEl); };
+
+  // ----- 전역 노출 (DotMatrix, LedSign 만) --------------------------------
+  window.DotMatrix = DotMatrix;
+  window.LedSign   = LedSign;
+})();
+
+/* ---- 정적 슬라이드의 LED 미리보기 초기화 (배치3·배치5) -------------------
+   각 패널의 preview 옵션을 ledPanels 레지스트리에 모아 둔다 →
+   IntersectionObserver(배치5)가 화면 밖에서 stop, 다시 보일 때 같은 옵션으로 재개. */
+(function () {
+  // 정적 LED 패널 목록 — { id, opts }. opts는 LedSign.preview에 그대로 넘긴다.
+  // 배치6: led-parking·led-illegal은 인터랙티브 위젯으로 전환되어 카드 IIFE가 초기화한다.
+  var staticPanels = [
+    // A-1 텍스트 한 줄 보내기 — 1단 "주차 잔여 152면", 노랑 정지
+    { id: 'led-cover',   opts: { msg: '다빛솔루션입니다', color: 3, entranceEffect: '01' } },
+    // B-1 LED 모듈 — 숫자·영문·한글 한 줄로 글자 폭 차이 시연(128×16=1단 8열). 노랑 정지
+    { id: 'led-module',  opts: { msg: '1234AaBb가나다라', color: 3, entranceEffect: '01' } },
+
+    // 슬라이드 10 (LED모듈가이드 5 이식) — 같은 크기, 다른 글자 수 (P8 · P6 도트매트릭스 비교).
+    // 두 canvas가 같은 물리 폭이 되게(P8 32×14 = P6 64×7 = 448px) 잡는다.
+    // P8 — 32×16 도트, 한글 "가나" 2자. cell 14. 주황 정지.
+    { id: 'led-p8-compare',
+      opts: {
+        board: { cols: 32, rows: 16 }, cell: 14,
+        msg: '가나', color: '#ff8c3a', entranceEffect: '01'
+      } },
+    // P6 — 64×32 도트, "가나가나"/"가나가나" 2줄(한글 8자). cell 7이라 도트가 P8 절반.
+    { id: 'led-p6-compare',
+      opts: {
+        board: { cols: 64, rows: 32 }, cell: 7,
+        lines: ['가나가나', '가나가나'], color: '#4b7be5', entranceEffect: '01'
+      } }
+  ];
+
+  function boot() {
+    staticPanels.forEach(function (p) {
+      var el = document.getElementById(p.id);
+      if (el) {
+        LedSign.preview(el, p.opts);
+        // 화면밖 정지 옵저버가 재개 시 쓰도록 패널에 옵션을 보관
+        el._ledOpts = p.opts;
+      }
+    });
+  }
+  // 폰트 로드 후 렌더 — 미로드 시 글자가 깨지는 것을 방지
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(boot);
+  } else {
+    window.addEventListener('load', boot);
+  }
+})();
+
+/* ---- 슬라이드 9 — P-series 선택기 (★ 인터랙티브) ----------------------
+   버튼 5개(P3/P4/P6/P8/P10) → 16×16 LED 보드에 "가" 표시 + 모듈 크기 라벨 갱신.
+   - cell(도트 한 칸 px) ≈ pitchMm × 3 으로 잡아 P3 작고 P10 크게 보임 (시각 비례).
+   - 모듈 크기(mm) = 16 × pitchMm (P3→48, P4→64, P6→96, P8→128, P10→160). */
+(function () {
+  'use strict';
+
+  // 피치별 화면 cell(px) — 같은 16×16 보드에 도트 크기를 다르게 잡아 모듈이 커 보이게.
+  // P3→9, P4→11, P6→15, P8→19, P10→23 (px). 너무 크지도 작지도 않게 튜닝.
+  var CELL_PX = { 3: 9, 4: 11, 6: 15, 8: 19, 10: 23 };
+
+  function init() {
+    var btns  = document.querySelectorAll('.ps-btn');
+    var ledEl = document.getElementById('ps-led');
+    var pEl   = document.getElementById('ps-pitch');
+    var sEl   = document.getElementById('ps-size');
+    if (!btns.length || !ledEl) return;
+
+    function render(pitch) {
+      var mm   = pitch * 16;             // 모듈 한 변 mm = 16픽셀 × 피치
+      var cell = CELL_PX[pitch] || 13;
+
+      if (pEl) pEl.textContent = 'P' + pitch;
+      if (sEl) sEl.textContent = mm + ' × ' + mm + ' mm';
+      ledEl.setAttribute('aria-label',
+        'LED 미리보기: P' + pitch + ' 16 곱하기 16 픽셀 보드에 한글 가 한 글자');
+
+      var opts = {
+        msg: '가',
+        color: 3,
+        entranceEffect: '01',
+        board: { cols: 16, rows: 16 },
+        cell: cell
+      };
+      LedSign.preview(ledEl, opts);
+      // 화면밖 정지 옵저버가 재개 시 쓰도록 패널에 옵션을 보관
+      ledEl._ledOpts = opts;
+
+      // 버튼 활성 상태 갱신
+      Array.prototype.forEach.call(btns, function (b) {
+        var on = (parseInt(b.getAttribute('data-pitch'), 10) === pitch);
+        b.classList.toggle('is-active', on);
+        if (on) b.setAttribute('aria-pressed', 'true');
+        else b.removeAttribute('aria-pressed');
+      });
+    }
+
+    Array.prototype.forEach.call(btns, function (b) {
+      b.addEventListener('click', function () {
+        var p = parseInt(b.getAttribute('data-pitch'), 10);
+        if (!isFinite(p)) return;
+        render(p);
+      });
+    });
+
+    // 초기 상태 — P6 (시각적 중간)
+    render(6);
+  }
+
+  // 폰트 로드 후에 초기화 — 도트 글리프 래스터가 또렷이 잡힘
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(init);
+  } else {
+    window.addEventListener('load', init);
+  }
+})();
+
+/* ---- 프로토콜 인터랙티브 카드·빌더 (배치4) -----------------------------
+   엔진(DotMatrix·LedSign)은 호출만 한다. 카드 로직은 이 IIFE 안에 격리.
+   각 카드는 opts 객체 하나를 만들어 LedSign.buildPacket·LedSign.preview 둘 다에 넘긴다. */
+(function () {
+  'use strict';
+
+  // ----- 공용 헬퍼 ------------------------------------------------------
+
+  /** id로 요소 가져오기 (짧게). */
+  function $(id) { return document.getElementById(id); }
+
+  /**
+   * 입력 디바운스 — 마지막 호출 후 wait(ms)가 지나야 fn 실행.
+   * 메시지 타이핑마다 DotMatrix 재렌더는 무거우므로 LED 갱신에 쓴다.
+   */
+  function debounce(fn, wait) {
+    var t = null;
+    return function () {
+      var args = arguments, self = this;
+      if (t) clearTimeout(t);
+      t = setTimeout(function () { t = null; fn.apply(self, args); }, wait);
+    };
+  }
+
+  // HTML 이스케이프 — 패킷 문자열을 <code>에 안전하게 넣기 위함
+  function esc(s) {
+    return String(s)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
+  /**
+   * 패킷 문자열을 <code>용 HTML로 — 속성 코드(/E /S /D /C)를 살짝 강조.
+   * 슬래시 2개(//)는 문구 안의 진짜 슬래시이므로 강조에서 제외.
+   */
+  function packetHtml(pkt) {
+    var safe = esc(pkt);
+    // /로 시작하고 영문 1자 + 숫자 0~5자리인 토막을 속성으로 본다
+    return safe.replace(/\/([A-Za-z]\d{0,5})/g, function (m) {
+      return '<span class="pc-attr">' + m + '</span>';
+    });
+  }
+
+  /** 패킷 문자열을 code 요소에 표시 (강조 포함). */
+  function showPacket(codeEl, pkt) {
+    codeEl.innerHTML = packetHtml(pkt);
+  }
+
+  /** LED 패널 aria-label을 현재 문구로 갱신 (접근성). */
+  function setPanelLabel(panelEl, msg) {
+    var text = (msg == null || msg === '') ? '(빈 화면)' : msg;
+    panelEl.setAttribute('aria-label', 'LED 미리보기: ' + text);
+  }
+
+  /** 복사 버튼 — data-copy로 가리킨 code의 텍스트를 클립보드에 복사. */
+  function wireCopyButtons() {
+    var btns = document.querySelectorAll('.pc-copy');
+    Array.prototype.forEach.call(btns, function (btn) {
+      btn.addEventListener('click', function () {
+        var target = $(btn.getAttribute('data-copy'));
+        if (!target) return;
+        var text = target.textContent;
+        var done = function () {
+          var orig = btn.textContent;
+          btn.textContent = '복사됨';
+          setTimeout(function () { btn.textContent = orig; }, 1200);
+        };
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(done, done);
+        } else {
+          // 구형 폴백 — 임시 textarea
+          var ta = document.createElement('textarea');
+          ta.value = text;
+          ta.style.position = 'fixed';
+          ta.style.opacity = '0';
+          document.body.appendChild(ta);
+          ta.select();
+          try { document.execCommand('copy'); } catch (e) {}
+          document.body.removeChild(ta);
+          done();
+        }
+      });
+    });
+  }
+
+  /**
+   * 색 스와치 그룹 배선 — 클릭 시 is-active 이동 + 콜백.
+   * @param {string} groupId  .pc-swatches 컨테이너 id
+   * @param {function} onPick (colorCode:number) => void
+   */
+  function wireSwatches(groupId, onPick) {
+    var group = $(groupId);
+    if (!group) return;
+    var swatches = group.querySelectorAll('.pc-swatch');
+    Array.prototype.forEach.call(swatches, function (sw) {
+      sw.addEventListener('click', function () {
+        Array.prototype.forEach.call(swatches, function (s) {
+          s.classList.remove('is-active');
+          s.setAttribute('aria-pressed', 'false');
+        });
+        sw.classList.add('is-active');
+        sw.setAttribute('aria-pressed', 'true');
+        onPick(parseInt(sw.getAttribute('data-color'), 10));
+      });
+      // 초기 aria-pressed
+      sw.setAttribute('aria-pressed',
+        sw.classList.contains('is-active') ? 'true' : 'false');
+    });
+  }
+
+  // ----- 카드 1 : 기본 문구 --------------------------------------------
+  // opts에 color·effect 없음 → 패킷은 ![000내용!] 형태
+  function initCardMsg() {
+    var input  = $('msg-input');
+    var panel  = $('led-msg');
+    var code   = $('pkt-msg');
+    if (!input || !panel || !code) return;
+
+    // 패킷·preview 공통 opts 객체 하나
+    var o = { msg: input.value };
+
+    var renderLed = debounce(function () {
+      LedSign.preview(panel, o);
+    }, 150);
+
+    function update() {
+      o.msg = input.value;
+      showPacket(code, LedSign.buildPacket(o)); // 패킷은 즉시
+      setPanelLabel(panel, o.msg);
+      renderLed();                              // LED는 디바운스
+    }
+
+    input.addEventListener('input', update);
+    // 초기 1회
+    showPacket(code, LedSign.buildPacket(o));
+    setPanelLabel(panel, o.msg);
+    panel._ledOpts = o; // 화면밖 정지 옵저버가 재개 시 쓸 옵션 (참조 공유)
+    LedSign.preview(panel, o);
+  }
+
+  // ----- 카드 2 : 색 바꾸기 --------------------------------------------
+  function initCardColor() {
+    var panel = $('led-color');
+    var code  = $('pkt-color');
+    if (!panel || !code) return;
+
+    // 고정 문구 + 색만 바꾼다. 초기 색 = 노랑(3, 스와치 is-active와 일치)
+    var o = { msg: '정차 위반 차량', color: 3 };
+
+    function update() {
+      showPacket(code, LedSign.buildPacket(o));
+      LedSign.preview(panel, o);
+    }
+
+    wireSwatches('color-swatches', function (code2) {
+      o.color = code2;
+      update();
+    });
+
+    showPacket(code, LedSign.buildPacket(o));
+    setPanelLabel(panel, o.msg);
+    panel._ledOpts = o; // 화면밖 정지 옵저버용
+    LedSign.preview(panel, o);
+  }
+
+  // ----- 카드 3 : 효과 --------------------------------------------------
+  function initCardEffect() {
+    var sel   = $('effect-select');
+    var panel = $('led-effect');
+    var code  = $('pkt-effect');
+    if (!sel || !panel || !code) return;
+
+    // 시작·종료 효과를 같게 줘서 /E + /S 가 패킷에 늘 보이게 한다.
+    // speed를 명시 → /S 출력. 초기값은 드롭다운 선택값(06 좌스크롤 → /E0606).
+    var o = {
+      msg: '주차장 만차',
+      entranceEffect: sel.value,
+      exitEffect: sel.value,
+      speed: 20,
+      hold: 4 // 효과 학습에 집중하려고 speed·hold는 고정
+    };
+
+    function update() {
+      o.entranceEffect = sel.value;
+      o.exitEffect = sel.value;
+      showPacket(code, LedSign.buildPacket(o));
+      LedSign.preview(panel, o); // 효과 바뀌면 애니메이션 재구동
+    }
+
+    sel.addEventListener('change', update);
+
+    showPacket(code, LedSign.buildPacket(o));
+    setPanelLabel(panel, o.msg);
+    panel._ledOpts = o; // 화면밖 정지 옵저버용
+    LedSign.preview(panel, o);
+  }
+
+  // ----- 카드 4 : 숫자 갱신 --------------------------------------------
+  // "값이 바뀔 때만 보낸다" — 입차/출차로 잔여 면수를 ±1, 로그에 누적.
+  function initCardCount() {
+    var btnIn  = $('btn-in');   // 입차 → 잔여 -1
+    var btnOut = $('btn-out');  // 출차 → 잔여 +1
+    var panel  = $('led-count');
+    var code   = $('pkt-count');
+    var log    = $('log-count');
+    if (!btnIn || !btnOut || !panel || !code || !log) return;
+
+    var count = 152;          // 시작 152
+    var logCount = 0;
+
+    function msgOf(n) { return '주차 잔여 ' + n + '면'; }
+    var o = { msg: msgOf(count) };
+
+    function appendLog(pkt) {
+      if (logCount === 0) log.innerHTML = ''; // "없음" 안내 제거
+      logCount++;
+      var line = document.createElement('div');
+      line.className = 'pc-log-line';
+      line.innerHTML = '<span class="pc-log-tx">→ 전송 ' +
+        String(logCount).padStart(2, '0') + '</span>  ' + esc(pkt);
+      log.appendChild(line);
+      log.scrollTop = log.scrollHeight;
+    }
+
+    // 잔여 면수를 delta만큼 바꾸고, 값이 실제로 달라졌을 때만 전송·로그.
+    function change(delta) {
+      var next = count + delta;
+      if (next < 0) next = 0;       // 음수 방지
+      if (next > 999) next = 999;   // 3자리 유지
+      if (next === count) return;   // 한계값에서 변화 없으면 무시
+      count = next;
+      o.msg = msgOf(count);
+      var pkt = LedSign.buildPacket(o); // 화면·로그가 같은 패킷을 쓰도록 한 번만 생성
+      showPacket(code, pkt);
+      setPanelLabel(panel, o.msg);
+      LedSign.preview(panel, o);
+      appendLog(pkt); // 값이 바뀐 경우에만 도달 — 위 early-return이 변화 없음을 거른다
+    }
+
+    btnIn.addEventListener('click', function ()  { change(-1); }); // 입차
+    btnOut.addEventListener('click', function () { change(+1); }); // 출차
+
+    showPacket(code, LedSign.buildPacket(o));
+    setPanelLabel(panel, o.msg);
+    panel._ledOpts = o; // 화면밖 정지 옵저버용
+    LedSign.preview(panel, o);
+  }
+
+  // ----- 종합 패킷 빌더 -------------------------------------------------
+  function initBuilder() {
+    var msg      = $('b-msg');
+    var entrance = $('b-entrance');
+    var exit     = $('b-exit');
+    var speed    = $('b-speed');
+    var hold     = $('b-hold');
+    var repeat   = $('b-repeat');
+    var speedVal = $('b-speed-val');
+    var holdVal  = $('b-hold-val');
+    var repVal   = $('b-repeat-val');
+    var panel    = $('led-builder');
+    var code     = $('pkt-builder');
+    var sendBtn  = $('btn-send');
+    var log      = $('log-builder');
+    if (!msg || !panel || !code || !sendBtn || !log) return;
+
+    // 빌더는 모든 옵션을 노출. 초기색 = 빨강(1, 스와치 is-active와 일치).
+    var o = {
+      msg: msg.value,
+      color: 1,
+      entranceEffect: entrance.value,
+      exitEffect: exit.value,
+      speed: parseInt(speed.value, 10),
+      hold: parseInt(hold.value, 10),
+      repeat: parseInt(repeat.value, 10)
+    };
+
+    var logCount = 0;
+
+    // 슬라이더 옆 숫자 라벨 갱신
+    function refreshLabels() {
+      speedVal.textContent = o.speed;
+      var sec = (o.hold * 0.5).toFixed(1);
+      holdVal.textContent = o.hold + ' (' + sec + '초)';
+      repVal.textContent = o.repeat + (o.repeat === 99 ? ' (무한)'
+        : o.repeat === 0 ? ' (표시 안 함)' : '회');
+    }
+
+    var renderLed = debounce(function () {
+      LedSign.preview(panel, o);
+    }, 150);
+
+    // immediate=true면 LED를 디바운스 없이 바로 (효과·색 변경 등)
+    function update(immediate) {
+      o.msg = msg.value;
+      o.entranceEffect = entrance.value;
+      o.exitEffect = exit.value;
+      o.speed  = parseInt(speed.value, 10);
+      o.hold   = parseInt(hold.value, 10);
+      o.repeat = parseInt(repeat.value, 10);
+      refreshLabels();
+      showPacket(code, LedSign.buildPacket(o));
+      setPanelLabel(panel, o.msg);
+      if (immediate) LedSign.preview(panel, o);
+      else renderLed();
+    }
+
+    // 메시지 타이핑 → 디바운스 / 그 외 컨트롤 → 즉시
+    msg.addEventListener('input', function () { update(false); });
+    entrance.addEventListener('change', function () { update(true); });
+    exit.addEventListener('change', function () { update(true); });
+    // 슬라이더는 드래그 중 잦은 이벤트 → LED는 디바운스, 패킷·라벨은 즉시
+    speed.addEventListener('input', function () { update(false); });
+    hold.addEventListener('input',  function () { update(false); });
+    repeat.addEventListener('input', function () { update(false); });
+
+    wireSwatches('b-swatches', function (c) {
+      o.color = c;
+      update(true);
+    });
+
+    // 전송 — simulateResponse로 응답을 받아 로그에 송·수신 한 쌍 누적
+    sendBtn.addEventListener('click', function () {
+      var pkt = LedSign.buildPacket(o);
+      var res = LedSign.simulateResponse(pkt);
+      // 빌더 입력으로 만든 패킷은 항상 형식이 올바르므로 응답은 성공. 실패 분기는 방어용.
+      var ok = res === '![0000!]';
+      if (logCount === 0) log.innerHTML = '';
+      logCount++;
+      var no = String(logCount).padStart(2, '0');
+      var line = document.createElement('div');
+      line.className = 'pc-log-line';
+      line.innerHTML =
+        '<span class="pc-log-tx">→ 송신 ' + no + '</span>  ' + esc(pkt) +
+        '<br><span class="' + (ok ? 'pc-log-rx' : 'pc-log-rx-fail') +
+        '">← 응답 ' + no + '</span>  ' + esc(res) +
+        '  ' + (ok ? '성공' : '실패');
+      log.appendChild(line);
+      log.scrollTop = log.scrollHeight;
+    });
+
+    // 초기 1회
+    refreshLabels();
+    showPacket(code, LedSign.buildPacket(o));
+    setPanelLabel(panel, o.msg);
+    panel._ledOpts = o; // 화면밖 정지 옵저버용
+    LedSign.preview(panel, o);
+  }
+
+  /* ===== 연동 사례 위젯 (배치6) =======================================
+     슬라이드 27~30 — 버튼으로 패킷을 전송하면 LED에 표시.
+     예시1~4·종합 빌더와 같은 .packet-card 패턴·전송 로그를 그대로 쓴다. */
+
+  /**
+   * 전송 로그 한 줄을 누적하는 공용 헬퍼.
+   * @param {HTMLElement} logEl  .pc-log 요소
+   * @param {object} state       { n:0 } 형태의 카운터 (호출 측이 보관)
+   * @param {string} pkt         전송한 패킷 문자열
+   * @param {string} note        끝에 붙일 짧은 설명 (없으면 생략)
+   */
+  function appendTxLog(logEl, state, pkt, note) {
+    if (state.n === 0) logEl.innerHTML = ''; // "없음" 안내 제거
+    state.n++;
+    var line = document.createElement('div');
+    line.className = 'pc-log-line';
+    line.innerHTML = '<span class="pc-log-tx">→ 전송 ' +
+      String(state.n).padStart(2, '0') + '</span>  ' + esc(pkt) +
+      (note ? '  <span class="pc-log-empty">' + esc(note) + '</span>' : '');
+    logEl.appendChild(line);
+    logEl.scrollTop = logEl.scrollHeight;
+  }
+
+  // ----- 위젯 27 : 주차관제 --------------------------------------------
+  // 입차/출차로 잔여 면수 ±1. N=0이면 만차 — 색을 빨강(/C1)으로 자동 전환.
+  // "만차 표시" 버튼은 입차를 거치지 않고 곧장 만차(N=0) 상태를 시연한다.
+  function initCardParking() {
+    var btnIn   = $('btn-park-in');   // 입차 → 잔여 -1
+    var btnOut  = $('btn-park-out');  // 출차 → 잔여 +1
+    var btnFull = $('btn-park-full'); // 만차 표시 → 곧장 N=0
+    var countEl = $('parking-count');
+    var panel  = $('led-parking');
+    var code   = $('pkt-parking');
+    var log    = $('log-parking');
+    if (!btnIn || !btnOut || !btnFull || !panel || !code || !log) return;
+
+    var count = 152;            // 시작 152
+    var logState = { n: 0 };
+
+    // 잔여 면수 → preview/buildPacket opts. 0이면 만차(빨강), 아니면 노랑 면수.
+    // 만차 메시지엔 color:1을 넣어 buildPacket이 /C1을 붙이게 한다 → ![000/C1만 차!].
+    // 효과 옵션은 넣지 않는다 — 정지 표시이므로 패킷에 /E를 붙이지 않는다.
+    function optsOf(n) {
+      return (n === 0)
+        ? { msg: '만 차', color: 1 }
+        : { msg: '주차 가능 ' + n + '대' };
+    }
+
+    function apply(n) {
+      count = n;
+      countEl.textContent = (n === 0) ? '0 (만차)' : n;
+      var o = optsOf(n);
+      var pkt = LedSign.buildPacket(o);
+      showPacket(code, pkt);
+      setPanelLabel(panel, o.msg);
+      panel._ledOpts = o;          // 화면밖 정지 옵저버용
+      LedSign.preview(panel, o);
+      appendTxLog(log, logState, pkt,
+        n === 0 ? '만차 — 색을 빨강으로' : null);
+    }
+
+    // 입차/출차 — 0~999로 가두고, 값이 실제로 바뀐 경우에만 전송.
+    function change(delta) {
+      var next = count + delta;
+      if (next < 0) next = 0;
+      if (next > 999) next = 999;
+      if (next === count) return;  // 한계값에서 변화 없으면 무시
+      apply(next);
+    }
+
+    btnIn.addEventListener('click', function ()  { change(-1); }); // 입차
+    btnOut.addEventListener('click', function () { change(+1); }); // 출차
+    // 만차 표시 — 입차를 거치지 않고 곧장 N=0(만차). 이미 만차면 다시 한 번 보낸다.
+    btnFull.addEventListener('click', function () { apply(0); });
+
+    // 초기 표시 (로그는 비워 둠 — 첫 버튼부터 쌓인다)
+    var o0 = optsOf(count);
+    showPacket(code, LedSign.buildPacket(o0));
+    setPanelLabel(panel, o0.msg);
+    panel._ledOpts = o0;
+    LedSign.preview(panel, o0);
+  }
+
+  // ----- 위젯 28 : 불법주정차 ------------------------------------------
+  // 평소엔 흰 글씨 "단속 중" 좌스크롤. 위반 적발 → 빨강 "{번호} 이동해 주세요." 좌스크롤.
+  function initCardIllegal() {
+    var btnCatch = $('btn-illegal-catch');
+    var btnReset = $('btn-illegal-reset');
+    var panel = $('led-illegal');
+    var code  = $('pkt-illegal');
+    var log   = $('log-illegal');
+    if (!btnCatch || !btnReset || !panel || !code || !log) return;
+
+    // 카메라가 읽는 차량 번호 — 적발할 때마다 번갈아 쓴다
+    var plates = ['123가4567', '34나5678', '56다7890'];
+    var plateIdx = 0;
+    var logState = { n: 0 };
+
+    // 단속 중 — 흰 글씨 좌스크롤(효과 06 → /E0606, /C7 흰색). 긴 문구라 흐름 효과로.
+    var idleOpts = { msg: '주정차 위반 단속 중!', color: 7,
+                     entranceEffect: '06' };
+    // 단속 중 패킷은 페이지 메시지(![001…)라 buildPacket(![000…) 대신 고정 문자열을 쓴다.
+    var IDLE_PACKET = '![001/E0606/C7주정차 위반 단속 중!]';
+
+    function showIdle() {
+      showPacket(code, IDLE_PACKET);
+      setPanelLabel(panel, idleOpts.msg);
+      panel._ledOpts = idleOpts;
+      LedSign.preview(panel, idleOpts);
+    }
+
+    btnCatch.addEventListener('click', function () {
+      var plate = plates[plateIdx];
+      plateIdx = (plateIdx + 1) % plates.length; // 다음 적발은 다른 번호
+      // "{번호} 이동해 주세요." 를 빨강 좌스크롤로 — /C1 + /E0606
+      var o = { msg: plate + ' 이동해 주세요.', color: 1,
+                entranceEffect: '06', exitEffect: '06' };
+      var pkt = LedSign.buildPacket(o);
+      showPacket(code, pkt);
+      setPanelLabel(panel, o.msg);
+      panel._ledOpts = o;
+      LedSign.preview(panel, o);
+      appendTxLog(log, logState, pkt, '위반 차량 안내 표출');
+    });
+
+    btnReset.addEventListener('click', function () {
+      showIdle();
+      appendTxLog(log, logState, IDLE_PACKET, '단속 중 문구로 복귀');
+    });
+
+    // 초기 = 단속 중 좌스크롤
+    showIdle();
+  }
+
+  // ----- 위젯 29 : PLC 연동 --------------------------------------------
+  // 1·2번 버튼 → 글자 화면, 3번 버튼 → 방향 화살표 그림. 호출 패킷 ![0020{번호3자리}!].
+
+  /**
+   * 1단 8열(128×16) 보드에 그릴 굵은 오른쪽 방향 화살표 도트 좌표를 만든다.
+   * 가운데에 굵은 가로 막대(축) + 끝에 삼각 화살촉.
+   * @returns {Array<[number,number]>} 켜질 [x,y] 좌표 배열
+   */
+  function arrowDots() {
+    var dots = [];
+    var cy = 8;                 // 화살표 세로 중심 (16행 보드)
+    var shaftX0 = 30, shaftX1 = 80;  // 가로 막대 x 구간
+    var halfThick = 2;          // 막대 반두께 → 두께 5행(cy±2)
+    // 1) 굵은 가로 막대 (축)
+    for (var x = shaftX0; x <= shaftX1; x++) {
+      for (var dy = -halfThick; dy <= halfThick; dy++) {
+        dots.push([x, cy + dy]);
+      }
+    }
+    // 2) 삼각 화살촉 — x가 늘수록 위아래로 좁아지며 끝점(tipX)에서 한 점.
+    var headX0 = shaftX1 - 6, tipX = shaftX1 + 14;
+    for (var hx = headX0; hx <= tipX; hx++) {
+      // headX0에서 반높이 7 → tipX에서 0 으로 선형 감소
+      var half = Math.round(7 * (tipX - hx) / (tipX - headX0));
+      for (var hy = -half; hy <= half; hy++) {
+        dots.push([hx, cy + hy]);
+      }
+    }
+    return dots;
+  }
+
+  function initCardPlc() {
+    var btn1  = $('btn-plc-1');
+    var btn2  = $('btn-plc-2');
+    var btn3  = $('btn-plc-3');
+    var panel = $('led-plc');
+    var code  = $('pkt-plc');
+    var log   = $('log-plc');
+    if (!btn1 || !btn2 || !btn3 || !panel || !code || !log) return;
+
+    var logState = { n: 0 };
+    // 저장 화면 — 1·2번은 글자(문구·색), 3번은 화살표 그림(pic).
+    var ARROW = arrowDots();
+    var SCREENS = {
+      1: { kind: 'text', msg: '차량 통제 중', color: 1, label: '1번 화면' },
+      2: { kind: 'text', msg: '정상 운행',   color: 2, label: '2번 화면' },
+      3: { kind: 'pic',  dots: ARROW, color: 3, ariaMsg: '방향 안내 화살표',
+           label: '3번 화면' }
+    };
+
+    // 특수명령 20 — 저장 화면 불러오기. 형식 ![0020{번호3자리}!]
+    function bgPacket(num) {
+      return '![0020' + String(num).padStart(3, '0') + '!]';
+    }
+
+    // 한 화면을 LED 패널에 표출. 글자면 preview, 그림이면 previewDots.
+    function showScreen(sc) {
+      if (sc.kind === 'pic') {
+        setPanelLabel(panel, sc.ariaMsg);
+        panel._ledOpts = null;            // 그림은 애니메이션 없음 — 옵저버 대상 아님
+        LedSign.previewDots(panel, { dots: sc.dots, color: sc.color });
+      } else {
+        var o = { msg: sc.msg, color: sc.color, entranceEffect: '01' };
+        setPanelLabel(panel, sc.msg);
+        panel._ledOpts = o;
+        LedSign.preview(panel, o);
+      }
+    }
+
+    function callScreen(num) {
+      var sc = SCREENS[num];
+      var pkt = bgPacket(num);
+      showPacket(code, pkt);
+      showScreen(sc);
+      appendTxLog(log, logState, pkt, sc.label + ' 호출');
+    }
+
+    btn1.addEventListener('click', function () { callScreen(1); });
+    btn2.addEventListener('click', function () { callScreen(2); });
+    btn3.addEventListener('click', function () { callScreen(3); });
+
+    // 초기 = 1번 화면을 보여 두되 로그는 비움
+    showPacket(code, bgPacket(1));
+    showScreen(SCREENS[1]);
+  }
+
+  // ----- 위젯 30 : 센서(소음) ------------------------------------------
+  // 32×16 작은 전광판 — 왼쪽 숫자 + 오른쪽 초록 "dB"(배경이미지 B001).
+  // 패킷은 하나: ![000/B001/C2{숫자}!]. 숫자만 바뀌고 dB·색·배경은 고정.
+  function initCardSensor() {
+    var btn50 = $('btn-db-50');
+    var btn60 = $('btn-db-60');
+    var btn85 = $('btn-db-85');
+    var panel = $('led-sensor');
+    var code  = $('pkt-sensor');
+    var log   = $('log-sensor');
+    if (!btn50 || !btn60 || !btn85 || !panel || !code || !log) return;
+
+    var logState = { n: 0 };
+    // 센서 보드 — 1단 2열 = 32×16 도트. 한 번 정의해 재사용.
+    var SENSOR_BOARD = { cols: 32, rows: 16 };
+
+    // 패킷 — /B001 배경이미지(초록 "dB") + /C2 초록 숫자색 + 숫자.
+    function dbPacket(db) { return '![000/B001/C2' + db + '!]'; }
+
+    // LED — 왼쪽 숫자 + 오른쪽 "dB"를 한 줄 색구간으로. 둘 다 초록(코드 2).
+    // "dB"는 배경이미지 B001 → 늘 켜진 고정 글자. 32칸 = 숫자2자(16) + dB(16).
+    function previewSensor(db) {
+      var o = {
+        segments: [
+          { text: String(db), color: 2 },  // 숫자 — /C2 초록
+          { text: 'dB',        color: 2 }   // 단위 — B001 배경, 항상 초록
+        ],
+        board: SENSOR_BOARD,
+        cell: 11,                           // 32×16이라 도트를 크게 — 패널을 채운다
+        entranceEffect: '01'
+      };
+      setPanelLabel(panel, db + ' dB');
+      panel._ledOpts = o;
+      LedSign.preview(panel, o);
+    }
+
+    function setDb(db) {
+      // 매번 같은 패킷 형식 — 숫자만 바뀐다 (별도 배경 설정 단계 없음).
+      var pkt = dbPacket(db);
+      showPacket(code, pkt);
+      previewSensor(db);
+      appendTxLog(log, logState, pkt, '측정값 ' + db + ' dB');
+    }
+
+    btn50.addEventListener('click', function () { setDb(50); });
+    btn60.addEventListener('click', function () { setDb(60); });
+    btn85.addEventListener('click', function () { setDb(85); });
+
+    // 초기 = 50 표시. 패킷 칸에 첫 패킷, 로그는 비움(첫 버튼부터).
+    showPacket(code, dbPacket(50));
+    previewSensor(50);
+  }
+
+  // ----- 부트 ----------------------------------------------------------
+  function boot() {
+    wireCopyButtons();
+    initCardMsg();
+    initCardColor();
+    initCardEffect();
+    initCardCount();
+    initBuilder();
+    // 연동 사례 위젯 (배치6) — 슬라이드 27~30
+    initCardParking();
+    initCardIllegal();
+    initCardPlc();
+    initCardSensor();
+  }
+
+  // 폰트 로드 후 — DotMatrix가 폰트 미로드 시 글자를 잘못 래스터라이즈하지 않게
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(boot);
+  } else {
+    window.addEventListener('load', boot);
+  }
+})();
+
+/* ---- 화면 밖 LED 패널 애니메이션 정지 (배치5) --------------------------
+   IntersectionObserver로 .led-panel이 뷰포트를 벗어나면 LedSign.stop으로
+   rAF 루프를 끄고, 다시 보이면 panel._ledOpts로 LedSign.preview 재개.
+   점멸·좌스크롤만 rAF를 도므로, 정적 패널은 건드리지 않아 깜빡임이 없다. */
+(function () {
+  'use strict';
+  if (!('IntersectionObserver' in window)) return; // 구형 브라우저 — 그냥 둠
+
+  // _ledOpts 효과 코드(entranceEffect)로 애니메이션 여부 판정.
+  // EFFECTS: 01 정지(static) / 02 점멸(blink) / 06 좌스크롤(scroll).
+  function isAnimated(opts) {
+    if (!opts) return false;
+    var code = opts.entranceEffect || '01';
+    return code === '02' || code === '06';
+  }
+
+  function setup() {
+    var panels = document.querySelectorAll('.led-panel');
+    if (!panels.length) return;
+
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        var panel = entry.target;
+        // 정적 패널은 rAF를 안 돌리므로 정지·재개가 불필요 — 건너뛴다
+        if (!isAnimated(panel._ledOpts)) return;
+        if (entry.isIntersecting) {
+          // 다시 보임 → 보관해 둔 옵션으로 애니메이션 재개
+          LedSign.preview(panel, panel._ledOpts);
+        } else {
+          // 화면 밖 → rAF 루프 정지 (유휴 CPU 절약)
+          LedSign.stop(panel);
+        }
+      });
+    }, { threshold: 0 });
+
+    Array.prototype.forEach.call(panels, function (p) { io.observe(p); });
+  }
+
+  // 패널 옵션(_ledOpts)은 폰트 로드 후 init에서 채워지므로 그 뒤에 옵저버를 건다
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(setup);
+  } else {
+    window.addEventListener('load', setup);
+  }
+})();
+</script>
+
+</body>
+</html>
