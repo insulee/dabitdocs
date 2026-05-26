@@ -52,3 +52,4 @@
 2026-05-26 10:42:30 - Change detected: 견적 문의 안내.md
 2026-05-26 10:45:00 - Change detected: 전광판 알아보기.md
 2026-05-26 10:45:00 - Deploy started
+2026-05-26 10:45:37 - Change detected: 2.4.4. 세로형 폰트 설정 방법.md
