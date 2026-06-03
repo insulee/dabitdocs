@@ -68,3 +68,8 @@
 2026-05-26 15:43:51 - Change detected: 원격 지원 안내.md
 2026-05-26 16:52:24 - Change detected: 3.8. 접점보드를 이용하여 표시목록 표출.md
 2026-05-26 16:52:24 - Deploy started
+2026-05-26 16:52:34 - Deploy completed
+2026-05-26 16:53:04 - Change detected: 3.8. 접점보드를 이용하여 표시목록 표출.md
+2026-05-28 07:40:57 - Auto-deploy watcher started: D:\Note\20_Marketing_Team\22_Area\dabitdocs-quartz\content
+2026-06-02 15:27:33 - Auto-deploy watcher started: D:\Note\20_Marketing_Team\22_Area\dabitdocs-quartz\content
+2026-06-04 08:04:48 - Change detected: 2.7.4. 컨트롤러에 업로드된 표시목록·이미지 확인.md
