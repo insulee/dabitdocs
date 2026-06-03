@@ -73,3 +73,4 @@
 2026-05-28 07:40:57 - Auto-deploy watcher started: D:\Note\20_Marketing_Team\22_Area\dabitdocs-quartz\content
 2026-06-02 15:27:33 - Auto-deploy watcher started: D:\Note\20_Marketing_Team\22_Area\dabitdocs-quartz\content
 2026-06-04 08:04:48 - Change detected: 2.7.4. 컨트롤러에 업로드된 표시목록·이미지 확인.md
+2026-06-04 08:05:25 - Change detected: 2.7.4. 컨트롤러에 업로드된 표시목록·이미지 확인.md
