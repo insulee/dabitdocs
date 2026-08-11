@@ -87,3 +87,6 @@
 2026-08-11 13:18:37 - Change detected: 견적 문의 안내.md
 2026-08-11 13:19:08 - Change detected: 전광판 알아보기.md
 2026-08-11 13:19:08 - Deploy started
+2026-08-11 13:19:41 - Deploy error: "?꾨즺" 구문 분석 - 수량자 {x,y} 앞에 아무 것도 없습니다.
+2026-08-11 13:20:11 - Change detected: 제품 시작 가이드.md
+2026-08-11 13:20:11 - Deploy started
