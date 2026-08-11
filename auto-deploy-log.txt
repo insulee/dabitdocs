@@ -94,3 +94,5 @@
 2026-08-11 13:21:07 - Change detected: 제품 시작 가이드.md
 2026-08-11 13:25:37 - Change detected: 7.2. 자동전송(AutoSend).md
 2026-08-11 13:25:37 - Deploy started
+2026-08-11 13:26:15 - Change detected: 2.1.1. 이더넷 통신 설정.md
+2026-08-11 15:27:45 - 자동배포 사용 중지 상태 — 실행하지 않고 종료 (수동 /deploy 사용)
