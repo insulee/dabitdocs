@@ -74,3 +74,6 @@
 2026-06-02 15:27:33 - Auto-deploy watcher started: D:\Note\20_Marketing_Team\22_Area\dabitdocs-quartz\content
 2026-06-04 08:04:48 - Change detected: 2.7.4. 컨트롤러에 업로드된 표시목록·이미지 확인.md
 2026-06-04 08:05:25 - Change detected: 2.7.4. 컨트롤러에 업로드된 표시목록·이미지 확인.md
+2026-08-11 12:51:28 - Deploy started
+2026-08-11 12:51:48 - Deploy error: "?꾨즺" 구문 분석 - 수량자 {x,y} 앞에 아무 것도 없습니다.
+2026-08-11 12:52:18 - Change detected: 7.5. 전송 전 안전장치.md
