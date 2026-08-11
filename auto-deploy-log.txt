@@ -79,3 +79,7 @@
 2026-08-11 12:52:18 - Change detected: 7.5. 전송 전 안전장치.md
 2026-08-11 12:54:49 - Change detected: 2.4.4. 세로형 폰트 설정 방법.md
 2026-08-11 12:54:49 - Deploy started
+2026-08-11 12:55:14 - Deploy completed
+2026-08-11 12:55:44 - Change detected: index.md
+2026-08-11 13:17:45 - Change detected: 견적 문의 안내.md
+2026-08-11 13:17:45 - Deploy started
