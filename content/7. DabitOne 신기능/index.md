@@ -1,5 +1,5 @@
 ---
-title: DabitOne 신기능
+title: 7. DabitOne 신기능
 ---
 
 > [!abstract] DabitOne에서 새로 생긴 기능 모음
