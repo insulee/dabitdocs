@@ -30,6 +30,9 @@ jobs:
         run: npx quartz build
       - name: Copy CNAME
         run: cp content/CNAME public/CNAME 2>/dev/null || true
+      - name: Copy search engine verification files
+        # Quartz strips .html from content assets (slugifyFilePath) — copy as-is to site root
+        run: cp content/google*.html content/naver*.html public/
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
