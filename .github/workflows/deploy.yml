@@ -26,8 +26,13 @@ jobs:
           node-version: 22
       - name: Install dependencies
         run: npm ci
-      - name: Build Quartz
+      - name: Build Quartz (Korean → public)
         run: npx quartz build
+      - name: Build Quartz (English → public/en)
+        # 반드시 한글 다음. 빌드는 출력 폴더를 먼저 지운다 — 한글이 뒤에 돌면 public/en이 사라진다
+        run: npx quartz build -d content-en -o public/en
+        env:
+          DOCS_LANG: en
       - name: Copy CNAME
         run: cp content/CNAME public/CNAME 2>/dev/null || true
       - name: Copy search engine verification files

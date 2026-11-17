@@ -1,6 +1,9 @@
 import { QuartzConfig } from "./quartz/cfg"
 import * as Plugin from "./quartz/plugins"
 
+// DOCS_LANG=en → 영문판 빌드 (content-en → public/en). deploy.yml이 한글 다음에 돌린다.
+const EN = process.env.DOCS_LANG === "en"
+
 /**
  * Quartz 4 Configuration
  *
@@ -9,12 +12,12 @@ import * as Plugin from "./quartz/plugins"
 const config: QuartzConfig = {
   configuration: {
     pageTitle: "DABIT DOCS",
-    pageTitleSuffix: " - 다빛솔루션",
+    pageTitleSuffix: EN ? " - Dabit Solution" : " - 다빛솔루션",
     enableSPA: true,
     enablePopovers: true,
     analytics: null,
-    locale: "ko-KR",
-    baseUrl: "docs.dabitsol.com",
+    locale: EN ? "en-US" : "ko-KR",
+    baseUrl: EN ? "docs.dabitsol.com/en" : "docs.dabitsol.com",
     ignorePatterns: ["private", "templates", ".obsidian", ".claude", ".trash", "Template"],
     defaultDateType: "modified",
     theme: {

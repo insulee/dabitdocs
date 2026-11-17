@@ -6,7 +6,7 @@ document.addEventListener("nav", () => {
         const action = el.querySelector(".shortlink-action")
         if (action) {
           const prev = action.textContent
-          action.textContent = "복사됨!"
+          action.textContent = el.dataset.copied ?? "복사됨!"
           setTimeout(() => (action.textContent = prev), 1500)
         }
       })

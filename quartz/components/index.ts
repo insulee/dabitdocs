@@ -26,6 +26,7 @@ import Flex from "./Flex"
 import ConditionalRender from "./ConditionalRender"
 import Chatbot from "./Chatbot"
 import QuickLinks from "./QuickLinks"
+import LangSwitch from "./LangSwitch"
 
 export {
   ArticleTitle,
@@ -56,4 +57,5 @@ export {
   ConditionalRender,
   Chatbot,
   QuickLinks,
+  LangSwitch,
 }

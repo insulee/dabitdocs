@@ -15,6 +15,19 @@ const MANUAL: Record<string, string> = {
   "교육 안내 및 오시는 길": "visit",
   "다빛솔루션 소개": "about",
   "다빛솔루션 연혁": "history",
+  // 영문판 (content-en) — 같은 별칭 → /en/as 등. 언어 바꾸기 짝도 이 별칭으로 찾는다
+  "Repair Service and Technical Inquiries": "as",
+  "Request a Quote": "quote",
+  "Remote Support": "remote",
+  "Software Downloads": "download",
+  "Training and Directions": "visit",
+  "About Dabit Solution": "about",
+}
+
+// 파일 이름(stem) → 짧은 주소. 번호 문서는 번호, 아니면 MANUAL
+export function shortKey(stem: string): string | undefined {
+  const m = stem.match(/^(\d+(?:\.\d+)+)\.\s/)
+  return m ? m[1] : MANUAL[stem]
 }
 
 export const NumberAliases: QuartzTransformerPlugin = () => ({
@@ -22,9 +35,7 @@ export const NumberAliases: QuartzTransformerPlugin = () => ({
   markdownPlugins(ctx) {
     return [
       () => (_tree, file) => {
-        const stem = file.stem ?? ""
-        const m = stem.match(/^(\d+(?:\.\d+)+)\.\s/)
-        const alias = m ? m[1] : MANUAL[stem]
+        const alias = shortKey(file.stem ?? "")
         if (!alias) return
         const slug = alias as FullSlug
         const aliases = file.data.aliases ?? []
