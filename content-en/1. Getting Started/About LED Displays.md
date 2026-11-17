@@ -7,7 +7,7 @@ title: About LED Displays
 > [!tip] Open the material
 > This material uses diagrams and live examples. It shows how an LED display receives data and shows text on the screen. It also shows how external systems (parking control, PLC, sensors) send data to an LED display.
 >
-> **<a href="/en/static/signage-intro-en.html" target="_blank" rel="noopener">About LED Displays</a>** — 28 full-screen slides, about 20 minutes (opens in a new tab)
+> **<a href="/static/signage-intro-en.html" target="_blank" rel="noopener">About LED Displays</a>** — 28 full-screen slides, about 20 minutes (opens in a new tab)
 
 ### 1. Contents
 
