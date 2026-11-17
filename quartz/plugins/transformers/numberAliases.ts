@@ -16,6 +16,7 @@ const MANUAL: Record<string, string> = {
   "다빛솔루션 소개": "about",
   "다빛솔루션 연혁": "history",
   // 영문판 (content-en) — 같은 별칭 → /en/as 등. 언어 바꾸기 짝도 이 별칭으로 찾는다
+  "About LED Displays": "start",
   "Repair Service and Technical Inquiries": "as",
   "Request a Quote": "quote",
   "Remote Support": "remote",
