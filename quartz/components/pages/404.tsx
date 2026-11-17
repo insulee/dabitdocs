@@ -11,6 +11,12 @@ const NotFound: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
       <h1>404</h1>
       <p>{i18n(cfg.locale).pages.error.notFound}</p>
       <a href={baseDir}>{i18n(cfg.locale).pages.error.home}</a>
+      {/* GitHub Pages는 맨 위 404.html 하나만 쓴다 → /en/ 아래 없는 주소도 이 화면이 뜬다 */}
+      {!cfg.locale.startsWith("en") && (
+        <p lang="en">
+          Page not found. <a href="/en/">Go to the English home page</a>
+        </p>
+      )}
     </article>
   )
 }

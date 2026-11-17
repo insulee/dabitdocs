@@ -45,7 +45,7 @@ const quickLinks = Component.QuickLinks(EN ? {
   links: [
     { icon: "home", label: "Dabit Solution website", href: "https://dabitsol.com" },
     { icon: "mail", label: "dabit@dabitsol.com", href: "mailto:dabit@dabitsol.com" },
-    { icon: "phone", label: "+82-31-202-2435~6", href: "tel:+82-31-202-2435" },
+    { icon: "phone", label: "+82-31-202-2435", href: "tel:+82-31-202-2435" },
   ],
 } : {
   title: "바로가기",
