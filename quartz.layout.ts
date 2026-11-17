@@ -1,12 +1,19 @@
 import { PageLayout, SharedLayout } from "./quartz/cfg"
 import * as Component from "./quartz/components"
 
+// DOCS_LANG=en → 영문판 빌드 (quartz.config.ts와 같은 스위치)
+const EN = process.env.DOCS_LANG === "en"
+
 // 특정 폴더의 파일 정렬 순서를 지정
 const customSortFn = (a: any, b: any) => {
   const customOrders: Record<string, string[]> = {
     "1.-시작하기": ["전광판 알아보기", "제품 시작 가이드"],
     "4.-고객지원": ["AS 및 기술문의 안내", "원격 지원 안내", "견적 문의 안내"],
     "6.-다빛솔루션-소개": ["다빛솔루션 소개", "다빛솔루션 연혁", "교육 안내 및 오시는 길"],
+    // 영문판 (content-en)
+    "1.-Getting-Started": ["About LED Displays", "Product Quick Start Guide"],
+    "4.-Customer-Support": ["Repair Service and Technical Inquiries", "Remote Support", "Request a Quote"],
+    "6.-About-Dabit-Solution": ["About Dabit Solution", "Training and Directions"],
   }
 
   if (!a.isFolder && !b.isFolder) {
@@ -32,7 +39,15 @@ const customSortFn = (a: any, b: any) => {
 }
 
 // 사이드바 하단 바로가기 링크
-const quickLinks = Component.QuickLinks({
+// 영문판은 한국어 전용 창구(스마트스토어 · 카카오톡)를 뺀다
+const quickLinks = Component.QuickLinks(EN ? {
+  title: "Quick Links",
+  links: [
+    { icon: "home", label: "Dabit Solution website", href: "https://dabitsol.com" },
+    { icon: "mail", label: "dabit@dabitsol.com", href: "mailto:dabit@dabitsol.com" },
+    { icon: "phone", label: "+82-31-202-2435", href: "tel:+82-31-202-2435" },
+  ],
+} : {
   title: "바로가기",
   links: [
     { icon: "home", label: "다빛솔루션 홈페이지", href: "https://dabitsol.com" },
@@ -47,7 +62,8 @@ const quickLinks = Component.QuickLinks({
 export const sharedPageComponents: SharedLayout = {
   head: Component.Head(),
   header: [],
-  afterBody: [
+  // 챗봇은 한국어 문서로 답한다 → 영문판에서는 끈다 (공개 전 이부장 결정 항목)
+  afterBody: EN ? [] : [
     Component.Chatbot({
       iframeUrl: "https://chatbot.dabit.synology.me",
       headerTitle: "다빛솔루션 AI 챗봇",
@@ -58,7 +74,7 @@ export const sharedPageComponents: SharedLayout = {
   ],
   footer: Component.Footer({
     links: {
-      "다빛솔루션": "https://dabitsol.com",
+      [EN ? "Dabit Solution" : "다빛솔루션"]: "https://dabitsol.com",
     },
   }),
 }
@@ -85,6 +101,7 @@ export const defaultContentPageLayout: PageLayout = {
         },
         { Component: Component.Darkmode() },
         { Component: Component.ReaderMode() },
+        { Component: Component.LangSwitch() },
       ],
     }),
     Component.Explorer({ folderClickBehavior: "collapse", folderDefaultState: "collapsed", sortFn: customSortFn }),
@@ -109,6 +126,7 @@ export const defaultListPageLayout: PageLayout = {
           grow: true,
         },
         { Component: Component.Darkmode() },
+        { Component: Component.LangSwitch() },
       ],
     }),
     Component.Explorer({ folderClickBehavior: "collapse", folderDefaultState: "collapsed", sortFn: customSortFn }),

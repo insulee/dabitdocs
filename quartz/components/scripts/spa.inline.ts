@@ -18,6 +18,8 @@ const isLocalUrl = (href: string) => {
   return false
 }
 
+const isEnPath = (p: string) => p === "/en" || p.startsWith("/en/")
+
 const isSamePage = (url: URL): boolean => {
   const sameOrigin = url.origin === window.location.origin
   const samePath = url.pathname === window.location.pathname
@@ -32,7 +34,11 @@ const getOpts = ({ target }: Event): { url: URL; scroll?: boolean } | undefined 
   if ("routerIgnore" in a.dataset) return
   const { href } = a
   if (!isLocalUrl(href)) return
-  return { url: new URL(href), scroll: "routerNoscroll" in a.dataset ? false : undefined }
+  const url = new URL(href)
+  // 한글(/) · 영문(/en) 빌드는 검색 색인 · 메뉴가 따로다 → 언어가 바뀌는 이동은 SPA를 거치지 않고 새로 연다
+  // ponytail: 영문 경로 머리를 "/en"으로 고정. 언어가 늘면 여기서 머리 목록으로 바꾼다.
+  if (isEnPath(url.pathname) !== isEnPath(window.location.pathname)) return
+  return { url, scroll: "routerNoscroll" in a.dataset ? false : undefined }
 }
 
 function notifyNav(url: FullSlug) {

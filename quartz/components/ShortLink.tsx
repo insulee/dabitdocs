@@ -5,19 +5,21 @@ import script from "./scripts/shortlink.inline"
 
 // 문서의 짧은 주소(docs.dabitsol.com/2.4.1 등)를 제목 아래에 표시하고 클릭 한 번으로 복사.
 // 별칭은 NumberAliases transformer가 file.data.aliases에 넣어둔 것을 그대로 사용.
-const ShortLink: QuartzComponent = ({ fileData, displayClass }: QuartzComponentProps) => {
+const ShortLink: QuartzComponent = ({ fileData, displayClass, cfg }: QuartzComponentProps) => {
   const alias = fileData.aliases?.[0]
   if (!alias) return null
-  const short = `docs.dabitsol.com/${alias}`
+  const en = cfg.locale.startsWith("en")
+  const short = `${cfg.baseUrl}/${alias}`
   return (
     <button
       class={classNames(displayClass, "shortlink")}
       type="button"
       data-short={`https://${short}`}
-      title="짧은 주소 복사"
+      title={en ? "Copy short link" : "짧은 주소 복사"}
+      data-copied={en ? "Copied!" : "복사됨!"}
     >
       <span class="shortlink-url">{short}</span>
-      <span class="shortlink-action">복사</span>
+      <span class="shortlink-action">{en ? "Copy" : "복사"}</span>
     </button>
   )
 }
