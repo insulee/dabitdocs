@@ -7,7 +7,7 @@ title: Request a Quote
 
 A quote request is a service to ask for the prices of Dabit Solution LED display products (controllers, LED modules, peripherals, and more). Enter the product information you need in the online form. Our staff review it and send you an accurate quote.
 
-Fill in the online quote request form at the link below.
+Fill in the quote request form at the link below.
 
  → [Request a quote](https://forms.gle/SLbBPm4rAcWLYFg29) (form in Korean)
 
@@ -71,14 +71,14 @@ To get an accurate quote quickly, please prepare the following information.
 
 #### Direct consultation
 
-Some needs are hard to describe in the online form. Sometimes you need a quote urgently. In these cases, contact Dabit Solution directly. We can then advise you faster and more accurately.
+Some needs are hard to describe in the online form. Sometimes you need a quote urgently. In these cases, contact Dabit Solution directly. We can then help you faster.
 
 - **Phone**: +82-31-202-2435
 - **Email**: dabit@dabitsol.com
 
 #### Personal information
 
-We use the personal information collected through quote requests (phone number, email) only to answer your quote request. We keep and use it for 3 months. We manage your personal information safely.
+We use the personal information collected through quote requests (phone number, email) only to answer your quote request. We keep and use it for 3 months.
 
 
 

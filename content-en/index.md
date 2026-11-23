@@ -2,7 +2,7 @@
 title: Welcome to DABIT DOCS
 ---
 
-DABIT DOCS helps you use Dabit Solution products more efficiently and effectively.
+DABIT DOCS collects installation, setup, and troubleshooting guides for Dabit Solution products.
 
 > [!note] About this English edition
 > - The DabitOne screens and the screenshots in these documents are in Korean. We show a screen label as the Korean label with its English meaning, for example `전송` (Send).
@@ -17,32 +17,16 @@ DABIT DOCS helps you use Dabit Solution products more efficiently and effectivel
 > - Only the features in `7. DabitOne New Features` (available in Korean) are new in DabitOne. DabitChe does not have them
 > - You can find the DabitChe menu locations in the [DabitChe manual](http://www.dabitsol.com/files/DabitChe_UserManual_v9.0.pdf) (Korean)
 
-DABIT DOCS has the following features.
+#### What you can find here
 
-#### 1. Complete documentation
+- **Getting started and user manual**: How to connect a controller, set the screen size, display signal, and fonts, and send images
+- **Technical notes**: Information you need during installation, such as display signals for each module, distribution board connections, and firmware information
+- **Customer support**: Repair service and technical inquiries, quote requests, and remote support
+- **Software downloads**: Where to get DabitOne, and information about earlier versions
 
-DABIT DOCS includes installation guides, user manuals, technical notes, repair cases, and more. All documents are organized clearly, so you can find what you need quickly and easily.
+#### How to find a document
 
-#### 2. Up-to-date information
+- Open a category in the list on the left, or type a word in the search box at the top
+- Each document has a short address. Example: `docs.dabitsol.com/en/2.1.5`
 
-We provide information on the latest software version. We also provide earlier versions, so you can choose the version you need. This helps you keep the best performance.
-
-#### 3. Troubleshooting support
-
-We explain in detail how to solve problems that can occur while you use our products. With the customer support and repair case documents, you can solve most problems quickly.
-
-#### 4. Easy-to-use interface
-
-DABIT DOCS is designed so that anyone can easily find the information they need. The documents are grouped into clear categories, so you can find what you want quickly.
-
-#### 5. Continuous updates
-
-We update DABIT DOCS continuously based on your feedback. We always try to give you the latest information and the best support.
-
-#### About DABIT DOCS
-
-DABIT DOCS is an important tool for using and maintaining Dabit Solution products efficiently. Find the information you need at any time, and get more from our products. If you have questions or need more support, contact us at any time.
-
-Dabit Solution always does its best for your satisfaction.
-
-Thank you.
+We update the documents each time a product or program changes. If you cannot find what you need, or if you find a mistake, [[Repair Service and Technical Inquiries|contact Dabit Solution]].
