@@ -9,7 +9,7 @@ We set the standard for the industrial data display market, and we connect the f
 
 Dabit Solution is a technology-driven small company. Its own protocol technology set the standard for the industrial LED control system market in Korea. Since the business started in 2006, Dabit Solution has grown beyond a simple hardware maker. It has built a unique technology ecosystem that covers controllers, communication protocols, software, and partner training.
 
-We are a B2B company. We develop and produce the main controllers and related modules, which are the core parts of industrial LED displays. We supply them to LED display makers, system integrators (SI), and engineering partners across Korea. With more than 15 years of research and development and stability proven in industrial sites, we are now the clear market leader with **over 80%** of the protocol-based LED display controller market in Korea.
+We are a B2B company. We develop and produce the main controllers and related modules, which are the core parts of industrial LED displays. We supply them to LED display makers, system integrators (SI), and engineering partners across Korea.
 
 | Item         | Details                                       |
 | ---------- | ---------------------------------------- |
@@ -34,7 +34,6 @@ We use our leadership in the industrial control market to expand our B2B capabil
 ### Our own technology ecosystem and market standard
 Our strongest advantage is the **DABIT Protocol**, which we developed, and the DABIT controller series that uses it.
 The protocol works fully with PLCs, PCs, IoT devices, and many kinds of sensors. Many partners use it as the standard for their own system development.
-This creates a strong technical lock-in that makes it hard to change to a competitor's product. It is the basis of our market share of over 80%.
 
 ### A partner-centered B2B business model
 As a rule, we focus on B2B. We do not sell directly to end users or give them technical support directly.
@@ -43,12 +42,10 @@ This strategy prevents conflicts with our partners from the start. Our partners 
 ### Strong partnerships through developer training
 Dabit Solution gives in-depth technical training to our partners' developers **for free**. The training covers system structure, the protocol, and how to use the software.
 This strategy goes beyond simple customer support. It helps our partners build the technology into their own skills. **DABIT DOCS**, which gives detailed technical documents, and the program source code that we provide make this strategy stronger.
-This keeps our partners deeply integrated in the Dabit Solution technology ecosystem. It is a strong customer retention strategy and a barrier to entry for competitors.
 
 ### Smart sales channels for future customers
 In addition to traditional B2B sales, Dabit Solution runs a **Naver Smart Store** (an online store in Korea) to reach more customers efficiently.
 Through it, small companies and the R&D departments of large companies can quickly buy small quantities of parts for tests and prototypes.
-The Smart Store is the top of an effective **sales funnel**. At low cost, it finds future large B2B customers and spreads our technology.
 
 ### Reliability and technology proven for more than 15 years
 In 2007, although we were a new company, we supplied controllers for the parking systems of major national facilities that require the highest reliability.
