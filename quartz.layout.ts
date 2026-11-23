@@ -43,7 +43,7 @@ const customSortFn = (a: any, b: any) => {
 const quickLinks = Component.QuickLinks(EN ? {
   title: "Quick Links",
   links: [
-    { icon: "home", label: "Dabit Solution website", href: "https://dabitsol.com" },
+    { icon: "home", label: "Dabit Solution website", href: "https://dabitsol.com/en/" },
     { icon: "mail", label: "dabit@dabitsol.com", href: "mailto:dabit@dabitsol.com" },
     { icon: "phone", label: "+82-31-202-2435", href: "tel:+82-31-202-2435" },
   ],
@@ -74,7 +74,7 @@ export const sharedPageComponents: SharedLayout = {
   ],
   footer: Component.Footer({
     links: {
-      [EN ? "Dabit Solution" : "다빛솔루션"]: "https://dabitsol.com",
+      [EN ? "Dabit Solution" : "다빛솔루션"]: EN ? "https://dabitsol.com/en/" : "https://dabitsol.com",
     },
   }),
 }

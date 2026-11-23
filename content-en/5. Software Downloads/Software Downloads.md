@@ -4,7 +4,7 @@ title: Software Downloads
 
 #### Software downloads
 
-- Get the latest **DabitOne** from the [Dabit Solution official download page](https://dabitsol.com/download/) (Korean)
+- Get the latest **DabitOne** from the [Dabit Solution official download page](https://dabitsol.com/en/download/)
 - If you need an older version, [[Training and Directions|contact Dabit Solution]]
 
 #### How are DabitOne and DabitChe different?
