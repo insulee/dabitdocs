@@ -6,7 +6,6 @@ DABIT DOCS collects installation, setup, and troubleshooting guides for Dabit So
 
 > [!note] About this English edition
 > - The DabitOne screens and the screenshots in these documents are in Korean. We show a screen label as the Korean label with its English meaning, for example `전송` (Send).
-> - We add English documents step by step. You can find all documents on the [Korean site](https://docs.dabitsol.com/) (Korean).
 
 > [!info] You can use DabitOne or DabitChe
 > **DabitOne** and **DabitChe** are **two different programs**. DabitOne is not just a new name. DabitOne is new, but you can keep using DabitChe.
