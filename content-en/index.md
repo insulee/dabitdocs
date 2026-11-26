@@ -14,7 +14,7 @@ DABIT DOCS collects installation, setup, and troubleshooting guides for Dabit So
 > These documents describe the latest program, **DabitOne**. You can do most of the same tasks in DabitChe. Only the menu locations and button names are different.
 >
 > - For features that both programs have, we show the `DabitOne` / `DabitChe` paths side by side
-> - Only the features in `7. DabitOne New Features` (available in Korean) are new in DabitOne. DabitChe does not have them
+> - Only the features in `7. DabitOne New Features` are new in DabitOne. DabitChe does not have them
 > - You can find the DabitChe menu locations in the [DabitChe manual](http://www.dabitsol.com/files/DabitChe_UserManual_v9.0.pdf) (Korean)
 
 #### What you can find here
@@ -27,6 +27,6 @@ DABIT DOCS collects installation, setup, and troubleshooting guides for Dabit So
 #### How to find a document
 
 - Open a category in the list on the left, or type a word in the search box at the top
-- Each document has a short address. Example: `docs.dabitsol.com/en/2.1.5`
+- Each document has a short address. Example: `docs.dabitsol.com/en/2.1.1`
 
 We update the documents each time a product or program changes. If you cannot find what you need, or if you find a mistake, [[Repair Service and Technical Inquiries|contact Dabit Solution]].

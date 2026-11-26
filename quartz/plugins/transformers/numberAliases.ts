@@ -24,6 +24,7 @@ const MANUAL: Record<string, string> = {
   "Software Downloads": "download",
   "Training and Directions": "visit",
   "About Dabit Solution": "about",
+  "Company History": "history",
 }
 
 // 파일 이름(stem) → 짧은 주소. 번호 문서는 번호, 아니면 MANUAL
