@@ -67,7 +67,7 @@ title: Product Quick Start Guide
 
 > [!important] Be sure to check this!
 > Before you set the display signal, check the display signal of the module in [[3.1. LED Module Information and Display Signals]]
-> For modules of other companies, ask [[About Dabit Solution|Dabit Solution]] whether they are compatible with the controller before you buy the controller, or send the module and request a compatibility test
+> For modules of other companies, ask [[Repair Service and Technical Inquiries|Dabit Solution]] whether they are compatible with the controller before you buy the controller, or send the module and request a compatibility test
 
 
 - 설정 (Settings) > 표출신호 설정 (Display signal settings) 

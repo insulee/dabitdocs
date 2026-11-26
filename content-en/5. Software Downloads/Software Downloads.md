@@ -16,6 +16,6 @@ title: Software Downloads
 
 **Basic tasks work in both programs**: setting the screen size, the display signal, and fonts, and making playlists. Only the menu locations and button names are different. These documents describe DabitOne, and they also give the DabitChe paths.
 
-Only the features in `7. DabitOne New Features` (available in Korean) are new in DabitOne. DabitChe does not have them. You can find the DabitChe menu locations in the [DabitChe manual](http://www.dabitsol.com/files/DabitChe_UserManual_v9.0.pdf) (Korean).
+Only the features in `7. DabitOne New Features` are new in DabitOne. DabitChe does not have them. You can find the DabitChe menu locations in the [DabitChe manual](http://www.dabitsol.com/files/DabitChe_UserManual_v9.0.pdf) (Korean).
 
 ---
