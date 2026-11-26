@@ -631,14 +631,14 @@ title: Company History
 > - **Public sector**
 >   - Illegal parking enforcement LED display for a city hall (partner company)
 >   - Parking LED display for a city vehicle registration office (partner company)
->   - Parking LED display in a district, 200 characters
+>   - Parking LED display in a city, 200 characters
 >   - Illegal parking LED display in a city (partner company)
 >   - Parking LED display in a city (partner company)
 >   - Promotional LED display at a park for a county office
 >   - Parking management LED displays in 2 districts (partner company)
 >   - Illegal parking enforcement LED displays in 2 cities (partner company)
 >   - Parking LED displays in 2 districts (partner company)
->   - GPS-linked parking LED display in a district (partner company)
+>   - GPS-linked parking LED display in a city (partner company)
 >   - Parking LED display for a city (partner company)
 >   - Parking LED display for a city (partner company)
 >   - Environmental LED displays for a county office and a town, 2M2M2M2M, inverter-linked, 3M blinking (partner company)
@@ -806,15 +806,15 @@ title: Company History
 >   - Illegal parking enforcement LED display for a city
 >   - Information LED display for a water resources agency
 >   - Information LED display for a provincial government office
->   - GPS-linked LED display in a district
+>   - GPS-linked LED display in a city
 >   - Parking enforcement LED display in a district
->   - Parking enforcement LED display in a district
+>   - Parking enforcement LED display in a city
 >   - Illegal parking enforcement LED display for a city
 >   - Banner LED display for a county
 >   - Environmental data information LED display for a district office
 >   - Information LED display at a sewage treatment plant
 >   - Illegal parking enforcement LED display for a city hall (partner company)
->   - Parking LED display in a district
+>   - Parking LED display in a city
 >   - Parking LED display for a city (extension)
 > - **Commerce/retail**
 >   - Information LED display at a department store
@@ -834,7 +834,7 @@ title: Company History
 > - **IT/technology development**
 >   - Development of a VB-OCX control system
 >   - LED display system linked to speed sensors (partner company)
->   - GPS-linked LED display system (in a district)
+>   - GPS-linked LED display system (in a city)
 >   - CDMA-linked LED display system (for a county office)
 > - **Lottery/games**
 >   - Lottery information LED display system
